@@ -1,0 +1,1009 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>BusyBox - The Swiss Army Knife of Embedded Linux</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:root@localhost" />
+</head>
+
+<body style="background-color: white">
+
+
+<!-- INDEX BEGIN -->
+<div name="index">
+<p><a name="__index__"></a></p>
+<!--
+
+<ul>
+
+	<li><a href="#name">NAME</a></li>
+	<li><a href="#syntax">SYNTAX</a></li>
+	<li><a href="#description">DESCRIPTION</a></li>
+	<li><a href="#usage">USAGE</a></li>
+	<li><a href="#common_options">COMMON OPTIONS</a></li>
+	<li><a href="#commands">COMMANDS</a></li>
+	<li><a href="#command_descriptions">COMMAND DESCRIPTIONS</a></li>
+	<li><a href="#libc_nss">LIBC NSS</a></li>
+	<li><a href="#maintainer">MAINTAINER</a></li>
+	<li><a href="#authors">AUTHORS</a></li>
+</ul>
+
+-->
+
+
+</div>
+<!-- INDEX END -->
+
+<p>
+</p>
+<h1><a name="name">NAME</a></h1>
+<p>BusyBox - The Swiss Army Knife of Embedded Linux</p>
+<p>
+</p>
+<hr />
+<h1><a name="syntax">SYNTAX</a></h1>
+<pre>
+ busybox &lt;applet&gt; [arguments...]  # or</pre>
+<pre>
+ &lt;applet&gt; [arguments...]          # if symlinked</pre>
+<p>
+</p>
+<hr />
+<h1><a name="description">DESCRIPTION</a></h1>
+<p>BusyBox combines tiny versions of many common UNIX utilities into a single
+small executable. It provides minimalist replacements for most of the utilities
+you usually find in GNU coreutils, util-linux, etc. The utilities in BusyBox
+generally have fewer options than their full-featured GNU cousins; however, the
+options that are included provide the expected functionality and behave very
+much like their GNU counterparts.</p>
+<p>BusyBox has been written with size-optimization and limited resources in mind.
+It is also extremely modular so you can easily include or exclude commands (or
+features) at compile time. This makes it easy to customize your embedded
+systems. To create a working system, just add /dev, /etc, and a Linux kernel.
+BusyBox provides a fairly complete POSIX environment for any small or embedded
+system.</p>
+<p>BusyBox is extremely configurable.  This allows you to include only the
+components you need, thereby reducing binary size. Run 'make config' or 'make
+menuconfig' to select the functionality that you wish to enable.  Then run
+'make' to compile BusyBox using your configuration.</p>
+<p>After the compile has finished, you should use 'make install' to install
+BusyBox. This will install the 'bin/busybox' binary, in the target directory
+specified by CONFIG_PREFIX. CONFIG_PREFIX can be set when configuring BusyBox,
+or you can specify an alternative location at install time (i.e., with a
+command line like 'make CONFIG_PREFIX=/tmp/foo install'). If you enabled
+any applet installation scheme (either as symlinks or hardlinks), these will
+also be installed in the location pointed to by CONFIG_PREFIX.</p>
+<p>
+</p>
+<hr />
+<h1><a name="usage">USAGE</a></h1>
+<p>BusyBox is a multi-call binary.  A multi-call binary is an executable program
+that performs the same job as more than one utility program.  That means there
+is just a single BusyBox binary, but that single binary acts like a large
+number of utilities.  This allows BusyBox to be smaller since all the built-in
+utility programs (we call them applets) can share code for many common
+operations.</p>
+<p>You can also invoke BusyBox by issuing a command as an argument on the
+command line.  For example, entering</p>
+<pre>
+        /bin/busybox ls</pre>
+<p>will also cause BusyBox to behave as 'ls'.</p>
+<p>Of course, adding '/bin/busybox' into every command would be painful.  So most
+people will invoke BusyBox using links to the BusyBox binary.</p>
+<p>For example, entering</p>
+<pre>
+        ln -s /bin/busybox ls
+        ./ls</pre>
+<p>will cause BusyBox to behave as 'ls' (if the 'ls' command has been compiled
+into BusyBox).  Generally speaking, you should never need to make all these
+links yourself, as the BusyBox build system will do this for you when you run
+the 'make install' command.</p>
+<p>If you invoke BusyBox with no arguments, it will provide you with a list of the
+applets that have been compiled into your BusyBox binary.</p>
+<p>
+</p>
+<hr />
+<h1><a name="common_options">COMMON OPTIONS</a></h1>
+<p>Most BusyBox applets support the <strong>--help</strong> argument to provide a terse runtime
+description of their behavior.  If the CONFIG_FEATURE_VERBOSE_USAGE option has
+been enabled, more detailed usage information will also be available.</p>
+<p>
+</p>
+<hr />
+<h1><a name="commands">COMMANDS</a></h1>
+<p>Currently available applets include:</p>
+<pre>
+        ash, bash, cat, cp, cut, date, depmod, df, dos2unix, echo, env,
+        halt, httpd, ifconfig, ifdown, ifenslave, ifplugd, ifup, init,
+        insmod, kill, killall, killall5, linuxrc, ln, ls, lsmod, mesg,
+        mkdir, mknod, modinfo, modprobe, mount, mv, ping, poweroff,
+        printenv, printf, ps, pwd, reboot, rm, rmdir, rmmod, sh, sleep,
+        stat, sync, top, udhcpc, umount, unix2dos, usleep, watch, wget</pre>
+<p>
+</p>
+<hr />
+<h1><a name="command_descriptions">COMMAND DESCRIPTIONS</a></h1>
+<dl>
+<dt><strong><a name="ash" class="item"><strong>ash</strong></a></strong></dt>
+
+<dd>
+<p>ash [-/+OPTIONS] [-/+o OPT]... [-c 'SCRIPT' [ARG0 [ARGS]] / FILE [ARGS]]</p>
+<p>Unix shell interpreter</p>
+</dd>
+<dt><strong><a name="bash" class="item"><strong>bash</strong></a></strong></dt>
+
+<dd>
+<p>bash [-/+OPTIONS] [-/+o OPT]... [-c 'SCRIPT' [ARG0 [ARGS]] / FILE [ARGS]]</p>
+<p>Unix shell interpreter</p>
+</dd>
+<dt><strong><a name="cat" class="item"><strong>cat</strong></a></strong></dt>
+
+<dd>
+<p>cat [FILE]...</p>
+<p>Concatenate FILEs and print them to stdout</p>
+</dd>
+<dt><strong><a name="cp" class="item"><strong>cp</strong></a></strong></dt>
+
+<dd>
+<p>cp [OPTIONS] SOURCE... DEST</p>
+<p>Copy SOURCE(s) to DEST</p>
+<pre>
+        -a      Same as -dpR
+        -R,-r   Recurse
+        -d,-P   Preserve symlinks (default if -R)
+        -L      Follow all symlinks
+        -H      Follow symlinks on command line
+        -p      Preserve file attributes if possible
+        -f      Overwrite
+        -i      Prompt before overwrite
+        -l,-s   Create (sym)links</pre>
+</dd>
+<dt><strong><a name="cut" class="item"><strong>cut</strong></a></strong></dt>
+
+<dd>
+<p>cut [OPTIONS] [FILE]...</p>
+<p>Print selected fields from each input FILE to stdout</p>
+<pre>
+        -b LIST Output only bytes from LIST
+        -c LIST Output only characters from LIST
+        -d CHAR Use CHAR instead of tab as the field delimiter
+        -s      Output only the lines containing delimiter
+        -f N    Print only these fields
+        -n      Ignored</pre>
+</dd>
+<dt><strong><a name="date" class="item"><strong>date</strong></a></strong></dt>
+
+<dd>
+<p>date [OPTIONS] [+FMT] [TIME]</p>
+<p>Display time (using +FMT), or set time</p>
+<pre>
+        [-s,--set] TIME Set time to TIME
+        -u,--utc        Work in UTC (don't convert to local time)
+        -R,--rfc-2822   Output RFC-2822 compliant date string
+        -I[SPEC]        Output ISO-8601 compliant date string
+                        SPEC='date' (default) for date only,
+                        'hours', 'minutes', or 'seconds' for date and
+                        time to the indicated precision
+        -r,--reference FILE     Display last modification time of FILE
+        -d,--date TIME  Display TIME, not 'now'
+        -D FMT          Use FMT for -d TIME conversion</pre>
+<p>Recognized TIME formats:</p>
+<pre>
+        hh:mm[:ss]
+        [YYYY.]MM.DD-hh:mm[:ss]
+        YYYY-MM-DD hh:mm[:ss]
+        [[[[[YY]YY]MM]DD]hh]mm[.ss]
+        'date TIME' form accepts MMDDhhmm[[YY]YY][.ss] instead</pre>
+</dd>
+<dt><strong><a name="depmod" class="item"><strong>depmod</strong></a></strong></dt>
+
+<dd>
+<p>depmod [-qfwrsv] MODULE [symbol=value]...</p>
+<pre>
+        -r      Remove MODULE (stacks) or do autoclean
+        -q      Quiet
+        -v      Verbose
+        -f      Force
+        -w      Wait for unload
+        -s      Report via syslog instead of stderr</pre>
+</dd>
+<dt><strong><a name="df" class="item"><strong>df</strong></a></strong></dt>
+
+<dd>
+<p>df [-Pkai] [-B SIZE] [FILESYSTEM]...</p>
+<p>Print filesystem usage statistics</p>
+<pre>
+        -P      POSIX output format
+        -k      1024-byte blocks (default)
+        -a      Show all filesystems
+        -i      Inodes
+        -B SIZE Blocksize</pre>
+</dd>
+<dt><strong><a name="dos2unix" class="item"><strong>dos2unix</strong></a></strong></dt>
+
+<dd>
+<p>dos2unix [-ud] [FILE]</p>
+<p>Convert FILE in-place from DOS to Unix format.
+When no file is given, use stdin/stdout.</p>
+<pre>
+        -u      dos2unix
+        -d      unix2dos</pre>
+</dd>
+<dt><strong><a name="echo" class="item"><strong>echo</strong></a></strong></dt>
+
+<dd>
+<p>echo [-neE] [ARG]...</p>
+<p>Print the specified ARGs to stdout</p>
+<pre>
+        -n      Suppress trailing newline
+        -e      Interpret backslash escapes (i.e., \t=tab)
+        -E      Don't interpret backslash escapes (default)</pre>
+</dd>
+<dt><strong><a name="env" class="item"><strong>env</strong></a></strong></dt>
+
+<dd>
+<p>env [-iu] [-] [name=value]... [PROG ARGS]</p>
+<p>Print the current environment or run PROG after setting up
+the specified environment</p>
+<pre>
+        -, -i   Start with an empty environment
+        -u      Remove variable from the environment</pre>
+</dd>
+<dt><strong><a name="halt" class="item"><strong>halt</strong></a></strong></dt>
+
+<dd>
+<p>halt [-d DELAY] [-n] [-f]</p>
+<p>Halt the system</p>
+<pre>
+        -d SEC  Delay interval
+        -n      Do not sync
+        -f      Force (don't go through init)</pre>
+</dd>
+<dt><strong><a name="httpd" class="item"><strong>httpd</strong></a></strong></dt>
+
+<dd>
+<p>httpd [-ifv[v]] [-c CONFFILE] [-p [IP:]PORT] [-u USER[:GRP]] [-r REALM] [-h HOME]
+or httpd -d/-e/-m STRING</p>
+<p>Listen for incoming HTTP requests</p>
+<pre>
+        -i              Inetd mode
+        -f              Don't daemonize
+        -v[v]           Verbose
+        -p [IP:]PORT    Bind to IP:PORT (default *:80)
+        -u USER[:GRP]   Set uid/gid after binding to port
+        -r REALM        Authentication Realm for Basic Authentication
+        -h HOME         Home directory (default .)
+        -c FILE         Configuration file (default {/etc,HOME}/httpd.conf)
+        -m STRING       MD5 crypt STRING
+        -e STRING       HTML encode STRING
+        -d STRING       URL decode STRING</pre>
+</dd>
+<dt><strong><a name="ifconfig" class="item"><strong>ifconfig</strong></a></strong></dt>
+
+<dd>
+<p>ifconfig [-a] interface [address]</p>
+<p>Configure a network interface</p>
+<pre>
+        [[-]broadcast [ADDRESS]] [[-]pointopoint [ADDRESS]]
+        [netmask ADDRESS] [dstaddr ADDRESS]
+        [outfill NN] [keepalive NN]
+        [hw ether ADDRESS] [metric NN] [mtu NN]
+        [[-]trailers] [[-]arp] [[-]allmulti]
+        [multicast] [[-]promisc] [txqueuelen NN] [[-]dynamic]
+        [mem_start NN] [io_addr NN] [irq NN]
+        [up|down] ...</pre>
+</dd>
+<dt><strong><a name="ifdown" class="item"><strong>ifdown</strong></a></strong></dt>
+
+<dd>
+<p>ifdown [-anmvf] [-i FILE] IFACE...</p>
+<pre>
+        -a      De/configure all interfaces automatically
+        -i FILE Use FILE for interface definitions
+        -n      Print out what would happen, but don't do it
+                (note: doesn't disable mappings)
+        -m      Don't run any mappings
+        -v      Print out what would happen before doing it
+        -f      Force de/configuration</pre>
+</dd>
+<dt><strong><a name="ifenslave" class="item"><strong>ifenslave</strong></a></strong></dt>
+
+<dd>
+<p>ifenslave [-cdf] MASTER_IFACE SLAVE_IFACE...</p>
+<p>Configure network interfaces for parallel routing</p>
+<pre>
+        -c,--change-active      Change active slave
+        -d,--detach             Remove slave interface from bonding device
+        -f,--force              Force, even if interface is not Ethernet</pre>
+</dd>
+<dt><strong><a name="ifplugd" class="item"><strong>ifplugd</strong></a></strong></dt>
+
+<dd>
+<p>ifplugd [OPTIONS]</p>
+<p>Network interface plug detection daemon</p>
+<pre>
+        -n              Don't daemonize
+        -s              Don't log to syslog
+        -i IFACE        Interface
+        -f/-F           Treat link detection error as link down/link up
+                        (otherwise exit on error)
+        -a              Don't up interface at each link probe
+        -M              Monitor creation/destruction of interface
+                        (otherwise it must exist)
+        -r PROG         Script to run
+        -x ARG          Extra argument for script
+        -I              Don't exit on nonzero exit code from script
+        -p              Don't run &quot;up&quot; script on startup
+        -q              Don't run &quot;down&quot; script on exit
+        -l              Always run script on startup
+        -t SECS         Poll time in seconds
+        -u SECS         Delay before running script after link up
+        -d SECS         Delay after link down
+        -m MODE         API mode (mii, priv, ethtool, wlan, iff, auto)
+        -k              Kill running daemon</pre>
+</dd>
+<dt><strong><a name="ifup" class="item"><strong>ifup</strong></a></strong></dt>
+
+<dd>
+<p>ifup [-anmvf] [-i FILE] IFACE...</p>
+<pre>
+        -a      De/configure all interfaces automatically
+        -i FILE Use FILE for interface definitions
+        -n      Print out what would happen, but don't do it
+                (note: doesn't disable mappings)
+        -m      Don't run any mappings
+        -v      Print out what would happen before doing it
+        -f      Force de/configuration</pre>
+</dd>
+<dt><strong><a name="init" class="item"><strong>init</strong></a></strong></dt>
+
+<dd>
+<p>init</p>
+<p>Init is the first process started during boot. It never exits.
+It (re)spawns children according to /etc/inittab.</p>
+</dd>
+<dt><strong><a name="insmod" class="item"><strong>insmod</strong></a></strong></dt>
+
+<dd>
+<p>insmod [-qfwrsv] MODULE [symbol=value]...</p>
+<pre>
+        -r      Remove MODULE (stacks) or do autoclean
+        -q      Quiet
+        -v      Verbose
+        -f      Force
+        -w      Wait for unload
+        -s      Report via syslog instead of stderr</pre>
+</dd>
+<dt><strong><a name="kill" class="item"><strong>kill</strong></a></strong></dt>
+
+<dd>
+<p>kill [-l] [-SIG] PID...</p>
+<p>Send a signal (default: TERM) to given PIDs</p>
+<pre>
+        -l      List all signal names and numbers</pre>
+</dd>
+<dt><strong><a name="killall" class="item"><strong>killall</strong></a></strong></dt>
+
+<dd>
+<p>killall [-l] [-q] [-SIG] PROCESS_NAME...</p>
+<p>Send a signal (default: TERM) to given processes</p>
+<pre>
+        -l      List all signal names and numbers
+        -q      Don't complain if no processes were killed</pre>
+</dd>
+<dt><strong><a name="killall5" class="item"><strong>killall5</strong></a></strong></dt>
+
+<dd>
+<p>killall5 [-l] [-SIG] [-o PID]...</p>
+<p>Send a signal (default: TERM) to all processes outside current session</p>
+<pre>
+        -l      List all signal names and numbers
+        -o PID  Don't signal this PID</pre>
+</dd>
+<dt><strong><a name="ln" class="item"><strong>ln</strong></a></strong></dt>
+
+<dd>
+<p>ln [OPTIONS] TARGET... LINK|DIR</p>
+<p>Create a link LINK or DIR/TARGET to the specified TARGET(s)</p>
+<pre>
+        -s      Make symlinks instead of hardlinks
+        -f      Remove existing destinations
+        -n      Don't dereference symlinks - treat like normal file
+        -b      Make a backup of the target (if exists) before link operation
+        -S suf  Use suffix instead of ~ when making backup files
+        -T      2nd arg must be a DIR
+        -v      Verbose</pre>
+</dd>
+<dt><strong><a name="ls" class="item"><strong>ls</strong></a></strong></dt>
+
+<dd>
+<p>ls [-1AaCxdLHRFplinserSXvctu] [FILE]...</p>
+<p>List directory contents</p>
+<pre>
+        -1      One column output
+        -a      Include entries which start with .
+        -A      Like -a, but exclude . and ..
+        -C      List by columns
+        -x      List by lines
+        -d      List directory entries instead of contents
+        -L      Follow symlinks
+        -H      Follow symlinks on command line
+        -R      Recurse
+        -p      Append / to dir entries
+        -F      Append indicator (one of */=@|) to entries
+        -l      Long listing format
+        -i      List inode numbers
+        -n      List numeric UIDs and GIDs instead of names
+        -s      List allocated blocks
+        -e      List full date and time
+        -r      Sort in reverse order
+        -S      Sort by size
+        -X      Sort by extension
+        -v      Sort by version
+        -c      With -l: sort by ctime
+        -t      With -l: sort by mtime
+        -u      With -l: sort by atime
+        --color[={always,never,auto}]   Control coloring</pre>
+</dd>
+<dt><strong><a name="lsmod" class="item"><strong>lsmod</strong></a></strong></dt>
+
+<dd>
+<p>lsmod [-qfwrsv] MODULE [symbol=value]...</p>
+<pre>
+        -r      Remove MODULE (stacks) or do autoclean
+        -q      Quiet
+        -v      Verbose
+        -f      Force
+        -w      Wait for unload
+        -s      Report via syslog instead of stderr</pre>
+</dd>
+<dt><strong><a name="mesg" class="item"><strong>mesg</strong></a></strong></dt>
+
+<dd>
+<p>mesg [y|n]</p>
+<p><table cellspacing="0" cellpadding="0"><tr><td>Control write access to your terminal
+<tr><td><td>y<td>Allow write access to your terminal
+<tr><td><td>n<td>Disallow write access to your terminal</table></p>
+</dd>
+<dt><strong><a name="mkdir" class="item"><strong>mkdir</strong></a></strong></dt>
+
+<dd>
+<p>mkdir [OPTIONS] DIRECTORY...</p>
+<p>Create DIRECTORY</p>
+<pre>
+        -m MODE Mode
+        -p      No error if exists; make parent directories as needed</pre>
+</dd>
+<dt><strong><a name="mknod" class="item"><strong>mknod</strong></a></strong></dt>
+
+<dd>
+<p>mknod [-m MODE] NAME TYPE MAJOR MINOR</p>
+<p>Create a special file (block, character, or pipe)</p>
+<pre>
+        -m MODE Creation mode (default a=rw)
+TYPE:
+        b       Block device
+        c or u  Character device
+        p       Named pipe (MAJOR and MINOR are ignored)</pre>
+</dd>
+<dt><strong><a name="modinfo" class="item"><strong>modinfo</strong></a></strong></dt>
+
+<dd>
+<p>modinfo [-adlp0] [-F keyword] MODULE</p>
+<pre>
+        -a              Shortcut for '-F author'
+        -d              Shortcut for '-F description'
+        -l              Shortcut for '-F license'
+        -p              Shortcut for '-F parm'
+        -F keyword      Keyword to look for
+        -0              Separate output with NULs</pre>
+</dd>
+<dt><strong><a name="modprobe" class="item"><strong>modprobe</strong></a></strong></dt>
+
+<dd>
+<p>modprobe [-qfwrsv] MODULE [symbol=value]...</p>
+<pre>
+        -r      Remove MODULE (stacks) or do autoclean
+        -q      Quiet
+        -v      Verbose
+        -f      Force
+        -w      Wait for unload
+        -s      Report via syslog instead of stderr</pre>
+</dd>
+<dt><strong><a name="mount" class="item"><strong>mount</strong></a></strong></dt>
+
+<dd>
+<p>mount [OPTIONS] [-o OPTS] DEVICE NODE</p>
+<p>Mount a filesystem. Filesystem autodetection requires /proc.</p>
+<pre>
+        -a              Mount all filesystems in fstab
+        -f              Dry run
+        -v              Verbose
+        -r              Read-only mount
+        -w              Read-write mount (default)
+        -t FSTYPE[,...] Filesystem type(s)
+        -O OPT          Mount only filesystems with option OPT (-a only)
+-o OPT:
+        loop            Ignored (loop devices are autodetected)
+        [a]sync         Writes are [a]synchronous
+        [no]atime       Disable/enable updates to inode access times
+        [no]diratime    Disable/enable atime updates to directories
+        [no]relatime    Disable/enable atime updates relative to modification time
+        [no]dev         (Dis)allow use of special device files
+        [no]exec        (Dis)allow use of executable files
+        [no]suid        (Dis)allow set-user-id-root programs
+        [r]shared       Convert [recursively] to a shared subtree
+        [r]slave        Convert [recursively] to a slave subtree
+        [r]private      Convert [recursively] to a private subtree
+        [un]bindable    Make mount point [un]able to be bind mounted
+        [r]bind         Bind a file or directory [recursively] to another location
+        move            Relocate an existing mount point
+        remount         Remount a mounted filesystem, changing flags
+        ro/rw           Same as -r/-w</pre>
+<p>There are filesystem-specific -o flags.</p>
+</dd>
+<dt><strong><a name="mv" class="item"><strong>mv</strong></a></strong></dt>
+
+<dd>
+<p>mv [-fin] SOURCE DEST
+or: mv [-fin] SOURCE... DIRECTORY</p>
+<p>Rename SOURCE to DEST, or move SOURCE(s) to DIRECTORY</p>
+<pre>
+        -f      Don't prompt before overwriting
+        -i      Interactive, prompt before overwrite
+        -n      Don't overwrite an existing file</pre>
+</dd>
+<dt><strong><a name="ping" class="item"><strong>ping</strong></a></strong></dt>
+
+<dd>
+<p>ping [OPTIONS] HOST</p>
+<p>Send ICMP ECHO_REQUEST packets to network hosts</p>
+<pre>
+        -c CNT          Send only CNT pings
+        -s SIZE         Send SIZE data bytes in packets (default:56)
+        -t TTL          Set TTL
+        -I IFACE/IP     Use interface or IP address as source
+        -W SEC          Seconds to wait for the first response (default:10)
+                        (after all -c CNT packets are sent)
+        -w SEC          Seconds until ping exits (default:infinite)
+                        (can exit earlier with -c CNT)
+        -q              Quiet, only displays output at start
+                        and when finished</pre>
+</dd>
+<dt><strong><a name="poweroff" class="item"><strong>poweroff</strong></a></strong></dt>
+
+<dd>
+<p>poweroff [-d DELAY] [-n] [-f]</p>
+<p>Halt and shut off power</p>
+<pre>
+        -d SEC  Delay interval
+        -n      Do not sync
+        -f      Force (don't go through init)</pre>
+</dd>
+<dt><strong><a name="printenv" class="item"><strong>printenv</strong></a></strong></dt>
+
+<dd>
+<p>printenv [VARIABLE]...</p>
+<p>Print environment VARIABLEs.
+If no VARIABLE specified, print all.</p>
+</dd>
+<dt><strong><a name="printf" class="item"><strong>printf</strong></a></strong></dt>
+
+<dd>
+<p>printf FORMAT [ARG]...</p>
+<p>Format and print ARG(s) according to FORMAT (a-la C printf)</p>
+</dd>
+<dt><strong><a name="ps" class="item"><strong>ps</strong></a></strong></dt>
+
+<dd>
+<p>ps</p>
+<p>Show list of processes</p>
+<pre>
+        w       Wide output
+        l       Long output</pre>
+</dd>
+<dt><strong><a name="pwd" class="item"><strong>pwd</strong></a></strong></dt>
+
+<dd>
+<p>pwd</p>
+<p>Print the full filename of the current working directory</p>
+</dd>
+<dt><strong><a name="reboot" class="item"><strong>reboot</strong></a></strong></dt>
+
+<dd>
+<p>reboot [-d DELAY] [-n] [-f]</p>
+<p>Reboot the system</p>
+<pre>
+        -d SEC  Delay interval
+        -n      Do not sync
+        -f      Force (don't go through init)</pre>
+</dd>
+<dt><strong><a name="rm" class="item"><strong>rm</strong></a></strong></dt>
+
+<dd>
+<p>rm [-irf] FILE...</p>
+<p>Remove (unlink) FILEs</p>
+<pre>
+        -i      Always prompt before removing
+        -f      Never prompt
+        -R,-r   Recurse</pre>
+</dd>
+<dt><strong><a name="rmdir" class="item"><strong>rmdir</strong></a></strong></dt>
+
+<dd>
+<p>rmdir [OPTIONS] DIRECTORY...</p>
+<p>Remove DIRECTORY if it is empty</p>
+<pre>
+        -p|--parents    Include parents
+        --ignore-fail-on-non-empty</pre>
+</dd>
+<dt><strong><a name="rmmod" class="item"><strong>rmmod</strong></a></strong></dt>
+
+<dd>
+<p>rmmod [-qfwrsv] MODULE [symbol=value]...</p>
+<pre>
+        -r      Remove MODULE (stacks) or do autoclean
+        -q      Quiet
+        -v      Verbose
+        -f      Force
+        -w      Wait for unload
+        -s      Report via syslog instead of stderr</pre>
+</dd>
+<dt><strong><a name="sh" class="item"><strong>sh</strong></a></strong></dt>
+
+<dd>
+<p>sh [-/+OPTIONS] [-/+o OPT]... [-c 'SCRIPT' [ARG0 [ARGS]] / FILE [ARGS]]</p>
+<p>Unix shell interpreter</p>
+</dd>
+<dt><strong><a name="sleep" class="item"><strong>sleep</strong></a></strong></dt>
+
+<dd>
+<p>sleep [N]...</p>
+<p>Pause for a time equal to the total of the args given, where each arg can
+have an optional suffix of (s)econds, (m)inutes, (h)ours, or (d)ays</p>
+</dd>
+<dt><strong><a name="stat" class="item"><strong>stat</strong></a></strong></dt>
+
+<dd>
+<p>stat [OPTIONS] FILE...</p>
+<p>Display file (default) or filesystem status</p>
+<pre>
+        -c fmt  Use the specified format
+        -f      Display filesystem status
+        -L      Follow links
+        -t      Display info in terse form</pre>
+<p>Valid format sequences for files:</p>
+<pre>
+ %a     Access rights in octal
+ %A     Access rights in human readable form
+ %b     Number of blocks allocated (see %B)
+ %B     The size in bytes of each block reported by %b
+ %d     Device number in decimal
+ %D     Device number in hex
+ %f     Raw mode in hex
+ %F     File type
+ %g     Group ID of owner
+ %G     Group name of owner
+ %h     Number of hard links
+ %i     Inode number
+ %n     File name
+ %N     File name, with -&gt; TARGET if symlink
+ %o     I/O block size
+ %s     Total size, in bytes
+ %t     Major device type in hex
+ %T     Minor device type in hex
+ %u     User ID of owner
+ %U     User name of owner
+ %x     Time of last access
+ %X     Time of last access as seconds since Epoch
+ %y     Time of last modification
+ %Y     Time of last modification as seconds since Epoch
+ %z     Time of last change
+ %Z     Time of last change as seconds since Epoch</pre>
+<p>Valid format sequences for file systems:</p>
+<pre>
+ %a     Free blocks available to non-superuser
+ %b     Total data blocks in file system
+ %c     Total file nodes in file system
+ %d     Free file nodes in file system
+ %f     Free blocks in file system
+ %i     File System ID in hex
+ %l     Maximum length of filenames
+ %n     File name
+ %s     Block size (for faster transfer)
+ %S     Fundamental block size (for block counts)
+ %t     Type in hex
+ %T     Type in human readable form</pre>
+</dd>
+<dt><strong><a name="sync" class="item"><strong>sync</strong></a></strong></dt>
+
+<dd>
+<p>sync</p>
+<p>Write all buffered blocks to disk</p>
+</dd>
+<dt><strong><a name="top" class="item"><strong>top</strong></a></strong></dt>
+
+<dd>
+<p>top [-b] [-nCOUNT] [-dSECONDS] [-m]</p>
+<p>Provide a view of process activity in real time.
+Read the status of all processes from /proc each SECONDS
+and display a screenful of them.
+Keys:</p>
+<pre>
+        N/M/P/T: show CPU usage, sort by pid/mem/cpu/time
+        S: show memory
+        R: reverse sort
+        1: toggle SMP
+        Q,^C: exit</pre>
+<p>Options:</p>
+<pre>
+        -b      Batch mode
+        -n N    Exit after N iterations
+        -d N    Delay between updates
+        -m      Same as 's' key</pre>
+</dd>
+<dt><strong><a name="udhcpc" class="item"><strong>udhcpc</strong></a></strong></dt>
+
+<dd>
+<p><table cellspacing="0" cellpadding="0"><tr><td>udhcpc [-fbqvaRB] [-t N] [-T SEC] [-A SEC/-n]
+<tr><td><td>[-i IFACE] [-s PROG] [-p PIDFILE]
+<tr><td><td>[-oC] [-r IP] [-V VENDOR] [-F NAME] [-x OPT:VAL]... [-O OPT]...</table></p>
+<pre>
+        -i,--interface IFACE    Interface to use (default eth0)
+        -s,--script PROG        Run PROG at DHCP events (default /usr/share/udhcpc/default.script)
+        -p,--pidfile FILE       Create pidfile
+        -B,--broadcast          Request broadcast replies
+        -t,--retries N          Send up to N discover packets (default 3)
+        -T,--timeout SEC        Pause between packets (default 3)
+        -A,--tryagain SEC       Wait if lease is not obtained (default 20)
+        -n,--now                Exit if lease is not obtained
+        -q,--quit               Exit after obtaining lease
+        -R,--release            Release IP on exit
+        -f,--foreground         Run in foreground
+        -b,--background         Background if lease is not obtained
+        -S,--syslog             Log to syslog too
+        -a,--arping             Use arping to validate offered address
+        -r,--request IP         Request this IP address
+        -o,--no-default-options Don't request any options (unless -O is given)
+        -O,--request-option OPT Request option OPT from server (cumulative)
+        -x OPT:VAL              Include option OPT in sent packets (cumulative)
+                                Examples of string, numeric, and hex byte opts:
+                                -x hostname:bbox - option 12
+                                -x lease:3600 - option 51 (lease time)
+                                -x 0x3d:0100BEEFC0FFEE - option 61 (client id)
+        -F,--fqdn NAME          Ask server to update DNS mapping for NAME
+        -V,--vendorclass VENDOR Vendor identifier (default 'udhcp VERSION')
+        -C,--clientid-none      Don't send MAC as client identifier
+        -v                      Verbose
+Signals:</pre>
+<pre>
+        USR1    Renew lease
+        USR2    Release lease</pre>
+</dd>
+<dt><strong><a name="umount" class="item"><strong>umount</strong></a></strong></dt>
+
+<dd>
+<p>umount [OPTIONS] FILESYSTEM|DIRECTORY</p>
+<p>Unmount file systems</p>
+<pre>
+        -a      Unmount all file systems
+        -r      Try to remount devices as read-only if mount is busy
+        -l      Lazy umount (detach filesystem)
+        -f      Force umount (i.e., unreachable NFS server)
+        -D      Don't free loop device even if it has been used</pre>
+</dd>
+<dt><strong><a name="unix2dos" class="item"><strong>unix2dos</strong></a></strong></dt>
+
+<dd>
+<p>unix2dos [-ud] [FILE]</p>
+<p>Convert FILE in-place from Unix to DOS format.
+When no file is given, use stdin/stdout.</p>
+<pre>
+        -u      dos2unix
+        -d      unix2dos</pre>
+</dd>
+<dt><strong><a name="usleep" class="item"><strong>usleep</strong></a></strong></dt>
+
+<dd>
+<p>usleep N</p>
+<p>Pause for N microseconds</p>
+</dd>
+<dt><strong><a name="watch" class="item"><strong>watch</strong></a></strong></dt>
+
+<dd>
+<p>watch [-n SEC] [-t] PROG ARGS</p>
+<p>Run PROG periodically</p>
+<pre>
+        -n      Loop period in seconds (default 2)
+        -t      Don't print header</pre>
+</dd>
+<dt><strong><a name="wget" class="item"><strong>wget</strong></a></strong></dt>
+
+<dd>
+<p><table cellspacing="0" cellpadding="0"><tr><td>wget [-c|--continue] [-s|--spider] [-q|--quiet] [-O|--output-document FILE]
+<tr><td><td>[--header 'header: value'] [-Y|--proxy on/off] [-P DIR]
+<tr><td><td>[-U|--user-agent AGENT] [-T SEC] URL...</table></p>
+<p>Retrieve files via HTTP or FTP</p>
+<pre>
+        -s      Spider mode - only check file existence
+        -c      Continue retrieval of aborted transfer
+        -q      Quiet
+        -P DIR  Save to DIR (default .)
+        -T SEC  Network read timeout is SEC seconds
+        -O FILE Save to FILE ('-' for stdout)
+        -U STR  Use STR for User-Agent header
+        -Y      Use proxy ('on' or 'off')</pre>
+</dd>
+</dl>
+<p>
+</p>
+<hr />
+<h1><a name="libc_nss">LIBC NSS</a></h1>
+<p>GNU Libc (glibc) uses the Name Service Switch (NSS) to configure the behavior
+of the C library for the local environment, and to configure how it reads
+system data, such as passwords and group information.  This is implemented
+using an /etc/nsswitch.conf configuration file, and using one or more of the
+/lib/libnss_* libraries.  BusyBox tries to avoid using any libc calls that make
+use of NSS.  Some applets however, such as login and su, will use libc functions
+that require NSS.</p>
+<p>If you enable CONFIG_USE_BB_PWD_GRP, BusyBox will use internal functions to
+directly access the /etc/passwd, /etc/group, and /etc/shadow files without
+using NSS.  This may allow you to run your system without the need for
+installing any of the NSS configuration files and libraries.</p>
+<p>When used with glibc, the BusyBox 'networking' applets will similarly require
+that you install at least some of the glibc NSS stuff (in particular,
+/etc/nsswitch.conf, /lib/libnss_dns*, /lib/libnss_files*, and /lib/libresolv*).</p>
+<p>Shameless Plug: As an alternative, one could use a C library such as uClibc.  In
+addition to making your system significantly smaller, uClibc does not require the
+use of any NSS support files or libraries.</p>
+<p>
+</p>
+<hr />
+<h1><a name="maintainer">MAINTAINER</a></h1>
+<p>Denis Vlasenko &lt;<a href="mailto:vda.linux@googlemail.com">vda.linux@googlemail.com</a>&gt;</p>
+<p>
+</p>
+<hr />
+<h1><a name="authors">AUTHORS</a></h1>
+<p>The following people have contributed code to BusyBox whether they know it or
+not.  If you have written code included in BusyBox, you should probably be
+listed here so you can obtain your bit of eternal glory.  If you should be
+listed here, or the description of what you have done needs more detail, or is
+incorrect, please send in an update.</p>
+<br><p>Emanuele Aina &lt;<a href="mailto:emanuele.aina@tiscali.it">emanuele.aina@tiscali.it</a>&gt;
+    run-parts</p>
+<br><p>Erik Andersen &lt;<a href="mailto:andersen@codepoet.org">andersen@codepoet.org</a>&gt;</p>
+<pre>
+    Tons of new stuff, major rewrite of most of the
+    core apps, tons of new apps as noted in header files.
+    Lots of tedious effort writing these boring docs that
+    nobody is going to actually read.</pre>
+<br><p>Laurence Anderson &lt;<a href="mailto:l.d.anderson@warwick.ac.uk">l.d.anderson@warwick.ac.uk</a>&gt;</p>
+<pre>
+    rpm2cpio, unzip, get_header_cpio, read_gz interface, rpm</pre>
+<br><p>Jeff Angielski &lt;<a href="mailto:jeff@theptrgroup.com">jeff@theptrgroup.com</a>&gt;</p>
+<pre>
+    ftpput, ftpget</pre>
+<br><p>Edward Betts &lt;<a href="mailto:edward@debian.org">edward@debian.org</a>&gt;</p>
+<pre>
+    expr, hostid, logname, whoami</pre>
+<br><p>John Beppu &lt;<a href="mailto:beppu@codepoet.org">beppu@codepoet.org</a>&gt;</p>
+<pre>
+    du, nslookup, sort</pre>
+<br><p>Brian Candler &lt;<a href="mailto:B.Candler@pobox.com">B.Candler@pobox.com</a>&gt;</p>
+<pre>
+    tiny-ls(ls)</pre>
+<br><p>Randolph Chung &lt;<a href="mailto:tausq@debian.org">tausq@debian.org</a>&gt;</p>
+<pre>
+    fbset, ping, hostname</pre>
+<br><p>Dave Cinege &lt;<a href="mailto:dcinege@psychosis.com">dcinege@psychosis.com</a>&gt;</p>
+<pre>
+    more(v2), makedevs, dutmp, modularization, auto links file,
+    various fixes, Linux Router Project maintenance</pre>
+<br><p>Jordan Crouse &lt;<a href="mailto:jordan@cosmicpenguin.net">jordan@cosmicpenguin.net</a>&gt;</p>
+<pre>
+    ipcalc</pre>
+<br><p>Magnus Damm &lt;<a href="mailto:damm@opensource.se">damm@opensource.se</a>&gt;</p>
+<pre>
+    tftp client insmod powerpc support</pre>
+<br><p>Larry Doolittle &lt;<a href="mailto:ldoolitt@recycle.lbl.gov">ldoolitt@recycle.lbl.gov</a>&gt;</p>
+<pre>
+    pristine source directory compilation, lots of patches and fixes.</pre>
+<br><p>Glenn Engel &lt;<a href="mailto:glenne@engel.org">glenne@engel.org</a>&gt;</p>
+<pre>
+    httpd</pre>
+<br><p>Gennady Feldman &lt;<a href="mailto:gfeldman@gena01.com">gfeldman@gena01.com</a>&gt;</p>
+<pre>
+    Sysklogd (single threaded syslogd, IPC Circular buffer support,
+    logread), various fixes.</pre>
+<br><p>Karl M. Hegbloom &lt;<a href="mailto:karlheg@debian.org">karlheg@debian.org</a>&gt;</p>
+<pre>
+    cp_mv.c, the test suite, various fixes to utility.c, &amp;c.</pre>
+<br><p>Daniel Jacobowitz &lt;<a href="mailto:dan@debian.org">dan@debian.org</a>&gt;</p>
+<pre>
+    mktemp.c</pre>
+<br><p>Matt Kraai &lt;<a href="mailto:kraai@alumni.cmu.edu">kraai@alumni.cmu.edu</a>&gt;</p>
+<pre>
+    documentation, bugfixes, test suite</pre>
+<br><p>Stephan Linz &lt;<a href="mailto:linz@li-pro.net">linz@li-pro.net</a>&gt;</p>
+<pre>
+    ipcalc, Red Hat equivalence</pre>
+<br><p>John Lombardo &lt;<a href="mailto:john@deltanet.com">john@deltanet.com</a>&gt;</p>
+<pre>
+    tr</pre>
+<br><p>Glenn McGrath &lt;<a href="mailto:bug1@iinet.net.au">bug1@iinet.net.au</a>&gt;</p>
+<pre>
+    Common unarchiving code and unarchiving applets, ifupdown, ftpgetput,
+    nameif, sed, patch, fold, install, uudecode.
+    Various bugfixes, review and apply numerous patches.</pre>
+<br><p>Manuel Novoa III &lt;<a href="mailto:mjn3@codepoet.org">mjn3@codepoet.org</a>&gt;</p>
+<pre>
+    cat, head, mkfifo, mknod, rmdir, sleep, tee, tty, uniq, usleep, wc, yes,
+    mesg, vconfig, make_directory, parse_mode, dirname, mode_string,
+    get_last_path_component, simplify_path, and a number trivial libbb routines</pre>
+<pre>
+    also bug fixes, partial rewrites, and size optimizations in
+    ash, basename, cal, cmp, cp, df, du, echo, env, ln, logname, md5sum, mkdir,
+    mv, realpath, rm, sort, tail, touch, uname, watch, arith, human_readable,
+    interface, dutmp, ifconfig, route</pre>
+<br><p>Vladimir Oleynik &lt;<a href="mailto:dzo@simtreas.ru">dzo@simtreas.ru</a>&gt;</p>
+<pre>
+    cmdedit; xargs(current), httpd(current);
+    ports: ash, crond, fdisk, inetd, stty, traceroute, top;
+    locale, various fixes
+    and irreconcilable critic of everything not perfect.</pre>
+<br><p>Bruce Perens &lt;<a href="mailto:bruce@pixar.com">bruce@pixar.com</a>&gt;</p>
+<pre>
+    Original author of BusyBox in 1995, 1996. Some of his code can
+    still be found hiding here and there...</pre>
+<br><p>Tim Riker &lt;<a href="mailto:Tim@Rikers.org">Tim@Rikers.org</a>&gt;</p>
+<pre>
+    bug fixes, member of fan club</pre>
+<br><p>Kent Robotti &lt;<a href="mailto:robotti@metconnect.com">robotti@metconnect.com</a>&gt;</p>
+<pre>
+    reset, tons and tons of bug reports and patches.</pre>
+<br><p>Chip Rosenthal &lt;<a href="mailto:chip@unicom.com">chip@unicom.com</a>&gt;, &lt;<a href="mailto:crosenth@covad.com">crosenth@covad.com</a>&gt;</p>
+<pre>
+    wget - Contributed by permission of Covad Communications</pre>
+<br><p>Pavel Roskin &lt;<a href="mailto:proski@gnu.org">proski@gnu.org</a>&gt;</p>
+<pre>
+    Lots of bugs fixes and patches.</pre>
+<br><p>Gyepi Sam &lt;<a href="mailto:gyepi@praxis-sw.com">gyepi@praxis-sw.com</a>&gt;</p>
+<pre>
+    Remote logging feature for syslogd</pre>
+<br><p>Linus Torvalds &lt;<a href="mailto:torvalds@transmeta.com">torvalds@transmeta.com</a>&gt;</p>
+<pre>
+    mkswap, fsck.minix, mkfs.minix</pre>
+<br><p>Mark Whitley &lt;<a href="mailto:markw@codepoet.org">markw@codepoet.org</a>&gt;</p>
+<pre>
+    grep, sed, cut, xargs(previous),
+    style-guide, new-applet-HOWTO, bug fixes, etc.</pre>
+<br><p>Charles P. Wright &lt;<a href="mailto:cpwright@villagenet.com">cpwright@villagenet.com</a>&gt;</p>
+<pre>
+    gzip, mini-netcat(nc)</pre>
+<br><p>Enrique Zanardi &lt;<a href="mailto:ezanardi@ull.es">ezanardi@ull.es</a>&gt;</p>
+<pre>
+    tarcat (since removed), loadkmap, various fixes, Debian maintenance</pre>
+<br><p>Tito Ragusa &lt;<a href="mailto:farmatito@tiscali.it">farmatito@tiscali.it</a>&gt;</p>
+<pre>
+    devfsd and size optimizations in strings, openvt and deallocvt.</pre>
+<br><p>Paul Fox &lt;<a href="mailto:pgf@foxharp.boston.ma.us">pgf@foxharp.boston.ma.us</a>&gt;</p>
+<pre>
+    vi editing mode for ash, various other patches/fixes</pre>
+<br><p>Roberto A. Foglietta &lt;<a href="mailto:me@roberto.foglietta.name">me@roberto.foglietta.name</a>&gt;</p>
+<pre>
+    port: dnsd</pre>
+<br><p>Bernhard Reutner-Fischer &lt;<a href="mailto:rep.dot.nop@gmail.com">rep.dot.nop@gmail.com</a>&gt;</p>
+<pre>
+    misc</pre>
+<br><p>Mike Frysinger &lt;<a href="mailto:vapier@gentoo.org">vapier@gentoo.org</a>&gt;</p>
+<pre>
+    initial e2fsprogs, printenv, setarch, sum, misc</pre>
+<br><p>Jie Zhang &lt;<a href="mailto:jie.zhang@analog.com">jie.zhang@analog.com</a>&gt;</p>
+<pre>
+    fixed two bugs in msh and hush (exitcode of killed processes)</pre>
+
+</body>
+
+</html>

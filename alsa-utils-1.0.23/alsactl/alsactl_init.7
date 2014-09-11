@@ -1,0 +1,428 @@
+'\" t
+.\"     Title: alsactl_init
+.\"    Author: [see the "AUTHOR" section]
+.\" Generator: DocBook XSL Stylesheets v1.75.2 <http://docbook.sf.net/>
+.\"      Date: July 2008
+.\"    Manual: alsactl init
+.\"    Source: alsactl
+.\"  Language: English
+.\"
+.TH "ALSACTL_INIT" "7" "July 2008" "alsactl" "alsactl init"
+.\" -----------------------------------------------------------------
+.\" * Define some portability stuff
+.\" -----------------------------------------------------------------
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.\" http://bugs.debian.org/507673
+.\" http://lists.gnu.org/archive/html/groff/2009-02/msg00013.html
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
+.SH "NAME"
+alsactl_init \- alsa control management \- initialization
+.SH "DESCRIPTION"
+.PP
+"alsactl init" provides soundcard specific initialization\&.
+.SH "CONFIGURATION"
+.PP
+All "alsactl init" configuration files are placed in
+/usr/share/alsa/init/
+directory\&. The top level configuration file is
+/usr/share/alsa/init/00main\&. The default top\-level file can be also specified using \-i or \-\-initfile parameter for the alsactl tool\&. Every file consists of a set of lines of text\&. All empty lines or lines beginning with \*(Aq#\*(Aq will be ignored\&.
+.SS "Rules files"
+.PP
+The "alsactl init" rules are read from the files located in the
+/usr/share/alsa/init/*\&. The top level configuration file is
+/usr/share/alsa/init/00main\&. Every line in the rules file contains at least one key value pair\&. There are two kind of keys, match and assignment keys\&. If all match keys are matching against its value, the rule gets applied and the assign keys get the specified value assigned\&.
+.PP
+A rule may consists of a list of one or more key value pairs separated by a comma\&. Each key has a distinct operation, depending on the used operator\&. Valid operators are:
+.PP
+\fB==\fR
+.RS 4
+Compare for equality\&.
+.RE
+.PP
+\fB!=\fR
+.RS 4
+Compare for non\-equality\&.
+.RE
+.PP
+\fB=\fR
+.RS 4
+Assign a value to a key\&. Keys that represent a list, are reset and only this single value is assigned\&.
+.RE
+.PP
+\fB+=\fR
+.RS 4
+Add the value to a key that holds a list of entries\&.
+.RE
+.PP
+\fB:=\fR
+.RS 4
+Assign a value to a key finally; disallow any later changes, which may be used to prevent changes by any later rules\&.
+.RE
+.PP
+The following key names can be used to match against device properties:
+.PP
+\fBCARDINDEX\fR
+.RS 4
+Match the card index of the ALSA driver\&.
+.RE
+.PP
+\fBCTL{\fR\fB\fIattribute\fR\fR\fB}\fR
+.RS 4
+Set or test universal control attribute\&. Possible attributes:
+.PP
+\fBnumid\fR
+.RS 4
+Numeric control identification\&.
+.RE
+.PP
+\fBiface\fR, \fBinterface\fR
+.RS 4
+Control interface name (CARD, HWEDEP, MIXER, PCM, RAWMIDI, TIMER, SEQUENCER)
+.RE
+.PP
+\fBsubdev\fR, \fBsubdevice\fR
+.RS 4
+Subdevice number\&.
+.RE
+.PP
+\fBname\fR
+.RS 4
+Control name
+.RE
+.PP
+\fBindex\fR
+.RS 4
+Control index
+.RE
+.PP
+\fBtype\fR
+.RS 4
+Control type (BOOLEAN, INTEGER, INTEGER64, ENUMERATED, BYTES, IEC958)
+.RE
+.PP
+\fBattr\fR, \fBattribute\fR
+.RS 4
+Attributes (stored in a string \- use match characters * and ?):
+.PP
+\fBr\fR
+.RS 4
+control is readable
+.RE
+.PP
+\fBw\fR
+.RS 4
+control is writable
+.RE
+.PP
+\fBv\fR
+.RS 4
+control is volatile
+.RE
+.PP
+\fBi\fR
+.RS 4
+control is inactive
+.RE
+.PP
+\fBl\fR
+.RS 4
+control is locked
+.RE
+.PP
+\fBR\fR
+.RS 4
+control is TLV readable
+.RE
+.PP
+\fBW\fR
+.RS 4
+control is TLV writable
+.RE
+.PP
+\fBC\fR
+.RS 4
+control is TLV commandable
+.RE
+.PP
+\fBo\fR
+.RS 4
+process is owner of this control
+.RE
+.PP
+\fBu\fR
+.RS 4
+control created in user space
+.RE
+.RE
+.PP
+\fBowner\fR
+.RS 4
+Control owner process PID number
+.RE
+.PP
+\fBcount\fR
+.RS 4
+Control count of values
+.RE
+.PP
+\fBmin\fR
+.RS 4
+Value range \- minimum value
+.RE
+.PP
+\fBmax\fR
+.RS 4
+Value range \- maximum value
+.RE
+.PP
+\fBstep\fR
+.RS 4
+Value range \- step value
+.RE
+.PP
+\fBdBmin\fR
+.RS 4
+Value range \- minimum dB value
+.RE
+.PP
+\fBdBmax\fR
+.RS 4
+Value range \- maximum dB value
+.RE
+.PP
+\fBitems\fR
+.RS 4
+Enumerated value \- number of text items
+.RE
+.PP
+\fBenums\fR
+.RS 4
+Enumerated value \- list of text names stored between \*(Aq|\*(Aq character
+.RE
+.PP
+\fBvalue\fR
+.RS 4
+Value of control stored to a string delimited by comma (,)\&.
+.RE
+.PP
+\fBdo_search\fR
+.RS 4
+Search for a control\&. Value "1" is returned if a control was found\&. The CTL{name} key might contain match characters * and ?\&. An control index might be specified as first argument starting from zero (e\&.g\&. CTL{do_search 2}="1")\&.
+.RE
+.PP
+\fBdo_count\fR
+.RS 4
+Search for a controls and return total count of matched ones\&. The CTL{name} key might contain match characters * and ?\&.
+.RE
+.RE
+.PP
+\fBCONFIG{sysfs_device}\fR
+.RS 4
+The relative path to sysfs subsystem specifying the root directory of a soundcard device\&. Usually, it should be set to "/class/sound/card$cardinfo{card}/device"\&.
+.RE
+.PP
+\fBATTR{\fR\fB\fIfilename\fR\fR\fB}\fR
+.RS 4
+Match sysfs attribute values of the soundcard device\&. The relative path to sysfs tree must be defined by CONFIG{sysfs_device} key\&. Trailing whitespace in the attribute values is ignored, if the specified match value does not contain trailing whitespace itself\&. Depending on the type of operator, this key is also used to set the value of a sysfs attribute\&.
+.RE
+.PP
+\fBENV{\fR\fB\fIkey\fR\fR\fB}\fR
+.RS 4
+Match against the value of an environment variable\&. Up to five
+\fBENV\fR
+keys can be specified per rule\&. Depending on the type of operator, this key is also used to export a variable to the environment\&.
+.RE
+.PP
+\fBPROGRAM\fR
+.RS 4
+Execute external program\&. The key is true, if the program returns without exit code zero\&. The whole event environment is available to the executed program\&. The program\*(Aqs output printed to stdout is available for the RESULT key\&.
+.sp
+Several buildin commands are available:
+.PP
+\fB__ctl_search\fR
+.RS 4
+Search for a control\&. The CTL{name} key might contain match characters * and ?\&. An control index might be specified as first argument starting from zero (e\&.g\&. PROGRAM="__ctl_search 2")\&.
+.RE
+.PP
+\fB__ctl_count\fR
+.RS 4
+Search for a controls and return total count of matched ones\&. The CTL{name} key might contain match characters * and ?\&.
+.RE
+.RE
+.PP
+\fBRESULT\fR
+.RS 4
+Match the returned string of the last PROGRAM call\&. This key can be used in the same or in any later rule after a PROGRAM call\&.
+.RE
+.PP
+Most of the fields support a shell style pattern matching\&. The following pattern characters are supported:
+.PP
+\fB*\fR
+.RS 4
+Matches zero, or any number of characters\&.
+.RE
+.PP
+\fB?\fR
+.RS 4
+Matches any single character\&.
+.RE
+.PP
+\fB[]\fR
+.RS 4
+Matches any single character specified within the brackets\&. For example, the pattern string \*(Aqtty[SR]\*(Aq would match either \*(AqttyS\*(Aq or \*(AqttyR\*(Aq\&. Ranges are also supported within this match with the \*(Aq\-\*(Aq character\&. For example, to match on the range of all digits, the pattern [0\-9] would be used\&. If the first character following the \*(Aq[\*(Aq is a \*(Aq!\*(Aq, any characters not enclosed are matched\&.
+.RE
+.PP
+The following keys can get values assigned:
+.PP
+\fBCTL{numid}\fR, \fBCTL{iface}\fR, \fBCTL{device}\fR, \fBCTL{subdev}\fR, \fBCTL{name}\fR, \fBCTL{index}\fR,
+.RS 4
+Select universal control element\&.
+.RE
+.PP
+\fBCTL{value}\fR
+.RS 4
+Value is set (written) also to soundcard\*(Aqs control device and RESULT key is set to errno code\&. The result of set operation is always true (it means continue with next key on line)\&.
+.RE
+.PP
+\fBCTL{values}\fR
+.RS 4
+Value is set (written) also to soundcard\*(Aqs control device (all control values are set to specified value) and RESULT key is set to errno code\&. The result of set operation is always true (it means continue with next key on line)\&.
+.RE
+.PP
+\fBCTL{write}\fR
+.RS 4
+Value is set (written) also to soundcard\*(Aqs control device (all control values are set to specified value)\&. The result of set operation is true when operation succeed (it means continue with next key on line)\&.
+.RE
+.PP
+\fBENV{\fR\fB\fIkey\fR\fR\fB}\fR
+.RS 4
+Export a variable to the environment\&. Depending on the type of operator, this key is also to match against an environment variable\&.
+.RE
+.PP
+\fBRESULT\fR
+.RS 4
+Set RESULT variable\&. Note that PROGRAM also sets this variable, but setting this variable manually might be useful to change code execution order (included files)\&.
+.RE
+.PP
+\fBLABEL\fR
+.RS 4
+Named label where a GOTO can jump to\&.
+.RE
+.PP
+\fBGOTO\fR
+.RS 4
+Jumps to the next LABEL with a matching name\&. The goto cannot jump backward\&.
+.RE
+.PP
+\fBINCLUDE\fR
+.RS 4
+Include specified filename or all files in specified directory
+.RE
+.PP
+\fBACCESS\fR
+.RS 4
+Check if specified file or directory exists
+.RE
+.PP
+\fBCONFIG{sysfs_device}\fR
+.RS 4
+The relative path to sysfs subsystem specifying the root directory of a soundcard device\&. Usually, it should be set to "/class/sound/card$cardinfo{card}/device"\&.
+.RE
+.PP
+\fBPRINT\fR
+.RS 4
+PRINT value to stdout\&.
+.RE
+.PP
+\fBERROR\fR
+.RS 4
+PRINT value to stderr\&.
+.RE
+.PP
+\fBEXIT\fR
+.RS 4
+Exit immediately and set program exit code to value (should be integer)\&. If value is "return" string, parser leaves current included file and returns to parent configuration file\&.
+.RE
+.PP
+The
+\fBPROGRAM\fR,
+\fBRESULT\fR,
+\fBCTL{value}\fR,
+\fBPRINT\fR,
+\fBERROR\fR,
+\fBEXIT\fR,
+\fBCONFIG{}\fR
+fields support simple printf\-like string substitutions\&. It allows the use of the complete environment set by earlier matching rules\&. For all other fields, substitutions are applied while the individual rule is being processed\&. The available substitutions are:
+.PP
+\fB$cardinfo{\fR\fB\fIattribute\fR\fR\fB}\fR, \fB%i{\fR\fB\fIattribute\fR\fR\fB}\fR
+.RS 4
+See CARDINFO{} for more details\&.
+.RE
+.PP
+\fB$ctl{\fR\fB\fIattribute\fR\fR\fB}\fR, \fB%C{\fR\fB\fIattribute\fR\fR\fB}\fR
+.RS 4
+See CTL{} for more details\&.
+.RE
+.PP
+\fB$attr{\fR\fB\fIfile\fR\fR\fB}\fR, \fB%s{\fR\fB\fIfile\fR\fR\fB}\fR
+.RS 4
+The value of a sysfs attribute found at the device, where all keys of the rule have matched\&. If the attribute is a symlink, the last element of the symlink target is returned as the value\&.
+.RE
+.PP
+\fB$env{\fR\fB\fIkey\fR\fR\fB}\fR, \fB%E{\fR\fB\fIkey\fR\fR\fB}\fR
+.RS 4
+The value of an environment variable\&.
+.RE
+.PP
+\fB$result\fR, \fB%c\fR
+.RS 4
+The string returned by the external program requested with PROGRAM\&. A single part of the string, separated by a space character may be selected by specifying the part number as an attribute:
+\fB%c{N}\fR\&. If the number is followed by the \*(Aq+\*(Aq char this part plus all remaining parts of the result string are substituted:
+\fB%c{N+}\fR
+.RE
+.PP
+\fB$sysfsroot\fR, \fB%r\fR
+.RS 4
+Root directory where sysfs file\-system is mounted\&. Ususally, this value is just "/sys"\&.
+.RE
+.PP
+\fB$config{\fR\fB\fIkey\fR\fR\fB}\fR, \fB%g{\fR\fB\fIkey\fR\fR\fB}\fR
+.RS 4
+The value of a configuration variable\&. See CONFIG{} for more details\&.
+.RE
+.PP
+\fB%%\fR
+.RS 4
+The \*(Aq%\*(Aq character itself\&.
+.RE
+.PP
+\fB$$\fR
+.RS 4
+The \*(Aq$\*(Aq character itself\&.
+.RE
+.PP
+The count of characters to be substituted may be limited by specifying the format length value\&. For example, \*(Aq%3s{file}\*(Aq will only insert the first three characters of the sysfs attribute
+.SH "AUTHOR"
+.PP
+Written by Jaroslav Kysela
+perex@perex\&.cz
+.PP
+Some portions are written by Greg Kroah\-Hartman
+greg@kroah\&.com
+and Kay Sievers
+kay\&.sievers@vrfy\&.org\&.
+.SH "SEE ALSO"
+.PP
+\fBalsactl\fR(1)
