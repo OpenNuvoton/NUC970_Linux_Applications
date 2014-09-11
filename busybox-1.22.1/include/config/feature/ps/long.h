@@ -1,0 +1,1 @@
+#define CONFIG_FEATURE_PS_LONG 1

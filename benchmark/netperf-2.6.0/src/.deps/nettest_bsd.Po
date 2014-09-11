@@ -1,0 +1,270 @@
+nettest_bsd.o: nettest_bsd.c ../config.h \
+  /usr/local/arm_linux_4.3/usr/include/stdio.h \
+  /usr/local/arm_linux_4.3/usr/include/features.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/uClibc_config.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/uClibc_arch_features.h \
+  /usr/local/arm_linux_4.3/usr/include/sys/cdefs.h \
+  /usr/local/arm_linux_4.3/usr/bin/../lib/gcc/arm-linux-uclibcgnueabi/4.3.4/include/stddef.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/types.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/wordsize.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/kernel_types.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/typesizes.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/pthreadtypes.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/sched.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/uClibc_stdio.h \
+  /usr/local/arm_linux_4.3/usr/include/wchar.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/wchar.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/uClibc_mutex.h \
+  /usr/local/arm_linux_4.3/usr/include/pthread.h \
+  /usr/local/arm_linux_4.3/usr/include/sched.h \
+  /usr/local/arm_linux_4.3/usr/include/time.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/time.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/uClibc_clk_tck.h \
+  /usr/local/arm_linux_4.3/usr/include/signal.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/sigset.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/initspin.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/sigthread.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/uClibc_pthread.h \
+  /usr/local/arm_linux_4.3/usr/bin/../lib/gcc/arm-linux-uclibcgnueabi/4.3.4/include/stdarg.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/stdio_lim.h \
+  /usr/local/arm_linux_4.3/usr/include/sys/types.h \
+  /usr/local/arm_linux_4.3/usr/include/endian.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/endian.h \
+  /usr/local/arm_linux_4.3/usr/include/sys/select.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/select.h \
+  /usr/local/arm_linux_4.3/usr/include/sys/sysmacros.h \
+  /usr/local/arm_linux_4.3/usr/include/sys/stat.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/stat.h \
+  /usr/local/arm_linux_4.3/usr/include/stdlib.h \
+  /usr/local/arm_linux_4.3/usr/include/alloca.h \
+  /usr/local/arm_linux_4.3/usr/include/string.h \
+  /usr/local/arm_linux_4.3/usr/include/strings.h \
+  /usr/local/arm_linux_4.3/usr/include/inttypes.h \
+  /usr/local/arm_linux_4.3/usr/include/stdint.h \
+  /usr/local/arm_linux_4.3/usr/include/unistd.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/posix_opt.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/confname.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/getopt.h \
+  /usr/local/arm_linux_4.3/usr/include/fcntl.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/fcntl.h \
+  /usr/local/arm_linux_4.3/usr/include/errno.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/errno.h \
+  /usr/local/arm_linux_4.3/usr/include/linux/errno.h \
+  /usr/local/arm_linux_4.3/usr/include/asm/errno.h \
+  /usr/local/arm_linux_4.3/usr/include/asm-generic/errno.h \
+  /usr/local/arm_linux_4.3/usr/include/asm-generic/errno-base.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/signum.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/siginfo.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/sigaction.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/sigcontext.h \
+  /usr/local/arm_linux_4.3/usr/include/asm/sigcontext.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/sigstack.h \
+  /usr/local/arm_linux_4.3/usr/include/sys/time.h \
+  /usr/local/arm_linux_4.3/usr/include/sys/ipc.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/ipc.h \
+  /usr/local/arm_linux_4.3/usr/include/sys/socket.h \
+  /usr/local/arm_linux_4.3/usr/include/sys/uio.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/uio.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/socket.h \
+  /usr/local/arm_linux_4.3/usr/bin/../lib/gcc/arm-linux-uclibcgnueabi/4.3.4/include-fixed/limits.h \
+  /usr/local/arm_linux_4.3/usr/bin/../lib/gcc/arm-linux-uclibcgnueabi/4.3.4/include-fixed/syslimits.h \
+  /usr/local/arm_linux_4.3/usr/include/limits.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/posix1_lim.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/local_lim.h \
+  /usr/local/arm_linux_4.3/usr/include/linux/limits.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/uClibc_local_lim.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/posix2_lim.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/sockaddr.h \
+  /usr/local/arm_linux_4.3/usr/include/asm/socket.h \
+  /usr/local/arm_linux_4.3/usr/include/asm/sockios.h \
+  /usr/local/arm_linux_4.3/usr/include/netinet/in.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/in.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/byteswap.h \
+  /usr/local/arm_linux_4.3/usr/include/netinet/tcp.h \
+  /usr/local/arm_linux_4.3/usr/include/arpa/inet.h \
+  /usr/local/arm_linux_4.3/usr/include/netdb.h \
+  /usr/local/arm_linux_4.3/usr/include/rpc/netdb.h \
+  /usr/local/arm_linux_4.3/usr/include/bits/netdb.h netlib.h netsh.h \
+  nettest_bsd.h /usr/local/arm_linux_4.3/usr/include/sys/sendfile.h
+
+../config.h:
+
+/usr/local/arm_linux_4.3/usr/include/stdio.h:
+
+/usr/local/arm_linux_4.3/usr/include/features.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/uClibc_config.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/uClibc_arch_features.h:
+
+/usr/local/arm_linux_4.3/usr/include/sys/cdefs.h:
+
+/usr/local/arm_linux_4.3/usr/bin/../lib/gcc/arm-linux-uclibcgnueabi/4.3.4/include/stddef.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/types.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/wordsize.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/kernel_types.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/typesizes.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/pthreadtypes.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/sched.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/uClibc_stdio.h:
+
+/usr/local/arm_linux_4.3/usr/include/wchar.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/wchar.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/uClibc_mutex.h:
+
+/usr/local/arm_linux_4.3/usr/include/pthread.h:
+
+/usr/local/arm_linux_4.3/usr/include/sched.h:
+
+/usr/local/arm_linux_4.3/usr/include/time.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/time.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/uClibc_clk_tck.h:
+
+/usr/local/arm_linux_4.3/usr/include/signal.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/sigset.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/initspin.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/sigthread.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/uClibc_pthread.h:
+
+/usr/local/arm_linux_4.3/usr/bin/../lib/gcc/arm-linux-uclibcgnueabi/4.3.4/include/stdarg.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/stdio_lim.h:
+
+/usr/local/arm_linux_4.3/usr/include/sys/types.h:
+
+/usr/local/arm_linux_4.3/usr/include/endian.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/endian.h:
+
+/usr/local/arm_linux_4.3/usr/include/sys/select.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/select.h:
+
+/usr/local/arm_linux_4.3/usr/include/sys/sysmacros.h:
+
+/usr/local/arm_linux_4.3/usr/include/sys/stat.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/stat.h:
+
+/usr/local/arm_linux_4.3/usr/include/stdlib.h:
+
+/usr/local/arm_linux_4.3/usr/include/alloca.h:
+
+/usr/local/arm_linux_4.3/usr/include/string.h:
+
+/usr/local/arm_linux_4.3/usr/include/strings.h:
+
+/usr/local/arm_linux_4.3/usr/include/inttypes.h:
+
+/usr/local/arm_linux_4.3/usr/include/stdint.h:
+
+/usr/local/arm_linux_4.3/usr/include/unistd.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/posix_opt.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/confname.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/getopt.h:
+
+/usr/local/arm_linux_4.3/usr/include/fcntl.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/fcntl.h:
+
+/usr/local/arm_linux_4.3/usr/include/errno.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/errno.h:
+
+/usr/local/arm_linux_4.3/usr/include/linux/errno.h:
+
+/usr/local/arm_linux_4.3/usr/include/asm/errno.h:
+
+/usr/local/arm_linux_4.3/usr/include/asm-generic/errno.h:
+
+/usr/local/arm_linux_4.3/usr/include/asm-generic/errno-base.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/signum.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/siginfo.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/sigaction.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/sigcontext.h:
+
+/usr/local/arm_linux_4.3/usr/include/asm/sigcontext.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/sigstack.h:
+
+/usr/local/arm_linux_4.3/usr/include/sys/time.h:
+
+/usr/local/arm_linux_4.3/usr/include/sys/ipc.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/ipc.h:
+
+/usr/local/arm_linux_4.3/usr/include/sys/socket.h:
+
+/usr/local/arm_linux_4.3/usr/include/sys/uio.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/uio.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/socket.h:
+
+/usr/local/arm_linux_4.3/usr/bin/../lib/gcc/arm-linux-uclibcgnueabi/4.3.4/include-fixed/limits.h:
+
+/usr/local/arm_linux_4.3/usr/bin/../lib/gcc/arm-linux-uclibcgnueabi/4.3.4/include-fixed/syslimits.h:
+
+/usr/local/arm_linux_4.3/usr/include/limits.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/posix1_lim.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/local_lim.h:
+
+/usr/local/arm_linux_4.3/usr/include/linux/limits.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/uClibc_local_lim.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/posix2_lim.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/sockaddr.h:
+
+/usr/local/arm_linux_4.3/usr/include/asm/socket.h:
+
+/usr/local/arm_linux_4.3/usr/include/asm/sockios.h:
+
+/usr/local/arm_linux_4.3/usr/include/netinet/in.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/in.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/byteswap.h:
+
+/usr/local/arm_linux_4.3/usr/include/netinet/tcp.h:
+
+/usr/local/arm_linux_4.3/usr/include/arpa/inet.h:
+
+/usr/local/arm_linux_4.3/usr/include/netdb.h:
+
+/usr/local/arm_linux_4.3/usr/include/rpc/netdb.h:
+
+/usr/local/arm_linux_4.3/usr/include/bits/netdb.h:
+
+netlib.h:
+
+netsh.h:
+
+nettest_bsd.h:
+
+/usr/local/arm_linux_4.3/usr/include/sys/sendfile.h:

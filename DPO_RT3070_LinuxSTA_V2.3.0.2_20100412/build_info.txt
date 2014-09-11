@@ -1,0 +1,3 @@
+RaLink RT3070 driver building:
+enable WEXT_PRIV
+Wireless LAN ---> IEEE 802.11 for Host AP (Prism2/2.5/3 and WEP/TKIP/CCMP)
