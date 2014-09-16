@@ -37,7 +37,7 @@
 #include     <errno.h>
 #include     <string.h>
 #include 	<signal.h>
-#include    "pthread.h"
+#include    <pthread.h>
 
 #define FALSE 0
 #define TRUE  1

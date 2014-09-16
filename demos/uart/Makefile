@@ -1,22 +1,14 @@
 .SUFFIXES : .x .o .c .s
 
-ROOT = /usr/local/arm_linux_4.3/usr
-LIB = $(ROOT)/lib
-LIB1 =$(ROOT)/lib/gcc/arm-linux-uclibcgnueabi/4.3.4
-INC1:=$(ROOT)/lib/gcc/arm-linux-uclibcgnueabi/4.3.4/include
-INC :=$(ROOT)/include
-
-CC=arm-linux-gcc -O2 -I$(INC) -I$(INC1) -static
-WEC_LDFLAGS=-L$(LIB) -L$(LIB1)
-STRIP=arm-linux-strip
-LIBS = -lpthread -lc -lgcc
+CC := arm-linux-gcc
+STRIP := arm-linux-strip
 
 TARGET = uart_demo
-
 SRCS := uart.c
+LIBS = -lpthread -lc -lgcc
 
 all:
-	$(CC) $(WEC_LDFLAGS) $(SRCS) -o $(TARGET) $(LIBS)
+	$(CC) -static $(SRCS) -o $(TARGET) $(LIBS)
 	$(STRIP) $(TARGET)
 
 clean:
