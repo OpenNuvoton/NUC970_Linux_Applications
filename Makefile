@@ -1,9 +1,6 @@
 .SUFFIXES : .x .o .c .s
 
-#SUBDIRS=`ls -d */ | grep -v 'bin' | grep -v 'lib' | grep -v 'include'`
-
 SUBDIRS=wireless_tools.29 \
-		benchmark/netperf-2.6.0 \
 		busybox-1.22.1 \
 		demos/wwdt \
 		demos/uart \
@@ -16,11 +13,15 @@ SUBDIRS=wireless_tools.29 \
 		demos/gpio \
 		demos/lcm \
 		demos/cap
-		
+
+BENCHMARK_SUBDIRS=benchmark/netperf-2.6.0
 
 define make_subdir
 	@for subdir in $(SUBDIRS) ; do \
 		( cd $$subdir && make $1) \
+	done;
+	@for subdir in $(BENCHMARK_SUBDIRS) ; do \
+		( cd $$subdir && ./configure --host=arm-linux && make $1) \
 	done;
 endef
 
@@ -32,6 +33,6 @@ install :
  
 debug:
 	$(call make_subdir , debug)
+	
 clean:
 	$(call make_subdir , clean) 
- 

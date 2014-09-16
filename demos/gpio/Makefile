@@ -1,21 +1,13 @@
 .SUFFIXES : .x .o .c .s
 
-ROOT = /usr/local/arm_linux_4.3/usr
-LIB = $(ROOT)/lib
-LIB1 =$(ROOT)/lib/gcc/arm-linux-uclibcgnueabi/4.3.4
-INC1:=$(ROOT)/lib/gcc/arm-linux-uclibcgnueabi/4.3.4/include
-INC :=$(ROOT)/include
-
-CC=arm-linux-gcc -O2 -I$(INC) -I$(INCSYS) -Wall --static
-WEC_LDFLAGS=-L$(LIB) -L$(LIB1) -L.
-STRIP=arm-linux-strip
+CC := arm-linux-gcc
+STRIP := arm-linux-strip
 
 TARGET = gpio_demo
 SRCS := gpio_demo.c
-LIBS= -lc -lgcc -lc -lpthread
 
 all: 
-	$(CC) $(WEC_LDFLAGS) $(SRCS) -o $(TARGET) $(LIBS)
+	$(CC) -static $(SRCS) -o $(TARGET)
 	$(STRIP) $(TARGET) 
 
 clean:

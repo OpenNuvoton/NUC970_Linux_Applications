@@ -19,9 +19,7 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <string.h>
-#include <nuc970-etimer.h>
-
-
+#include "nuc970-etimer.h"
 
 int main(int argc, char **argv)
 {

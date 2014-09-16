@@ -1,14 +1,7 @@
 .SUFFIXES : .x .o .c .s
 
-ROOT = /usr/local/arm_linux_4.3/usr
-LIB = $(ROOT)/lib
-LIB1 =$(ROOT)/lib/gcc/arm-linux-uclibcgnueabi/4.3.4
-INC1:=$(ROOT)/lib/gcc/arm-linux-uclibcgnueabi/4.3.4/include
-INC :=$(ROOT)/include
-
-CC := $(ROOT)/bin/arm-linux-gcc
-STRIP := $(ROOT)/bin/arm-linux-strip
-WEC_LDFLAGS=-L$(LIB) -L$(LIB1)
+CC := arm-linux-gcc
+STRIP := arm-linux-strip
 
 TARGET = oss_demo
 SRCS := demo.c
@@ -16,7 +9,7 @@ SRCS := demo.c
 LIBS= -lc -lgcc -lc
 
 all: 
-	$(CC) -O2 -I$(INC) -I$(INCSYS) -static $(WEC_LDFLAGS) $(SRCS) -o $(TARGET) $(LIBS)
+	$(CC) -static -O2 $(SRCS) -o $(TARGET)
 	$(STRIP) $(TARGET) 
 	
 clean:
