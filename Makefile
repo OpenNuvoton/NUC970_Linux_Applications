@@ -13,7 +13,8 @@ SUBDIRS=wireless_tools.29 \
 		demos/gpio \
 		demos/lcm \
 		demos/cap \
-		demos/keypad
+		demos/keypad \
+                demos/rtc
 
 BENCHMARK_SUBDIRS=benchmark/netperf-2.6.0
 TSLIB_DIRS=tslib-1.1
