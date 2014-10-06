@@ -12,9 +12,11 @@ SUBDIRS=wireless_tools.29 \
 		demos/etimer \
 		demos/gpio \
 		demos/lcm \
-		demos/cap
+		demos/cap \
+		demos/keypad
 
 BENCHMARK_SUBDIRS=benchmark/netperf-2.6.0
+TSLIB_DIRS=tslib-1.1
 
 define make_subdir
 	@for subdir in $(SUBDIRS) ; do \
@@ -23,6 +25,10 @@ define make_subdir
 	@for subdir in $(BENCHMARK_SUBDIRS) ; do \
 		( cd $$subdir && ./configure --host=arm-linux && make $1) \
 	done;
+
+	@for subdir in $(TSLIB_DIRS) ; do \
+                ( cd $$subdir && ./configure --host=arm-linux --enable-static && make $1) \
+        done;
 endef
 
 all:

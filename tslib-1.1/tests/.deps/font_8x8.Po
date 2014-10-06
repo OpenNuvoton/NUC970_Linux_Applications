@@ -1,0 +1,24 @@
+font_8x8.o: font_8x8.c font.h \
+  /usr/local/arm_linux_4.3.2/lib/gcc/arm-none-linux-gnueabi/4.3.2/../../../../arm-none-linux-gnueabi/include/linux/types.h \
+  /usr/local/arm_linux_4.3.2/lib/gcc/arm-none-linux-gnueabi/4.3.2/../../../../arm-none-linux-gnueabi/include/linux/posix_types.h \
+  /usr/local/arm_linux_4.3.2/lib/gcc/arm-none-linux-gnueabi/4.3.2/../../../../arm-none-linux-gnueabi/include/linux/stddef.h \
+  /usr/local/arm_linux_4.3.2/lib/gcc/arm-none-linux-gnueabi/4.3.2/../../../../arm-none-linux-gnueabi/include/linux/compiler.h \
+  /usr/local/arm_linux_4.3.2/lib/gcc/arm-none-linux-gnueabi/4.3.2/../../../../arm-none-linux-gnueabi/include/asm/posix_types.h \
+  /usr/local/arm_linux_4.3.2/lib/gcc/arm-none-linux-gnueabi/4.3.2/../../../../arm-none-linux-gnueabi/include/asm/types.h \
+  /usr/local/arm_linux_4.3.2/lib/gcc/arm-none-linux-gnueabi/4.3.2/../../../../arm-none-linux-gnueabi/include/asm-generic/int-ll64.h
+
+font.h:
+
+/usr/local/arm_linux_4.3.2/lib/gcc/arm-none-linux-gnueabi/4.3.2/../../../../arm-none-linux-gnueabi/include/linux/types.h:
+
+/usr/local/arm_linux_4.3.2/lib/gcc/arm-none-linux-gnueabi/4.3.2/../../../../arm-none-linux-gnueabi/include/linux/posix_types.h:
+
+/usr/local/arm_linux_4.3.2/lib/gcc/arm-none-linux-gnueabi/4.3.2/../../../../arm-none-linux-gnueabi/include/linux/stddef.h:
+
+/usr/local/arm_linux_4.3.2/lib/gcc/arm-none-linux-gnueabi/4.3.2/../../../../arm-none-linux-gnueabi/include/linux/compiler.h:
+
+/usr/local/arm_linux_4.3.2/lib/gcc/arm-none-linux-gnueabi/4.3.2/../../../../arm-none-linux-gnueabi/include/asm/posix_types.h:
+
+/usr/local/arm_linux_4.3.2/lib/gcc/arm-none-linux-gnueabi/4.3.2/../../../../arm-none-linux-gnueabi/include/asm/types.h:
+
+/usr/local/arm_linux_4.3.2/lib/gcc/arm-none-linux-gnueabi/4.3.2/../../../../arm-none-linux-gnueabi/include/asm-generic/int-ll64.h:
