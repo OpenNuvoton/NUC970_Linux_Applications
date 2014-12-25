@@ -12,7 +12,7 @@
 #define BUF_SIZE 	16
 
 
-static void aes_crypt(__u8 *protocol, int encrypt, 
+static void aes_crypt(__u8 *protocol, int encrypt, int use_mtp_key,
 							char *in, int inlen, char *out, const char *key, char *oiv)
 {
 	int opfd;
@@ -32,7 +32,14 @@ static void aes_crypt(__u8 *protocol, int encrypt,
 
  	tfmfd = socket(AF_ALG, SOCK_SEQPACKET, 0);
  	bind(tfmfd, (struct sockaddr *)&sa, sizeof(sa));
+ 	
  	setsockopt(tfmfd, SOL_ALG, ALG_SET_KEY, key, 16);
+ 	
+ 	if (use_mtp_key)
+ 		setsockopt(tfmfd, SOL_ALG, ALG_USE_MTP_KEY, NULL, 0);
+ 	else
+ 		setsockopt(tfmfd, SOL_ALG, ALG_USE_REG_KEY, NULL, 0);
+ 	
  	opfd = accept(tfmfd, NULL, 0);
  	msg.msg_control = cbuf;
  	msg.msg_controllen = sizeof(cbuf);
@@ -130,7 +137,7 @@ void  print_data(char *str, char *buff, int len)
 }
 
 
-void AES_demo()
+void AES_demo(int use_mtp_key)
 {
  	int i;
  	char out[BUF_SIZE] = {0};
@@ -139,22 +146,24 @@ void AES_demo()
   							"\x51\x2e\x03\xd5\x34\x12\x00\x06";
  	char iv[16] = "\x3d\xaf\xba\x42\x9d\x9e\xb4\x30\xb4\x22\xda\x80\x2c\x9f\xac\x41";
 
-    printf("\nBefore AES encode =>\n");
-	print_data("IN", in, BUF_SIZE);
-	print_data("OUT", out, BUF_SIZE);
- 
-	aes_crypt("cbc(aes)", 1, in, BUF_SIZE, out, key, iv);
+    printf("\n+---------------------------------------------------------------+\n");
+    if (use_mtp_key)
+	printf("|  AES-128 CBC mode encrypt/descrpt demo (use MTP key)          |\n");
+	else
+	printf("|  AES-128 CBC mode encrypt/descrpt demo                        |\n");
+    printf("+---------------------------------------------------------------+\n");
+
+	aes_crypt("cbc(aes)", 1, use_mtp_key, in, BUF_SIZE, out, key, iv);
 
     printf("\nAES encrypt result =>\n");
 	print_data("IN", in, BUF_SIZE);
 	print_data("OUT", out, BUF_SIZE);
 
-	aes_crypt("cbc(aes)", 0, out, BUF_SIZE, in, key, iv);
+	aes_crypt("cbc(aes)", 0, use_mtp_key, out, BUF_SIZE, in, key, iv);
 
     printf("\nAES descrypt result =>\n");
 	print_data("IN", out, BUF_SIZE);
 	print_data("OUT", in, BUF_SIZE);
-	printf("\n\n");
 }
 
 
@@ -168,19 +177,19 @@ void DES_demo()
   							"\xa0\x53\x07\x1e\x22\x00\x96\x77";
  	char iv[8] = "\x3d\xaf\xba\x42\x9d\x9e\xb4\x30";
 
-    printf("\nBefore TDES encode =>\n");
-	print_data("IN", in, BUF_SIZE);
-	print_data("OUT", out, BUF_SIZE);
- 
+    printf("\n+---------------------------------------------------------------+\n");
+	printf("|  DES ECB mode encrypt/descrpt demo                            |\n");
+    printf("+---------------------------------------------------------------+\n");
+
 	des_crypt(0, "ecb(des)", 1, in, BUF_SIZE, out, key, iv);
 
-    printf("\nTDES encrypt result =>\n");
+    printf("\nDES encrypt result =>\n");
 	print_data("IN", in, BUF_SIZE);
 	print_data("OUT", out, BUF_SIZE);
 
 	des_crypt(0, "ecb(des)", 0, out, BUF_SIZE, in, key, iv);
 
-    printf("\nTDES descrypt result =>\n");
+    printf("\nDES descrypt result =>\n");
 	print_data("IN", out, BUF_SIZE);
 	print_data("OUT", in, BUF_SIZE);
 }
@@ -195,9 +204,9 @@ void TDES_demo()
   							"\xa0\x53\x07\x1e\x22\x00\x96\x77";
  	char iv[8] = "\x3d\xaf\xba\x42\x9d\x9e\xb4\x30";
 
-    printf("\nBefore TDES encode =>\n");
-	print_data("IN", in, BUF_SIZE);
-	print_data("OUT", out, BUF_SIZE);
+    printf("\n+---------------------------------------------------------------+\n");
+	printf("|  Tripple-DES ECB mode encrypt/descrpt demo                    |\n");
+    printf("+---------------------------------------------------------------+\n");
  
 	des_crypt(1, "ecb(3des)", 1, in, BUF_SIZE, out, key, iv);
 
@@ -212,7 +221,7 @@ void TDES_demo()
 	print_data("OUT", in, BUF_SIZE);
 }
 
-int SHA_demo(void)
+int SHA_demo(int digest_size, int is_hmac)
 {
     int opfd;
     int tfmfd;
@@ -224,35 +233,81 @@ int SHA_demo(void)
     char msg1[] = { 0xdf, 0x4b, 0xd2 };              // bf36ed5d74727dfd5d7854ec6b1d49468d8ee8aa
     char msg2[] = { 0xf7, 0xfb, 0x1b, 0xe2, 0x05 };  // 60b7d5bb560a1acf6fa45721bd0abb419a841a89
     char msg3[] = { 0x7e, 0x3d, 0x7b, 0x3e, 0xad, 0xa9, 0x88, 0x66 };  // 24a2c34b976305277ce58c2f42d5092031572520
-    char buf[20];
-    int i;
+    char hmac_key[8] = { 0x89, 0x11, 0x32, 0xef, 0x10, 0x8a, 0x22, 0x90 };
+    char buf[64];
+    int  i, bytes;
+
+    printf("\n+---------------------------------------------------------------+\n");
+	if (is_hmac)
+		printf("|  HMAC-SHA-%d demo                                            |\n", digest_size);
+	else	
+		printf("|  SHA-%d demo                                                 |\n", digest_size);
+    printf("+---------------------------------------------------------------+\n");
+
+	switch (digest_size)
+	{
+		case 160:
+			strcpy(sa.salg_name, is_hmac ? "hmac-sha1" : "sha1");
+			break;
+			
+		case 224:
+			strcpy(sa.salg_name, is_hmac ? "hmac-sha224" : "sha224");
+			break;
+
+		case 256:
+			strcpy(sa.salg_name, is_hmac ? "hmac-sha256" : "sha256");
+			break;
+
+		case 384:
+			strcpy(sa.salg_name, is_hmac ? "hmac-sha384" : "sha384");
+			break;
+
+		case 512:
+			strcpy(sa.salg_name, is_hmac ? "hmac-sha512" : "sha512");
+			break;
+		
+		default:
+			printf("Invalid parameter!\n");
+			return -1;
+	}
+	
+	bytes = digest_size/8;
  
     tfmfd = socket(AF_ALG, SOCK_SEQPACKET, 0);
  
     bind(tfmfd, (struct sockaddr *)&sa, sizeof(sa));
- 
+
     opfd = accept(tfmfd, NULL, 0);
 
+	if (is_hmac)
+ 		setsockopt(tfmfd, SOL_ALG, ALG_SET_KEY, hmac_key, 8);  // must be x4 length
+
     write(opfd, msg1, sizeof(msg1));
-    read(opfd, buf, 20);
+    read(opfd, buf, bytes);
 	printf("Output digest:\n  "); 
-    for (i = 0; i < 20; i++) {
+    for (i = 0; i < bytes; i++) {
         printf("%02x", (unsigned char)buf[i]);
     }
     printf("\n");
+
+	if (is_hmac)
+ 		setsockopt(tfmfd, SOL_ALG, ALG_SET_KEY, hmac_key, 8);  // must be x4 length
 
     write(opfd, msg2, sizeof(msg2));
-    read(opfd, buf, 20);
+    read(opfd, buf, bytes);
 	printf("Output digest:\n  "); 
-    for (i = 0; i < 20; i++) {
+    for (i = 0; i < bytes; i++) {
         printf("%02x", (unsigned char)buf[i]);
     }
     printf("\n");
 
+	if (is_hmac)
+ 		setsockopt(tfmfd, SOL_ALG, ALG_SET_KEY, hmac_key, 8);  // must be x4 length
+
     write(opfd, msg3, sizeof(msg3));
-    read(opfd, buf, 20);
+    read(opfd, buf, bytes);
 	printf("Output digest:\n  "); 
-    for (i = 0; i < 20; i++) {
+    for (i = 0; i < bytes; i++) {
         printf("%02x", (unsigned char)buf[i]);
     }
     printf("\n");
@@ -263,10 +318,20 @@ int SHA_demo(void)
 
 int main(int argc, char **argv)
 {
-	AES_demo();
+	AES_demo(0);
+	AES_demo(1);            // use MTP key
 	DES_demo();
 	TDES_demo();
-	SHA_demo();
+	SHA_demo(160, 0);       // SHA-1
+	SHA_demo(160, 1);       // HMAC-SHA-1
+	SHA_demo(224, 0);       // SHA-224
+	SHA_demo(224, 1);       // HMAC-SHA-224
+	SHA_demo(256, 0);       // SHA-256
+	SHA_demo(256, 1);       // HMAC-SHA-256
+	SHA_demo(384, 0);       // SHA-384
+	SHA_demo(384, 1);       // HMAC-SHA-384
+	SHA_demo(512, 0);       // SHA-512
+	SHA_demo(512, 1);       // HMAC-SHA-512
 }
 
 
