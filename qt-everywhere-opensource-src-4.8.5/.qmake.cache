@@ -1,0 +1,40 @@
+CONFIG +=  cross_compile release embedded largefile exceptions_off dylib create_prl link_prl depend_includepath fix_output_dirs QTDIR_build
+QT_SOURCE_TREE = $$quote(/home/ccwang/bsp/nuc970/workspace/_qt/QT4/qt-everywhere-opensource-src-4.8.5)
+QT_BUILD_TREE = $$quote(/home/ccwang/bsp/nuc970/workspace/_qt/QT4/qt-everywhere-opensource-src-4.8.5)
+QT_BUILD_PARTS = libs
+QMAKE_ABSOLUTE_SOURCE_ROOT = $$QT_SOURCE_TREE
+QMAKE_MOC_SRC    = $$QT_BUILD_TREE/src/moc
+
+#local paths that cannot be queried from the QT_INSTALL_* properties while building QTDIR
+QMAKE_MOC        = $$QT_BUILD_TREE/bin/moc
+QMAKE_UIC        = $$QT_BUILD_TREE/bin/uic
+QMAKE_UIC3       = $$QT_BUILD_TREE/bin/uic3
+QMAKE_RCC        = $$QT_BUILD_TREE/bin/rcc
+QMAKE_QDBUSXML2CPP = $$QT_BUILD_TREE/bin/qdbusxml2cpp
+QMAKE_INCDIR_QT  = $$QT_BUILD_TREE/include
+QMAKE_LIBDIR_QT  = $$QT_BUILD_TREE/lib
+
+QMAKE_LFLAGS    = -Wl,-rpath-link,$$QT_BUILD_TREE/lib $$QMAKE_LFLAGS
+QT_LFLAGS_ODBC   = -lodbc
+QMAKESPEC = $$QT_BUILD_TREE/mkspecs/qws/linux-nuc970-g++
+styles += cde mac motif plastique cleanlooks windows
+decorations += default windows styled
+mouse-drivers += pc
+gfx-drivers += linuxfb
+mouse-drivers += linuxtp
+kbd-drivers += tty
+gfx-drivers += linuxfb
+mouse-drivers += tslib
+kbd-drivers += linuxinput
+JAVASCRIPTCORE_JIT = no
+PRECOMPILED_DIR = .pch/release-static-emb-arm
+OBJECTS_DIR = .obj/release-static-emb-arm
+MOC_DIR = .moc/release-static-emb-arm
+RCC_DIR = .rcc/release-static-emb-arm
+UI_DIR = .uic/release-static-emb-arm
+QMAKE_RPATHDIR += "/usr/local/Trolltech/QtEmbedded-4.8.5/lib" 
+QMAKE_CFLAGS += -fno-exceptions
+QMAKE_CXXFLAGS += -fno-exceptions
+QMAKE_LFLAGS += -fno-exceptions
+sql-drivers = 
+sql-plugins =  sqlite
