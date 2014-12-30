@@ -26,6 +26,8 @@
 #include "tslib-private.h"
 #include "tslib-filter.h"
 
+#define TS_POINTERCAL "/etc/pointercal"
+
 struct tslib_linear {
 	struct tslib_module_info module;
 	int	swap_xy;
