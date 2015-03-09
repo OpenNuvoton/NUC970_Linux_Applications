@@ -5,11 +5,21 @@
 #include <sys/socket.h>
 #include "if_alg.h"
 
+//#define DO_MTP_PROGRAM_TEST
+//#define DO_MTP_LOCK_TEST
+
 #ifndef AF_ALG
 #define AF_ALG 		38
 #define SOL_ALG 	279
 #endif
 #define BUF_SIZE 	16
+
+
+__u32  _mtp_key[9] = {
+	0x98fc0099, 0x3424a76c, 0xac9879f8, 0xef9a8c80, 0xc76c76c8, 0x9f898f8f, 0xa987f87a, 0x897c87b8,
+};
+
+#define MTP_USER_DATA		0x81
 
 
 static void aes_crypt(__u8 *protocol, int encrypt, int use_mtp_key,
@@ -134,6 +144,62 @@ void  print_data(char *str, char *buff, int len)
  	for (i = 0; i < len; i++) 
  	 printf("%02x", (unsigned char)buff[i]);
  	printf("\n");
+}
+
+
+void MTP_demo(void)
+{
+	int tfmfd;
+	__u32  mtp_status;
+	struct sockaddr_alg sa = {
+	.salg_family = AF_ALG,
+	.salg_type = "skcipher",
+	.salg_name = "mtp"
+ 	};
+
+    printf("\n+--------------------------------+\n");
+	printf("|  MTP key demo                    |\n");
+    printf("+----------------------------------+\n");
+ 	
+ 	tfmfd = socket(AF_ALG, SOCK_SEQPACKET, 0);
+ 	bind(tfmfd, (struct sockaddr *)&sa, sizeof(sa));
+ 	
+#ifdef DO_MTP_PROGRAM_TEST
+	_mtp_key[8] = MTP_USER_DATA;	
+ 	if (setsockopt(tfmfd, SOL_ALG, ALG_MTP_PROGRAM, _mtp_key, 36) == 0)
+ 		printf("MTP program succeed.\n");
+ 	else
+ 		printf("Failed to program MTP key!\n");
+#endif
+
+#ifdef DO_MTP_LOCK_TEST
+ 	if (setsockopt(tfmfd, SOL_ALG, ALG_MTP_LOCK, NULL, 0) == 0)
+ 		printf("MTP lock succeed.\n");
+ 	else
+ 		printf("Failed to lock MTP key!\n");
+#endif
+
+ 	mtp_status = setsockopt(tfmfd, SOL_ALG, ALG_MTP_STATUS, NULL, 0);
+ 	if (mtp_status == 0xFFFF)
+ 		printf("Failed to get MTP status!\n");
+ 	else
+ 	{
+    	printf("MTP status: 0x%x (", mtp_status);
+    	if (mtp_status & 0x1)
+    		printf(" ENABLED");
+    	if (mtp_status & 0x2)
+    		printf(" KEY_VALID");
+    	if (mtp_status & 0x4)
+    		printf(" NO_KEY");
+    	if (mtp_status & 0x8)
+    		printf(" LOCKED");
+    	if (mtp_status & 0x10)
+    		printf(" PROG_FAIL");
+    	if (mtp_status & 0x1000000)
+    		printf(" BUSY");
+    	printf(" PRGCNT=%d)\n", (mtp_status >> 16) & 0xf);
+	}	
+ 	close(tfmfd);
 }
 
 
@@ -318,6 +384,7 @@ int SHA_demo(int digest_size, int is_hmac)
 
 int main(int argc, char **argv)
 {
+	MTP_demo();
 	AES_demo(0);
 	AES_demo(1);            // use MTP key
 	DES_demo();
