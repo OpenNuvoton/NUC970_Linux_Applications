@@ -151,6 +151,7 @@ typedef struct mkyaffs2_fstree {
 
 static unsigned mkyaffs2_flags = 0;
 
+static unsigned mkyaffs2_inband_tags = 0;
 static unsigned mkyaffs2_chunksize = 0;
 static unsigned mkyaffs2_sparesize = 0;
 
@@ -446,7 +447,6 @@ mkyaffs2_write_chunk (unsigned obj_id, unsigned chunk_id, unsigned bytes)
 {
 	ssize_t written;
 	unsigned char *spare = mkyaffs2_databuf + mkyaffs2_chunksize;
-
 	struct yaffs_ext_tags tag;
 
 	/* prepare the spare (oob) first */
@@ -465,24 +465,40 @@ mkyaffs2_write_chunk (unsigned obj_id, unsigned chunk_id, unsigned bytes)
 	tag.chunk_used = 1;
 	tag.seq_number = YAFFS_LOWEST_SEQUENCE_NUMBER;
 
+  if(mkyaffs2_inband_tags==0)  //shanchun
+	{
+  	/* write the spare (oob) into the buffer */
+	  memset(spare, 0xff, mkyaffs2_sparesize);
+	  if (mkyaffs2_assemble_ptags(spare, &tag, NULL, 1)) {
+  		MKYAFFS2_DEBUG("tag to spare failed for obj %u chunk %u\n",
+  				obj_id, chunk_id);
+  		return -1;
+	  }
 
-	/* write the spare (oob) into the buffer */
-	memset(spare, 0xff, mkyaffs2_sparesize);
-	if (mkyaffs2_assemble_ptags(spare, &tag, NULL, 1)) {
-		MKYAFFS2_DEBUG("tag to spare failed for obj %u chunk %u\n",
-				obj_id, chunk_id);
-		return -1;
-	}
-
-	/* write a whole "chunk + spare" back to the image */
-	written = safe_write(mkyaffs2_image_fd,
-			     mkyaffs2_databuf, mkyaffs2_bufsize);
-	if (written != mkyaffs2_bufsize) {
-		MKYAFFS2_DEBUG("write chunk failed for obj %u chunk %u: %s\n",
-				obj_id, chunk_id, strerror(errno));
-		return -1;
-	}
-
+	  /* write a whole "chunk + spare" back to the image */
+	  written = safe_write(mkyaffs2_image_fd,
+		  	     mkyaffs2_databuf, mkyaffs2_bufsize);
+	  if (written != mkyaffs2_bufsize) {
+		  MKYAFFS2_DEBUG("write chunk failed for obj %u chunk %u: %s\n",
+	  			obj_id, chunk_id, strerror(errno));
+  		return -1;
+	  }
+  }
+  else
+  { //inband_tags
+  	struct yaffs_packed_tags2 pt2;	  
+	  yaffs_pack_tags2_tags_only(&pt2.t, &tag);
+    memcpy(spare,&pt2.t,mkyaffs2_sparesize);
+    
+	  /* write a whole "chunk + spare" back to the image */
+	  written = safe_write(mkyaffs2_image_fd,
+		  	     mkyaffs2_databuf, mkyaffs2_bufsize);
+	  if (written != mkyaffs2_bufsize) {
+		  MKYAFFS2_DEBUG("write chunk failed for obj %u chunk %u: %s\n",
+	  			obj_id, chunk_id, strerror(errno));
+  		return -1;
+	  }
+  }
 	mkyaffs2_image_pages++;
 
 	return 0;
@@ -939,7 +955,7 @@ mkyaffs2_helper (void)
 	MKYAFFS2_HELP("Usage: mkyaffs2 [-h|--help] [-e|--endian] [-v|--verbose]\n"
 		      "                [-p|--pagesize pagesize] [-s|sparesize sparesize]\n"
 		      "                [-o|--oobimg oobimage] [--all-root] [--yaffs-ecclayout]\n"
-		      "                [--nuc970-ecclayout]\n"
+		      "                [--nuc970-ecclayout][-i|--inband-tags]\n"
 		      "                dirname imgfile\n\n");
 	MKYAFFS2_HELP("Options:\n");
 	MKYAFFS2_HELP("  -h                 display this help message and exit.\n");
@@ -956,7 +972,7 @@ mkyaffs2_helper (void)
 	MKYAFFS2_HELP("  -b nuc970-bch      The BCH algorithm is used to select the ECC algorithm \n"
 	        "                     for data protecting.\n" 
 	        "                     (0:BCH_T4(default)|1:BCH_T8|2:BCH_T12|3:BCH_T15|4:BCH_T24)\n");
-		      
+	MKYAFFS2_HELP("  --inband-tags     Using in-band tags.\n");	      
 	return -1;
 }
 
@@ -981,7 +997,7 @@ main (int argc, char *argv[])
 	char *dirpath = NULL, *imgfile = NULL, *oobfile = NULL;
 	
 	int option, option_index;
-	static const char *short_options = "hvep:s:onb:";
+	static const char *short_options = "hvep:s:onbi:";
 	static const struct option long_options[] = {
 		{"pagesize", 		required_argument, 	0, 'p'},
 		{"sparesize", 		required_argument, 	0, 's'},
@@ -991,7 +1007,8 @@ main (int argc, char *argv[])
 		{"all-root",		no_argument,		0, '0'},
 		{"yaffs-ecclayout",	no_argument,		0, 'y'},
 		{"nuc970-ecclayout",	no_argument,		0, 'n'},
-		{"nuc970-bch",	no_argument,		0, 'b'},
+		{"nuc970-bch",	required_argument,		0, 'b'},
+		{"inband-tags",	no_argument,		0, 'i'},
 		{"help", 		no_argument, 		0, 'h'},
 		{NULL,			no_argument,		0, '\0'},
 	}; 
@@ -1027,7 +1044,10 @@ main (int argc, char *argv[])
 			break;			
 		case 'b':
 			mkyaffs2_nuc970bch = strtoul(optarg, NULL, 10);
-			break;			
+			break;		
+		case 'i':	
+			mkyaffs2_inband_tags = 1;
+			break;
 		case 'h':
 		default:
 			return mkyaffs2_helper();
@@ -1127,7 +1147,11 @@ main (int argc, char *argv[])
 		MKYAFFS2_ERROR("(max: %u characters).\n", PATH_MAX - 1);
 		return -1;
 	}
-
+  if(mkyaffs2_inband_tags==1) 
+  {
+  	mkyaffs2_chunksize=mkyaffs2_chunksize-16;
+  	mkyaffs2_sparesize=16;
+  }
 
 	retval = mkyaffs2_create_image(dirpath, imgfile);
 	if (!retval) {
