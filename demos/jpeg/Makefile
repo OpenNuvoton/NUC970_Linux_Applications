@@ -1,18 +1,12 @@
 .SUFFIXES : .x .o .c .s
 
-ROOT = /usr/local/arm_linux_4.2/
-INC :=$(ROOT)/arm-linux/include
-LIB = $(ROOT)/lib/gcc/arm-linux/4.2.1
-LIB1 =$(ROOT)/arm-linux/lib
+CC := arm-linux-gcc
+STRIP := arm-linux-strip
 
-CC=arm-linux-gcc -O2 -g -I$(INC) -static
-WEC_LDFLAGS=-L$(LIB) -L$(LIB1)
-STRIP=arm-linux-strip
-
-TARGET = jpeg_demo
+TARGET = jpeg_demo  
 SRCS := jpeg_demo.c exif.c
-#LIBS = -lgcc
-LIBS = 
+
+LIBS= -lc -lgcc -lc
 
 all: 
 	$(CC) $(WEC_LDFLAGS) $(SRCS) -o $(TARGET) $(LIBS)
@@ -38,7 +32,7 @@ all:
 	echo "Decode With Input & Output Wait : jpegIOPW.jpg"
 	echo "Window Decode : jpegWIN.jpg"
 	
-#	cp jpeg_demo ../../../rootfs/usr/bin
+	cp jpeg_demo ../../../rootfs/usr/bin
 
 clean:
 	rm -f *.o 

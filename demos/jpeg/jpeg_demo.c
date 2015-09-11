@@ -6,13 +6,13 @@
 #include <errno.h>
 #include <sys/mman.h>
 #include <asm/ioctl.h>
-#include <asm/arch/hardware.h>
-#include "jpegcodec.h"
 #include <linux/vt.h>
 #include <linux/kd.h>
 #include <linux/fb.h>
 #include <unistd.h>
 #include <dirent.h>
+
+#include "nuc970_jpeg.h"
 
 #define TEST_NORMAL_DECODE        1
 #define TEST_NORMAL_ENCODE        2
@@ -26,11 +26,8 @@
 #define EXIF_SIZE                 0x84
 
 
-#define NUC970_VA_JPEG 	   	(0xF000A000)
+#define NUC970_VA_JPEG 	   	      (0xF000A000)
 
-
-/*IOCTLs*/
-#define IOCTL_LCD_GET_DMA_BASE   _IOR('v', 32, unsigned int *)
 
 jpeg_param_t jpeg_param;
 static int fb_fd=0;
@@ -2126,7 +2123,6 @@ int main()
     unsigned int select = 0;
     char *p;
     int i;
-    DIR *dir;
 
     fb_fd = open(fbdevice, O_RDWR);
     if (fb_fd == -1) {
@@ -2161,28 +2157,10 @@ int main()
     }
     memcpy((void*)backupVideoBuffer, (char*)pVideoBuffer, uVideoSize);
 
-#if 1
 	fb_paddress = NUC970_VA_JPEG;
-#else            
-    if (ioctl(fb_fd, IOCTL_LCD_GET_DMA_BASE, &fb_paddress) < 0) {
-        perror("ioctl IOCTL_LCD_GET_DMA_BASE ");
-        close(fb_fd);
-        return -1;
-    }
-#endif
 
 	/* Check device for jpegcodec "/dev/video0" or "/dev/video1" */
     printf("Open jpegcodec device\n");
-
-    /* Try to open folder "/sys/class/video4linux/video1/",
-       if the folder exists, jpegcodec is "/dev/video1", otherwises jpegcodec is "/dev/video0" */
-    dir = opendir("/sys/class/video4linux/video1/");
-    if (dir)
-    {
-        closedir(dir);      
-        device[10]++;
-    }   
-    printf("jpegcodec is %s\n",device); 
 
     for (i = 0; i < RETRY_NUM; i++)
     {
