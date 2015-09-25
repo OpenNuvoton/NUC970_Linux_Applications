@@ -3,6 +3,7 @@
 #include <string.h>
 #include <fcntl.h>
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <errno.h>
 #include <sys/mman.h>
 #include <asm/ioctl.h>
@@ -27,6 +28,8 @@
 
 
 #define NUC970_VA_JPEG 	   	      (0xF000A000)
+
+#define JPEG_DEMO_DIR    "/mnt/mmcblk0p1"
 
 
 jpeg_param_t jpeg_param;
@@ -2117,6 +2120,212 @@ out:
 
 }
 
+
+int  jpegDeocdeToFB(char *filename)
+{
+    unsigned long BufferSize, bufferCount,readSize;
+    int enc_reserved_size;
+    int ret = 0;
+    int i,len, jpeginfo_size;   
+    int width,height, parser;
+    FILE *fp;
+
+    memset((void*)&jpeg_param, 0, sizeof(jpeg_param_t));
+    jpeginfo_size = sizeof(jpeg_info_t) + sizeof(__u32);
+    jpeginfo = malloc(jpeginfo_size);
+    
+    jpeg_param.encode = 0;          /* Decode Operation */
+    jpeg_param.src_bufsize = 0x380000;  /* Src buffer size (Bitstream buffer size for JPEG engine) */
+    jpeg_param.dst_bufsize = 0x80000; /* Dst buffer size (Decoded Raw data buffer size for JPEG engine) */
+    jpeg_param.decInWait_buffer_size = 0;   /* Decode input Wait buffer size (Decode input wait function disable when                                  decInWait_buffer_size is 0) */
+    jpeg_param.decopw_en = 0;
+    jpeg_param.windec_en = 0;
+
+    jpeg_param.scale = 1;       /* Enable scale function */
+    jpeg_param.scaled_width = 800;  /* width after scaling */
+    jpeg_param.scaled_height = 480; /* height after scaling */
+    jpeg_param.dec_stride = xres;   /* Enable stride function */            
+
+    /* Set output offset */ 
+    jpeg_param.paddr_dst = 0;
+    jpeg_param.vaddr_dst = (__u32)pVideoBuffer;
+
+    BufferSize = (jpeg_param.src_bufsize + jpeg_param.dst_bufsize);
+
+    if (BufferSize > jpeg_buffer_size)
+    {
+    	printf("Required buffer size is 0x%x, but JPEG buffer size is 0x%x\n", BufferSize, jpeg_buffer_size);
+        printf("JPEG Engine Buffer isn't enough. Please enlarge JPEG buffer via menuconfig setting.\n");
+        goto out;
+    }
+
+	printf("pJpegBuffer = 0x%x, size = 0x%x\n", (int)pJpegBuffer, BufferSize);
+
+    /* Clear buffer */
+    //memset(pJpegBuffer, 0x77, BufferSize);  
+    //memset(pVideoBuffer, 0x77, 800*480*4); 
+    
+    printf("Open file %s...\n", filename);
+    
+    /* Open JPEG file */
+    fp = fopen(filename, "r+");
+    if (fp == NULL)
+    {
+            printf("open %s error!\n", fp);
+            return 0;
+    }
+
+    pSRCbuffer = pJpegBuffer;
+    bufferCount = 0;
+    parser = 0;
+    printf("JPEG Header Parser:\n");
+    
+    /* Read Bitstream to JPEG engine src buffer */
+    while (!feof(fp))    
+    {   
+        fd_set writefds;
+        struct timeval tv;
+        int result;
+        tv.tv_sec       = 0;
+        tv.tv_usec      = 0;
+        FD_ZERO( &writefds );
+        FD_SET( fd , &writefds );
+        tv.tv_sec       = 0;
+        tv.tv_usec      = 0;
+    
+        select( fd + 1 , NULL , &writefds , NULL, &tv );
+        if ( FD_ISSET( fd, &writefds ))
+        {                   
+            readSize = fread(pSRCbuffer, 1, 4096 , fp);
+            pSRCbuffer += readSize; 
+            bufferCount += readSize;
+        }  
+         
+        if (!parser)
+        {
+            result = ParsingJPEG(pJpegBuffer, bufferCount, &width, &height);
+            if(!result)
+            {
+                printf("\t->Width %d, Height %d\n", width,height);
+                parser = 1;
+            }
+            else
+                printf("\t->Can't get image siz in %5d byte bistream\n", bufferCount);
+        }
+
+        if ( bufferCount > jpeg_param.src_bufsize)
+        {
+            printf("Bitstream size is larger than src buffer, %d!!\n",bufferCount);         
+            return 0;
+        }
+    }
+    printf("Bitstream is 0x%X Bytes\n",bufferCount);
+
+    if (bufferCount % 4)
+        bufferCount = (bufferCount & ~0x3) + 4; 
+
+    printf("Set Src Buffer is 0x%X Bytes\n",bufferCount);
+    
+    jpeg_param.src_bufsize = bufferCount;   /* Src buffer size (Bitstream buffer size for JPEG engine) */
+    jpeg_param.dst_bufsize = BufferSize - bufferCount;  /* Dst buffer size (Decoded Raw data buffer size for JPEG engine) */
+
+    jpeg_param.buffersize = 0;      /* only for continuous shot */
+    jpeg_param.buffercount = 1;
+
+    /* Set decode output format: RGB555/RGB565/RGB888/YUV422/PLANAR_YUV */
+    jpeg_param.decode_output_format = DRVJPEG_DEC_PRIMARY_PACKET_RGB888;        
+    
+    /* Set operation property to JPEG engine */
+    if ((ioctl(fd, JPEG_S_PARAM, &jpeg_param)) < 0)
+    {
+        fprintf(stderr,"set jpeg param failed:%d\n",errno);
+        ret = -1;
+        goto out;
+    }       
+
+    /* Ask JPEG engine direct decode output to frame buffer */
+    if ((ioctl(fd, JPEG_DECODE_TO_FRAME_BUFFER, 1)) < 0)
+    {
+        fprintf(stderr,"ioctl JPEG_DECODE_TO_FRAME_BUFFER failed:%d\n",errno);
+        ret = -1;
+        goto out;
+    }       
+    
+    /* Trigger JPEG engine */
+    if ((ioctl(fd, JPEG_TRIGGER, NULL)) < 0)
+    {
+        fprintf(stderr,"trigger jpeg failed:%d\n",errno);
+        ret = -1;
+        goto out;
+    }
+    
+    /* Get JPEG decode information */
+    len = read(fd, jpeginfo, jpeginfo_size);
+
+    if (len<0) 
+    {
+        fprintf(stderr, "read data error errno=%d\n", errno);
+        ret = -1;
+        goto out;
+    }
+    printf("JPEG: Width %d, Height %d\n",jpeginfo->width, jpeginfo->height);
+
+    if (jpeginfo->state == JPEG_DECODED_IMAGE)
+    {
+        printf("Decode Complete\n");
+        printf("Stride %d\n", jpeginfo->dec_stride);
+        printf("Output size is %d x %d\n", xres, jpeginfo->height);
+        //memcpy((void*)pVideoBuffer, (char*)(pJpegBuffer + jpeg_param.src_bufsize), 800*480*4);
+    }
+    else if (jpeginfo->state == JPEG_DECODE_ERROR)
+        printf("Decode Error\n");
+    else if (jpeginfo->state == JPEG_MEM_SHORTAGE)
+        printf("Memory Shortage\n");    
+    else if (jpeginfo->state == JPEG_DECODE_PARAM_ERROR)
+        printf("Decode Parameter Error\n");         
+
+out:
+    free(jpeginfo);
+    return 0;
+
+}
+
+void slide_show()
+{
+ 	struct stat attr;
+ 	struct dirent *entry = NULL;
+ 	DIR 	*jpeg_dir;
+ 	int     n;
+ 	char    filename[256];
+ 	
+
+    while (1)
+	{
+		jpeg_dir = opendir(JPEG_DEMO_DIR);
+ 		stat(JPEG_DEMO_DIR, &attr); 
+
+  		while ((entry = readdir(jpeg_dir)))
+     	{
+         	printf ("Filename = %s\n" ,entry->d_name );
+         	
+         	n = strlen(entry->d_name);
+         	
+         	if ((entry->d_name[n-4] == '.') &&
+         		((entry->d_name[n-3] == 'j') || (entry->d_name[n-3] == 'J')) &&
+         		((entry->d_name[n-2] == 'p') || (entry->d_name[n-2] == 'P')) &&
+         		((entry->d_name[n-1] == 'g') || (entry->d_name[n-1] == 'G')))
+         	{
+         		strcpy(filename, JPEG_DEMO_DIR);
+         		strcat(filename, "/");
+         		strcat(filename, entry->d_name);
+         		jpegDeocdeToFB(filename);
+         		sleep(1);
+         	}
+     	}
+    }
+}
+
+
 int number;
 int main()
 {
@@ -2212,6 +2421,7 @@ int main()
     	printf("| [A] Jpeg Resizing from one jpeg file to another jpeg file     |\n"); 
     	printf("| [B] Active Default Q-Table                                    |\n"); 
     	printf("| [C] Active User-defined Q-Table                               |\n"); 
+    	printf("| [S] Slide show on panel                                       |\n"); 
     	printf("| [X] Exit                                                      |\n"); 
     	printf("+---------------------------------------------------------------+\n");
         printf("Select : \n"); 
@@ -2282,6 +2492,10 @@ int main()
             case 'c':case 'C':              
                 printf("C.Active User-defined Q-Table\n");  
                 g_qtflag = 1;
+                break;
+
+            case 's':case 'S':              
+                slide_show(); 
                 break;
         
             case 'x':
