@@ -3,8 +3,8 @@
 CC := arm-linux-gcc
 STRIP := arm-linux-strip
 
-TARGET = cap_demo
-SRCS := cap_demo.c
+TARGET = cap2lcm
+SRCS := cap2lcm.c
 LIBS= -lc -lgcc -lc -lpthread
 
 all: 
