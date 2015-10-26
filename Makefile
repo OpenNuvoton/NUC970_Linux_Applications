@@ -15,6 +15,7 @@ SUBDIRS=wireless_tools.29 \
 		demos/cap \
 		demos/keypad \
 		demos/CAN \
+		demos/sc \
         demos/spi \
         demos/2d \
         demos/rtc
