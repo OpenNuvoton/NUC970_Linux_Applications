@@ -15,6 +15,8 @@ SUBDIRS=wireless_tools.29 \
 		demos/cap \
 		demos/keypad \
 		demos/CAN \
+        demos/spi \
+        demos/2d \
         demos/rtc
         
 BENCHMARK_SUBDIRS=benchmark/netperf-2.6.0
