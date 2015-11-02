@@ -26,6 +26,10 @@ LZO_DIRS=lzo-2.09
 MTD_DIRS=mtd-utils
 YAFFS2_DIRS=yaffs2utils
 
+MINIGUI_LIB_SUBDIRS=minigui/libminigui-gpl-3.0.12
+MINIGUI_RES_SUBDIRS=minigui/minigui-res-be-3.0.12
+MINIGUI_APP_SUBDIRS=minigui/mg-samples-3.0.12
+
 SETUPPATH=$(PWD)/$(MTD_DIRS)/install
 
 define make_subdir
@@ -55,8 +59,23 @@ define make_subdir
 	done;
 endef
 
+define make_minigui   
+    @for subdir in $(MINIGUI_LIB_SUBDIRS) ; do \
+        cd $(MINIGUI_LIB_SUBDIRS) && ./configure --prefix=$(PWD)/minigui/build CC=arm-linux-gcc --host=arm-linux --build=i386-linux --with-osname=linux --with-targetname=fbcon --disable-pcxvfb --enable-videonuc970 --enable-videofbcon --enable-autoial --disable-vbfsupport --disable-screensaver && make && make install && cd .. && cd ..; \
+    done;
+    @for subdir in $(MINIGUI_RES_SUBDIRS) ; do \
+        cd $(MINIGUI_RES_SUBDIRS) && ./configure --prefix=$(PWD)/minigui/build && make install && cd .. && cd ..; \
+    done;
+    @for subdir in $(MINIGUI_APP_SUBDIRS) ; do \
+        cd $(MINIGUI_APP_SUBDIRS) && export PKG_CONFIG_PATH="$(PWD)/minigui/build/lib/pkgconfig" && ./configure --prefix=$(PWD)/minigui/build CC=arm-linux-gcc --host=arm-linux --build=i386-linux CFLAGS=-I$(PWD)/minigui/build/include && make && cd .. && cd ..; \
+    done;
+endef
+
 all:
 	$(call make_subdir , all)
+    
+gui:
+	$(call make_minigui , all)
  
 install :
 	$(call make_subdir , install)

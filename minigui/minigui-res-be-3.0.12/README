@@ -1,0 +1,39 @@
+NAME
+====
+
+MiniGUI Resources Package version 3.0.12 for MiniGUI v3.0.x.
+
+INSTALLATION
+===========
+
+The installation path by default is:
+
+    ${prefix}/share/minigui/res
+
+Run
+
+    $ ./configure --prefix=<your_prefix>
+    $ make && sudo make install
+
+to install the resource files.
+
+Run
+
+    $ sudo make uninstall
+
+to uninstall the resource files.
+
+USAGE FOR TARBALL MAKER
+=======================
+
+Use configure script and specify --with-mgedition for different MiniGUI editions:
+
+    $ ./configure --with-mgedition=ve/be/sepe/ee
+
+For example, if you want to make minigui-res tarball for MiniGUI Standard Edition, run
+
+    $ ./configure --with-mgedition=sepe
+    $ make dist
+
+The tarball named minigui-res-sepe-3.0.x.tar.gz will be generated.
+

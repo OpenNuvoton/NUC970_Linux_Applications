@@ -1,0 +1,1 @@
+#define CAPTION "»­±Ê"

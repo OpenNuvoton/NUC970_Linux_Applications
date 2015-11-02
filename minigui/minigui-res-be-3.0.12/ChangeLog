@@ -1,0 +1,51 @@
+2012/01/16 Cleanup for GPL release.
+
+2010/10/13 Fix skin_caption.gif image.
+	* bmp/skin_caption.gif
+
+2010/08/19 Fix fold.ico image.
+	* icon/fold.ico
+
+2010/01/04 Adjust the font package of SE and PE.
+	* configure.in
+
+2010/01/04 New upf fonts.
+	* font/fmsong-latin-*.upf
+	* font/fmhei-latin-*.upf
+
+2009/01/22 Fix the "阅" in song-24-GB2312.bin font.
+	* font/song-24-gb2312.bin
+
+2008/09-08 Move tools to mgadp-tools package.
+	* tools/*
+
+2008/08-31 Add new fm*.upf fonts and delete old fm*.upf files (hejian)
+	* font/*
+
+2008/08-25 Add resouce tools (dongjunjie)
+	* tools/*
+
+2008/08-25 Changed some pictrures for lf_skin. (wangjian)
+	* All the skin bmp/gif files.
+
+2008/05/19 (lfzhang)
+	* Delete bmp/skin-bkgnd.png
+	* Add bmp/skin-bkgnd.bmp
+
+2008/04.28.(lfzhang)
+	* Delete bmp/skin-tb-slider.bmp
+	* Add bmp/skin-tbslider-h.bmp
+	* Add bmp/skin-tbslider-v.bmp
+
+2008/04/25.(lfzhang)
+	* Delete bmp/skin-bkgnd.jpg
+	* Add bmp/skin-bkgnd.png
+
+2008/04/24.(lfzhang)
+	* Fix bmp/skin-caption.gif
+	* Delete bmp/skin-fold.bmp
+	* Delete bmp/skin-caption-btn.gif
+	* Delete bmp/skin-pushbtn.bmp
+	* Delete bmp/skin-bkgnd.bmp
+	* Add bmp/skin-cpn-btn.gif
+	* Add bmp/skin-bkgnd.jpg

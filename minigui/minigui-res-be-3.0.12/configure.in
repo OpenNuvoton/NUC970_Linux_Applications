@@ -1,0 +1,257 @@
+dnl Process this file with autoconf to produce a configure script.
+AC_PREREQ(2.13)
+AC_INIT(bmp/classic_check_button.bmp)
+
+dnl ========================================================================
+dnl Checks for programs.
+AC_PROG_MAKE_SET
+
+AC_CHECK_FILE(font/this_is_svn, guess_mgedition="svn", guess_mgedition="rel")
+
+if test "x$guess_mgedition" = "xrel"; then
+  AC_CHECK_FILE(font/fmsong-latin-gb18030-12.upf, with_mgedition="ee", with_mgedition="unknown")
+  if test "x$with_mgedition" = "xunknown"; then
+    AC_CHECK_FILE(font/fmkai-latin-gb2312-20.upf, with_mgedition="sepe", with_mgedition="unknown")
+    if test "x$with_mgedition" = "xunknown"; then
+      AC_CHECK_FILE(font/fmkai-latin-gb2312-16.upf, with_mgedition="be", with_mgedition="ve")
+    fi
+  fi
+else
+  AC_ARG_WITH(mgedition, [  --with-mgedition=ve/be/sepe/ee])
+fi
+
+AM_INIT_AUTOMAKE(minigui-res-$with_mgedition, 3.0.12)
+
+case "$with_mgedition" in
+  ve)
+    DEV_FONTS="unifont_160_50.upf" 
+    ;;
+
+  be)
+    DEV_FONTS="\
+6x12-iso8859-1.bin \
+8x16-iso8859-1.bin \
+song-12-gb2312.bin \
+song-16-gb2312.bin \
+Courier-rr-10-15.vbf \
+Courier-rr-8-13.vbf \
+Helvetica-rr-11-12.vbf \
+Helvetica-rr-15-16.vbf \
+Times-rr-10-12.vbf \
+Times-rr-13-15.vbf \
+courier-mr-8.upf \
+courier-mr-10.upf \
+courier-mr-12.upf \
+courier-mr-14.upf \
+courier-mr-18.upf \
+courier-mr-24.upf \
+helvetica-mr-8.upf \
+helvetica-mr-10.upf \
+helvetica-mr-12.upf \
+helvetica-mr-14.upf \
+helvetica-mr-18.upf \
+helvetica-mr-24.upf \
+lucida-mr-8.upf \
+lucida-mr-10.upf \
+lucida-mr-12.upf \
+lucida-mr-14.upf \
+lucida-mr-18.upf \
+lucida-mr-19.upf \
+lucida-mr-24.upf \
+times-mr-8.upf \
+times-mr-10.upf \
+times-mr-12.upf \
+times-mr-14.upf \
+times-mr-18.upf \
+times-mr-24.upf \
+micro_40_50.upf \
+smoothtimes_100_50.upf \
+fmkai-latin-gb2312-12.upf \
+fmkai-latin-gb2312-16.upf \
+fmfsong-latin-gb2312-12.upf \
+fmfsong-latin-gb2312-16.upf \
+fmsong-latin-gbk-12.upf \
+fmsong-latin-gbk-16.upf \
+fmhei-latin-gbk-16.upf \
+unifont_160_50.upf"
+    ;;
+
+  sepe)
+    DEV_FONTS="\
+6x12-iso8859-1.bin \
+8x16-iso8859-1.bin \
+12x24-iso8859-1.bin \
+song-12-gb2312.bin \
+song-16-gb2312.bin \
+song-24-gb2312.bin \
+fmfsong-12-gb2312.bin \
+fmfsong-14-gb2312.bin \
+fmfsong-16-gb2312.bin \
+fmfsong-24-gb2312.bin \
+fmhei-16-gb2312.bin \
+fmhei-18-gb2312.bin \
+fmhei-20-gb2312.bin \
+fmhei-24-gb2312.bin \
+Courier-rr-10-15.vbf \
+Courier-rr-8-13.vbf \
+Helvetica-rr-11-12.vbf \
+Helvetica-rr-15-16.vbf \
+Times-rr-10-12.vbf \
+Times-rr-13-15.vbf \
+courier-mr-8.upf \
+courier-mr-10.upf \
+courier-mr-12.upf \
+courier-mr-14.upf \
+courier-mr-18.upf \
+courier-mr-24.upf \
+helvetica-mr-8.upf \
+helvetica-mr-10.upf \
+helvetica-mr-12.upf \
+helvetica-mr-14.upf \
+helvetica-mr-18.upf \
+helvetica-mr-24.upf \
+lucida-mr-8.upf \
+lucida-mr-10.upf \
+lucida-mr-12.upf \
+lucida-mr-14.upf \
+lucida-mr-18.upf \
+lucida-mr-19.upf \
+lucida-mr-24.upf \
+times-mr-8.upf \
+times-mr-10.upf \
+times-mr-12.upf \
+times-mr-14.upf \
+times-mr-18.upf \
+times-mr-24.upf \
+micro_40_50.upf \
+smoothtimes_100_50.upf \
+fmkai-latin-gb2312-12.upf \
+fmkai-latin-gb2312-13.upf \
+fmkai-latin-gb2312-14.upf \
+fmkai-latin-gb2312-15.upf \
+fmkai-latin-gb2312-16.upf \
+fmkai-latin-gb2312-18.upf \
+fmkai-latin-gb2312-20.upf \
+fmfsong-latin-gb2312-12.upf \
+fmfsong-latin-gb2312-13.upf \
+fmfsong-latin-gb2312-14.upf \
+fmfsong-latin-gb2312-15.upf \
+fmfsong-latin-gb2312-16.upf \
+fmfsong-latin-gb2312-18.upf \
+fmfsong-latin-gb2312-20.upf \
+fmsong-latin-gbk-12.upf \
+fmsong-latin-gbk-13.upf \
+fmsong-latin-gbk-14.upf \
+fmsong-latin-gbk-15.upf \
+fmsong-latin-gbk-16.upf \
+fmsong-latin-gbk-18.upf \
+fmhei-latin-gbk-16.upf \
+fmhei-latin-gbk-18.upf \
+fmhei-latin-gbk-20.upf \
+unifont_160_50.upf"
+    ;;
+
+  *)
+    DEV_FONTS=" \
+6x12-iso8859-1.bin \
+8x16-iso8859-1.bin \
+12x24-iso8859-1.bin \
+batang-12-ksc5601.bin \
+fixed-16-jiskan.bin \
+mincho-12-jiskan.bin \
+mincho-16-ksc5601.bin \
+gothic-12-jiskan.bin \
+gothic-6x12-jisx0201.bin \
+gothic-6x12rk.bin \
+fmfsong-12-gb2312.bin \
+fmfsong-14-gb2312.bin \
+fmfsong-16-gb2312.bin \
+fmfsong-24-gb2312.bin \
+ming-12-big5.bin \
+ming-16-big5.bin \
+ming-24-big5.bin \
+song-12-gb2312.bin \
+song-16-gb2312.bin \
+song-24-gb2312.bin \
+fmhei-16-gb2312.bin \
+fmhei-18-gb2312.bin \
+fmhei-20-gb2312.bin \
+fmhei-24-gb2312.bin \
+Helvetica-rr-11-12.vbf \
+Helvetica-rr-15-16.vbf \
+Times-rr-10-12.vbf \
+Times-rr-13-15.vbf \
+Courier-rr-10-15.vbf \
+Courier-rr-8-13.vbf \
+naskhi-18-21-iso8859-6.vbf \
+fixed-10-20-iso8859-8.vbf \
+courier-mr-8.upf \
+courier-mr-10.upf \
+courier-mr-12.upf \
+courier-mr-14.upf \
+courier-mr-18.upf \
+courier-mr-24.upf \
+helvetica-mr-8.upf \
+helvetica-mr-10.upf \
+helvetica-mr-12.upf \
+helvetica-mr-14.upf \
+helvetica-mr-18.upf \
+helvetica-mr-24.upf \
+lucida-mr-8.upf \
+lucida-mr-10.upf \
+lucida-mr-12.upf \
+lucida-mr-14.upf \
+lucida-mr-18.upf \
+lucida-mr-19.upf \
+lucida-mr-24.upf \
+times-mr-8.upf \
+times-mr-10.upf \
+times-mr-12.upf \
+times-mr-14.upf \
+times-mr-18.upf \
+times-mr-24.upf \
+micro_40_50.upf \
+smoothtimes_100_50.upf \
+fmkai-latin-gb2312-12.upf \
+fmkai-latin-gb2312-13.upf \
+fmkai-latin-gb2312-14.upf \
+fmkai-latin-gb2312-15.upf \
+fmkai-latin-gb2312-16.upf \
+fmkai-latin-gb2312-18.upf \
+fmkai-latin-gb2312-20.upf \
+fmfsong-latin-gb2312-12.upf \
+fmfsong-latin-gb2312-13.upf \
+fmfsong-latin-gb2312-14.upf \
+fmfsong-latin-gb2312-15.upf \
+fmfsong-latin-gb2312-16.upf \
+fmfsong-latin-gb2312-18.upf \
+fmfsong-latin-gb2312-20.upf \
+fmsong-latin-gb2312-8.upf \
+fmsong-latin-gb2312-9.upf \
+fmsong-latin-gbk-10.upf \
+fmsong-latin-gbk-12.upf \
+fmsong-latin-gbk-13.upf \
+fmsong-latin-gbk-14.upf \
+fmsong-latin-gbk-15.upf \
+fmsong-latin-gbk-16.upf \
+fmsong-latin-gbk-18.upf \
+fmhei-latin-gbk-16.upf \
+fmhei-latin-gbk-18.upf \
+fmhei-latin-gbk-20.upf \
+fmsong-latin-gb18030-12.upf \
+fmsong-latin-gb18030-14.upf \
+fmsong-latin-gb18030-16.upf \
+unifont_160_50.upf"
+    ;;
+esac
+
+AC_SUBST(DEV_FONTS)
+
+AC_OUTPUT(
+Makefile
+bmp/Makefile
+cursor/Makefile
+font/Makefile
+icon/Makefile
+)
+
