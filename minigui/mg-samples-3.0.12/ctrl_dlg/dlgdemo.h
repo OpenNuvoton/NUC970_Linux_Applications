@@ -1,0 +1,3 @@
+
+void testPropertySheet (HWND hWnd);
+

@@ -1,0 +1,90 @@
+*******************************************************************************
+What's new in this version (3.0.12, 2012/01/16):
+
+2012/01/16: CLEANUP #1: Cleanup for GPL release.
+
+*******************************************************************************
+What's new in this version (3.0.10, 2010/08/06):
+
+2011/03/14: BUGFIXING #?: Handle EINTR properly when usleep() returns -1. (wanzheng)
+	* dbuff/watch.c
+
+2010/08/26: CLEANUP #3: Move scrolltest.c and textedit.c to sandbox. (wanzheng)
+	* src/scrolltest.c
+	* src/textedit.c
+
+2010/08/26: CLEANUP #2: Remove scrolltest and textedit programs from
+Makefile.am. (ymwei)
+	* src/Makefile.am
+
+2010/08/18: CLEANUP #1: check dlcustom IAL engine when configuring. (ymwei)
+	* configure.in
+
+*******************************************************************************
+What's new in this version (3.0.6, 2009/12/31):
+
+2010/01/31: BUGFIXING #4444: alter the name of .upf files according to
+minigui-res (wanzheng)
+	* font_text/font_text.c
+
+2010/01/24: BUGFIXING #4412: add $(CUSTOMMG_SRC) into Makefile.am (wanzheng)
+	* src/Makefile.am
+
+2010/01/11: Disable qpf by default in font_text (wanzheng)
+	* font_test/font_test.c
+
+12/14: Add notebook sample (chenlei)
+	* notebook/Makefile.am
+	* notebook/main.c
+	* notebook/notebook.h
+	* notebook/big5.txt
+	* notebook/gb2312.txt
+	* notebook/res/Makefile.am
+	* notebook/res/notebook.ico
+	* configure.in
+	* Makefile.am
+
+*******************************************************************************
+What's new in this version (3.0.4, 2009/10/26):
+
+10/26: fix bug of lf_tiny.c
+	* look_feel/lf_tiny.c
+
+*******************************************************************************
+What's new in this version (3.0.2, 2009/04/13):
+
+2009/03/29: add dbuff sample for secondary DC.
+	* dbuff/*
+
+*******************************************************************************
+What's new in this version (3.0.1, 2009/02/28):
+
+2009/01/21: add -lscripteasy check surport.
+	* configure.in 
+
+12/30: scrolltest.c
+	* change function WindowToClient's name to LWindowToClient
+
+08/23: Cleanup for make dist.
+	* src/Makefile.am
+	* src/res/Makefile.am
+
+08/23: Tune and cleanup for MiniGUI V3.0.1.
+
+*******************************************************************************
+What's new in this version (2.0.4/1.6.10, 2007/08/31):
+
+08/23: Add #include <dirent.h> to src/listbox.c
+
+*******************************************************************************
+What's new in this version (1.6.1, 2005/01/31):
+
+01/31: More samples.
+
+01/31: English and Chinese UI. Please use the following command to enable the Chinese UI:
+	* ./configure --with-lang=zhcn
+
+*******************************************************************************
+What's new in this version (1.2.6, 2003/06/23):
+
+06/03: Use autoconf/automake.

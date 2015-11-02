@@ -1,0 +1,109 @@
+dnl Process this file with autoconf to produce a configure script.
+AC_PREREQ(2.13)
+AC_INIT(src/helloworld.c)
+
+dnl ========================================================================
+dnl needed for cross-compiling
+AC_CANONICAL_SYSTEM
+
+dnl ========================================================================
+dnl Checks for programs.
+AC_PROG_MAKE_SET
+AC_PROG_CC
+
+AM_INIT_AUTOMAKE(mg-samples,3.0.12)
+
+dnl ========================================================================
+dnl Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+
+dnl ========================================================================
+dnl Checks for header files.
+AC_HEADER_STDC
+AC_HEADER_SYS_WAIT
+AC_HEADER_TIME
+AC_CHECK_HEADERS(sys/time.h unistd.h)
+
+dnl ========================================================================
+dnl check for libminigui
+have_libminigui="no"
+AC_CHECK_HEADERS(minigui/common.h, have_libminigui=yes, foo=bar)
+
+dnl ========================================================================
+dnl check for non-UNIX system
+unix="yes"
+AC_CHECK_DECLS(__NOUNIX__, unix="no", foo=bar)
+
+dnl ========================================================================
+dnl check for run-time mode of MiniGUI
+dnl ========================================================================
+procs_version="no"
+AC_CHECK_DECLS(_MGRM_PROCESSES, procs_version="yes", foo=bar, [#include <minigui/common.h>])
+
+AC_ARG_WITH(lang,
+        [  --with-lang=[en/zhcn/zhtw]])
+
+case "$with_lang" in
+  zhcn)
+    AC_DEFINE(_LANG_ZHCN, 1, 
+            [Use text strings for locale zh_CN in GB2312])
+    ;;
+  zhtw)
+    AC_DEFINE(_LANG_ZHTW, 1, 
+            [Use text strings for locale zh_TW in BIG5])
+    ;;
+  *)
+    AC_DEFINE(_LANG_EN, 1, 
+            [Use text strings for locale en_US in ISO8859-1])
+    ;;
+esac
+
+dnl ========================================================================
+dnl Write Output
+
+if test "$ac_cv_prog_gcc" = "yes"; then
+    CFLAGS="$CFLAGS -Wall -Wstrict-prototypes -pipe"
+fi
+
+AM_CONDITIONAL(MGRM_PROCESSES, test "x$procs_version" = "xyes")
+
+PKG_CHECK_MODULES([MINIGUI], [minigui >= 3.0.10])
+LIBS="$LIBS $MINIGUI_LIBS"
+
+AC_OUTPUT(
+Makefile
+same/Makefile
+same/res/Makefile
+graphics/Makefile
+graphics/res/Makefile
+housekeeper/Makefile
+housekeeper/res/Makefile
+minesweeper/Makefile
+minesweeper/res/Makefile
+ctrl_dlg/Makefile
+ctrl_dlg/res/Makefile
+lf_skin/Makefile
+lf_skin/res/Makefile
+lf_skin/res/skin_res/Makefile
+lf_skin/res/systemres/Makefile
+look_feel/Makefile
+look_feel/res/Makefile
+font_text/Makefile
+dbuff/Makefile
+dbuff/res/Makefile
+mginit/Makefile
+mginit/res/Makefile
+src/Makefile
+src/res/Makefile
+notebook/Makefile
+notebook/res/Makefile
+)
+
+if test "x$have_libminigui" != "xyes"; then
+    AC_MSG_WARN([
+        MiniGUI is not properly installed on the system. You need 
+        MiniGUI Ver 3.0.12 or later for building this package. 
+        Please configure and install MiniGUI Ver 3.0.12 first.
+    ])
+fi
+

@@ -1,0 +1,1 @@
+#define CAPTION "Flying GUI"
