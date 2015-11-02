@@ -33,39 +33,38 @@ unsigned char resp[10];
 
 int main(int argc, char **argv)
 {
-        int i, len, j;
-        char atr[33];
-        int param = ICC_ABSENT;
+	int i, len, j;
+	char atr[33];
+	int param = ICC_ABSENT;
 
 
-        fd = open(DEV, O_RDWR);
-        if(fd < 0) {
-                printf("open sc error\n");
-                goto out;
-        } else {
-                printf("open successed\n");
-
+	fd = open(DEV, O_RDWR);
+	if(fd < 0) {
+		printf("open sc error\n");
+		goto out;
+	} else {
+		printf("open successed\n");
         }
 
-        do {
-                ioctl(fd, SC_IOC_GETSTATUS, &param);
+	do {
+		ioctl(fd, SC_IOC_GETSTATUS, &param);
 
-        } while(param == ICC_ABSENT);
+	} while(param == ICC_ABSENT);
 
-        // activate
-        len = ioctl(fd, SC_IOC_ACTIVATE);
+	// activate
+	len = ioctl(fd, SC_IOC_ACTIVATE);
 
-        if(len < 0) {
-                printf("activate failed\n");
-                goto out1;
-        }
+	if(len < 0) {
+		printf("activate failed\n");
+		goto out1;
+	}
 
-        ioctl(fd, SC_IOC_READATR, &atr[0]);
+	ioctl(fd, SC_IOC_READATR, &atr[0]);
 
-        printf("ATR: ");
-        for(i = 0; i < len; i++)
-                printf("%02x ", atr[i]);
-        printf("\n");
+	printf("ATR: ");
+	for(i = 0; i < len; i++)
+		printf("%02x ", atr[i]);
+	printf("\n");
 
 	sc_t.tx_buf = &cmd[0];
 	sc_t.rx_buf = resp;
@@ -84,9 +83,10 @@ int main(int argc, char **argv)
 
 
 out2:
-        ioctl(fd, SC_IOC_DEACTIVATE);
+	ioctl(fd, SC_IOC_DEACTIVATE);
 out1:
-        close(fd);
+	close(fd);
 out:
-        return 0;
+	return 0;
 }
+
