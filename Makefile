@@ -35,14 +35,14 @@ SETUPPATH=$(PWD)/$(MTD_DIRS)/install
 
 define make_subdir
 	@for subdir in $(SUBDIRS) ; do \
-		( cd $$subdir && make $1) \
+		( cd $$subdir && make $1) || exit 1; \
 	done;
 	@for subdir in $(BENCHMARK_SUBDIRS) ; do \
-		( cd $$subdir && ./configure --host=arm-linux && make $1) \
+		( cd $$subdir && ./configure --host=arm-linux && make $1) || exit 1; \
 	done;
 
 	@for subdir in $(TSLIB_DIRS) ; do \
-		( cd $$subdir && ./configure --host=arm-linux --enable-static && make $1) \
+		( cd $$subdir && ./configure --host=arm-linux --enable-static && make $1) || exit 1; \
 	done;
 
 	@for subdir in $(MTD_DIRS) ; do \
