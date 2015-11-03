@@ -27,7 +27,7 @@
 
 int fd;
 // get challenge command. see iso 7816-4
-unsigned char cmd[] = {0x00, 084, 0x00, 0x00, 0x08};
+unsigned char cmd[] = {0x00, 0x84, 0x00, 0x00, 0x08};
 unsigned char resp[10];
 
 
@@ -36,7 +36,7 @@ int main(int argc, char **argv)
 	int i, len, j;
 	char atr[33];
 	int param = ICC_ABSENT;
-
+	struct sc_transact sc_t;
 
 	fd = open(DEV, O_RDWR);
 	if(fd < 0) {
