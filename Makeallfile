@@ -28,6 +28,7 @@ UUID_DIRS=libuuid-1.0.3
 LZO_DIRS=lzo-2.09
 MTD_DIRS=mtd-utils
 YAFFS2_DIRS=yaffs2utils
+PYTHON=Python-2.7.9
 
 MINIGUI_LIB_SUBDIRS=minigui/libminigui-gpl-3.0.12
 MINIGUI_RES_SUBDIRS=minigui/minigui-res-be-3.0.12
@@ -62,6 +63,12 @@ define make_subdir
 	done;
 endef
 
+define make_python
+	@for subdir in $(PYTHON) ; do  \
+        ( cd $$subdir && ./make_python.sh ) \
+	done;
+endef
+
 define make_minigui   
     @for subdir in $(MINIGUI_LIB_SUBDIRS) ; do \
         cd $(MINIGUI_LIB_SUBDIRS) && ./configure --prefix=$(PWD)/minigui/build CC=arm-linux-gcc --host=arm-linux --build=i386-linux --with-osname=linux --with-targetname=fbcon --disable-pcxvfb --enable-videonuc970 --enable-videofbcon --enable-autoial --disable-vbfsupport --disable-screensaver && make && make install && cd .. && cd ..; \
@@ -79,6 +86,9 @@ all:
     
 gui:
 	$(call make_minigui , all)
+
+python:
+	$(call make_python , all)
  
 install :
 	$(call make_subdir , install)
