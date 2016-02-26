@@ -1416,8 +1416,9 @@ int main(int argc, char **argv)
 
 	printf("\n");
 
-	close(s[0]);
-	close(s[1]);
+	can_do_stop("can0"); 
+        can_do_stop("can1");
+        
 	return 0;
 }
 

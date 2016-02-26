@@ -3,7 +3,7 @@
 CC := arm-linux-gcc
 STRIP := arm-linux-strip
 
-TARGET = uart_demo
+TARGET = can_demo
 SRCS := can.c
 LIBS = -lpthread -lc -lgcc
 
