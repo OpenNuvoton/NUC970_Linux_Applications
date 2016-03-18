@@ -66,6 +66,8 @@ int main(int argc, char **argv)
 		printf("%02x ", atr[i]);
 	printf("\n");
 
+	ioctl(fd, SC_IOC_SETPARAM); // This call is a must before doing any transaction.
+
 	sc_t.tx_buf = &cmd[0];
 	sc_t.rx_buf = resp;
 	sc_t.tx_len = 5;
