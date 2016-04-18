@@ -24,6 +24,7 @@ SUBDIRS=wireless_tools.29 \
         demos/rtc
         
 BENCHMARK_SUBDIRS=benchmark/netperf-2.6.0
+LIGHTTPD_SUBDIRS=lighttpd-1.4.39
 TSLIB_DIRS=tslib-1.1
 UUID_DIRS=libuuid-1.0.3
 LZO_DIRS=lzo-2.09
@@ -43,6 +44,10 @@ define make_subdir
 	done;
 	@for subdir in $(BENCHMARK_SUBDIRS) ; do \
 		( cd $$subdir && ./configure --host=arm-linux && make $1) || exit 1; \
+	done;
+
+	@for subdir in $(LIGHTTPD_SUBDIRS) ; do \
+		( cd $$subdir && ./configure --host arm-linux --build pentium-pc-linux --prefix=$(PWD)/install --without-zlib --without-bzip2 --without-pcre --target arm-linux && autoreconf --install --verbose --force && make && make install) || exit 1; \
 	done;
 
 	@for subdir in $(TSLIB_DIRS) ; do \
