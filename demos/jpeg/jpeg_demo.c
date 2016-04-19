@@ -265,7 +265,7 @@ int jpegCodec(int mode)
 
         jpeg_param.encode = 0;          /* Decode Operation */
         jpeg_param.src_bufsize = 100*1024;  /* Src buffer size (Bitstream buffer size for JPEG engine) */
-        jpeg_param.dst_bufsize = 640*480*2; /* Dst buffer size (Decoded Raw data buffer size for JPEG engine) */
+        jpeg_param.dst_bufsize = 640*480*4; /* Dst buffer size (Decoded Raw data buffer size for JPEG engine) */
         jpeg_param.decInWait_buffer_size = 0;   /* Decode input Wait buffer size (Decode input wait function disable when                                  decInWait_buffer_size is 0) */
         jpeg_param.decopw_en = 0;
         jpeg_param.windec_en = 0;
@@ -306,8 +306,8 @@ int jpegCodec(int mode)
         /* Clear buffer */
         if (mode == TEST_DECODE_DOWNSCALE || mode == TEST_DECODE_DOWNSCALE_FB)
         {
-            memset(pJpegBuffer, 0x77, BufferSize);  
-            memset(pVideoBuffer, 0x77, BufferSize); 
+            memset(pJpegBuffer, 0x77, jpeg_buffer_size);  
+            memset(pVideoBuffer, 0x77, uVideoSize); 
         }
         
         /* Open JPEG file */
@@ -2142,8 +2142,8 @@ int  jpegDeocdeToFB(char *filename)
     jpeg_param.windec_en = 0;
 
     jpeg_param.scale = 1;       /* Enable scale function */
-    jpeg_param.scaled_width = 800;  /* width after scaling */
-    jpeg_param.scaled_height = 480; /* height after scaling */
+    jpeg_param.scaled_width = 320;  /* width after scaling */
+    jpeg_param.scaled_height = 240; /* height after scaling */
     jpeg_param.dec_stride = xres;   /* Enable stride function */            
 
     /* Set output offset */ 
@@ -2349,7 +2349,7 @@ int main()
     yres = var.yres;
 
     //ioctl(fb_fd,LCD_ENABLE_INT);
-    uVideoSize = xres * yres * 2;
+    uVideoSize = xres * yres * 4;
     pVideoBuffer = mmap(NULL, uVideoSize, PROT_READ|PROT_WRITE, MAP_SHARED, fb_fd, 0);
     printf("LCD resolution is %dx%d, pVideoBuffer = 0x%x\n", xres, yres, pVideoBuffer);
     if(pVideoBuffer == MAP_FAILED)
@@ -2366,7 +2366,7 @@ int main()
     }
     memcpy((void*)backupVideoBuffer, (char*)pVideoBuffer, uVideoSize);
 
-	fb_paddress = NUC970_VA_JPEG;
+	//fb_paddress = NUC970_VA_JPEG;
 
 	/* Check device for jpegcodec "/dev/video0" or "/dev/video1" */
     printf("Open jpegcodec device\n");
@@ -2399,6 +2399,9 @@ int main()
     }
     else
         printf("\tGet memory from jpeg engine: 0x%X\n",jpeg_buffer_size);
+
+    ioctl(fd, JPEG_GET_JPEG_FB, (__u32)&fb_paddress);
+    //printf("\n fb_paddress = 0x%x \n", fb_paddress);
 
     InitColorTable();
     
