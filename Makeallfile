@@ -47,7 +47,7 @@ define make_subdir
 	done;
 
 	@for subdir in $(LIGHTTPD_SUBDIRS) ; do \
-		( cd $$subdir && ./configure --host arm-linux --build pentium-pc-linux --prefix=$(PWD)/install --without-zlib --without-bzip2 --without-pcre --target arm-linux && autoreconf --install --verbose --force && make && make install) || exit 1; \
+		( cd $$subdir && ./configure --host arm-linux --build pentium-pc-linux --without-zlib --without-bzip2 --without-pcre --target arm-linux && autoreconf --install --verbose --force && make) || exit 1; \
 	done;
 
 	@for subdir in $(TSLIB_DIRS) ; do \
