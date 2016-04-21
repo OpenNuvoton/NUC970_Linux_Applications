@@ -30,7 +30,7 @@ int main(int argc, char **argv)
 	fd = open("/dev/ebi",O_RDWR);
 	if(fd < 0)
 		printf("open ebi %d error\n", i);
-	uEbiSize = 512 * 1024 ; //512K
+	uEbiSize = 2 * 1024 ; //2K
 	pEbiBuffer = mmap(NULL, uEbiSize, PROT_READ|PROT_WRITE, MAP_SHARED, fd, 0);
 	if (pEbiBuffer == MAP_FAILED) {
 		printf("mmap() failed\n");
