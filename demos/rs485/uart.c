@@ -40,7 +40,11 @@ char buff[256];
 static struct termios newtios,oldtios; /*termianal settings */
 static int saved_portfd=-1;            /*serial port fd */
 
-struct serial_rs485
+
+/* Test GCC version, this structure is consistent in GCC 4.8, thus no need to overwrite */
+#if (__GNUC__ == 4 && __GNUC_MINOR__ == 3)
+
+struct my_serial_rs485
 {
 	unsigned long	flags;			/* RS485 feature flags */
 #define SER_RS485_ENABLED		(1 << 0)	/* If enabled */
@@ -56,6 +60,7 @@ struct serial_rs485
 					   are a royal PITA .. */
 };
 
+#endif
 
 
 static void reset_tty_atexit(void)
@@ -80,9 +85,13 @@ static int open_port(const char *portname)
 {
 	struct sigaction sa;
 	int portfd;
-struct serial_rs485 rs485conf;
+#if (__GNUC__ == 4 && __GNUC_MINOR__ == 3)
+	struct my_serial_rs485 rs485conf;
+	struct my_serial_rs485 rs485conf_bak;
+#else
+	struct serial_rs485 rs485conf;
 	struct serial_rs485 rs485conf_bak;
-	
+#endif	
 	//printf("opening serial port:%s\n",portname);
 	/*open serial port */
 	if((portfd=open(portname,O_RDWR | O_NOCTTY, 0)) < 0 )
@@ -121,45 +130,44 @@ struct serial_rs485 rs485conf;
 	tcflush(portfd,TCIFLUSH);
 	tcsetattr(portfd,TCSADRAIN,&newtios);
 	
-	
-#if 1		
-		if (ioctl (portfd, TIOCGRS485, &rs485conf) < 0) 
-		{
-			/* Error handling.*/ 
-			printf("ioctl TIOCGRS485 error.\n");
-		}
-		/* Enable RS485 mode: */
-		rs485conf.flags |= SER_RS485_ENABLED;
+		
+	if (ioctl (portfd, TIOCGRS485, &rs485conf) < 0) 
+	{
+		/* Error handling.*/ 
+		printf("ioctl TIOCGRS485 error.\n");
+	}
+	/* Enable RS485 mode: */
+	rs485conf.flags |= SER_RS485_ENABLED;
 
-		/* Set logical level for RTS pin equal to 1 when sending: */
-		rs485conf.flags |= SER_RS485_RTS_ON_SEND;
-		//rs485conf.flags |= SER_RS485_RTS_AFTER_SEND;
+	/* Set logical level for RTS pin equal to 1 when sending: */
+	rs485conf.flags |= SER_RS485_RTS_ON_SEND;
+	//rs485conf.flags |= SER_RS485_RTS_AFTER_SEND;
 
-		/* set logical level for RTS pin equal to 0 after sending: */ 
-		rs485conf.flags &= ~(SER_RS485_RTS_AFTER_SEND);
-		//rs485conf.flags &= ~(SER_RS485_RTS_ON_SEND);
+	/* set logical level for RTS pin equal to 0 after sending: */ 
+	rs485conf.flags &= ~(SER_RS485_RTS_AFTER_SEND);
+	//rs485conf.flags &= ~(SER_RS485_RTS_ON_SEND);
 
-		/* Set rts delay after send, if needed: */
-		rs485conf.delay_rts_after_send = 0x80;
+	/* Set rts delay after send, if needed: */
+	rs485conf.delay_rts_after_send = 0x80;
 
-		if (ioctl (portfd, TIOCSRS485, &rs485conf) < 0)
-		{
-			/* Error handling.*/ 
-			printf("ioctl TIOCSRS485 error.\n");
-		}
+	if (ioctl (portfd, TIOCSRS485, &rs485conf) < 0)
+	{
+		/* Error handling.*/ 
+		printf("ioctl TIOCSRS485 error.\n");
+	}
 
-		if (ioctl (portfd, TIOCGRS485, &rs485conf_bak) < 0)
-		{
-			/* Error handling.*/ 
-			printf("ioctl TIOCGRS485 error.\n");
-		}
-		else
-		{
-			printf("rs485conf_bak.flags 0x%x.\n", rs485conf_bak.flags);
-			printf("rs485conf_bak.delay_rts_before_send 0x%x.\n", rs485conf_bak.delay_rts_before_send);
-			printf("rs485conf_bak.delay_rts_after_send 0x%x.\n", rs485conf_bak.delay_rts_after_send);
-		}
-	#endif
+	if (ioctl (portfd, TIOCGRS485, &rs485conf_bak) < 0)
+	{
+		/* Error handling.*/ 
+		printf("ioctl TIOCGRS485 error.\n");
+	}
+	else
+	{
+		printf("rs485conf_bak.flags 0x%x.\n", rs485conf_bak.flags);
+		printf("rs485conf_bak.delay_rts_before_send 0x%x.\n", rs485conf_bak.delay_rts_before_send);
+		printf("rs485conf_bak.delay_rts_after_send 0x%x.\n", rs485conf_bak.delay_rts_after_send);
+	}
+
 	return portfd;
 }
 
@@ -180,31 +188,6 @@ void * process1(void* arg)
    	}
 	printf("\n uart1 send %d byts\n", rev2);
 
-	#if 0
-	rev1 = 0;
-	rev2 = 0;
-
-	while(rev2 < sizeof(RxBuffer))
-	{
-		rev1 = read(portfd,(RxBuffer+rev2),sizeof(RxBuffer) - rev2);
-		rev2 += rev1;
-	}
-		
-	printf("\n uart1 receive %d bytes\n", rev2);
-
-	for(i = 0; i < sizeof(buff); i++)
-	{
-		if(i != RxBuffer[i])
-		{
-			printf("\n uart1 compare Error!!");
-						
-			while(1);
-		}
-	}
-
-	printf("\n uart1 compare correct!!\n");
-	printf("\n uart1 test done!!\n");
-	#endif
 
 }	
 
@@ -215,18 +198,6 @@ void * process2(void* arg)
 	int rev1, rev2;
 	char RxBuffer[sizeof(buff)];
 
-	#if 0
-	rev1 =0;
-	rev2 =0;
-
-	while(rev2 < sizeof(RxBuffer))
-   	{
-		rev1 = write(portfd,(buff+rev2),sizeof(RxBuffer) - rev2);
-		rev2 += rev1;
-   	}
-
-	printf("\n uart2 send %d bytes \n", rev2);
-	#endif
 
 	rev1 = 0;
 	rev2 = 0;
