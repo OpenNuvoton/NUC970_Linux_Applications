@@ -10,6 +10,8 @@
 
 #ifndef AF_ALG
 #define AF_ALG 		38
+#endif
+#ifndef SOL_ALG
 #define SOL_ALG 	279
 #endif
 #define BUF_SIZE 	16
