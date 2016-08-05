@@ -272,10 +272,34 @@ static GAL_Surface *NUC970_SetVideoMode(_THIS, GAL_Surface *current,
                 int width, int height, int bpp, Uint32 flags)
 {
     struct GAL_PrivateVideoData *hidden = this->hidden;
+    
+    Uint32 Rmask;
+    Uint32 Gmask;
+    Uint32 Bmask;
+    Uint32 Amask;
+    
+    switch (bpp) {
+		//RGB565
+		case 16:
+			Amask = 0x00000000;
+			Rmask = 0x0000F800;
+			Gmask = 0x000007E0;
+			Bmask = 0x0000001F;
+			break;
 
+		//RGB888
+		case 32:
+			Amask = 0xFF000000;
+			Rmask = 0x00FF0000;
+			Gmask = 0x0000FF00;
+			Bmask = 0x000000FF;
+			break;
+		default:
+			return NULL;
+	}
+    
     /* Allocate the new pixel format for the screen */
-    // support rgb888
-    if (!GAL_ReallocFormat (current, bpp, 0x00FF0000, 0x0000FF00, 0x000000FF, 0)) {
+    if (!GAL_ReallocFormat (current, bpp, Rmask, Gmask, Bmask, Amask)) {
         fprintf (stderr, "NEWGAL>NUC970: "
                 "Couldn't allocate new pixel format for requested mode\n");
         return(NULL);
