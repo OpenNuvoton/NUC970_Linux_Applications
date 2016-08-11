@@ -19,9 +19,10 @@ SUBDIRS=wireless_tools.29 \
 		demos/CAN \
 		demos/rs485 \
 		demos/sc \
-        demos/spi \
-        demos/2d \
-        demos/rtc
+		demos/eth2uart \
+		demos/spi \
+		demos/2d \
+		demos/rtc
         
 BENCHMARK_SUBDIRS=benchmark/netperf-2.6.0
 LIGHTTPD_SUBDIRS=lighttpd-1.4.39
@@ -31,6 +32,7 @@ LZO_DIRS=lzo-2.09
 MTD_DIRS=mtd-utils
 YAFFS2_DIRS=yaffs2utils
 PYTHON=Python-2.7.9
+ETHTOOL=ethtool-4.6
 
 MINIGUI_LIB_SUBDIRS=minigui/libminigui-gpl-3.0.12
 MINIGUI_RES_SUBDIRS=minigui/minigui-res-be-3.0.12
@@ -67,6 +69,9 @@ define make_subdir
 	@for subdir in $(YAFFS2_DIRS) ; do \
 	( cd $$subdir && make CROSS=arm-linux- ) \
 	done;
+
+	( cd $(ETHTOOL) && ./configure CC=arm-linux-gcc CTAGS=-mach=armv5te --host=arm-linux && make) || exit 1;
+
 endef
 
 define make_python
@@ -87,9 +92,10 @@ define make_minigui
     done;
 endef
 
+
 all:
 	$(call make_subdir , all)
-    
+
 gui:
 	$(call make_minigui , all)
 
