@@ -12,7 +12,7 @@
 #include     <stdio.h>
 #include     <stdlib.h>
 #include     <unistd.h> 
-#include     <sys/types.h> 
+#include     <sys/types.h>
 #include     <sys/stat.h> 
 #include     <fcntl.h> 
 #include     <termios.h>  
@@ -102,8 +102,6 @@ static int open_port(const char *portname)
 
 	printf("opening serial port:%s\n",portname);
 
-	return portfd;
-
 	/*get serial port parnms,save away */
 	tcgetattr(portfd,&newtios);
 	memcpy(&oldtios,&newtios,sizeof newtios);
@@ -174,7 +172,7 @@ static int open_port(const char *portname)
 void * process1(void* arg)
 {
 	int portfd = (int) arg;
-	unsigned char i, j;
+	unsigned int i, j;
 	int rev1, rev2;
 	char RxBuffer[sizeof(buff)];	
 
@@ -194,7 +192,7 @@ void * process1(void* arg)
 void * process2(void* arg)
 {
 	int portfd = (int) arg;
-	unsigned char i, j;
+	unsigned int i, j;
 	int rev1, rev2;
 	char RxBuffer[sizeof(buff)];
 
