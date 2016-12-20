@@ -64,7 +64,7 @@ AC_DECL_H_ERRNO
 AC_STRUCT_SOCKADDR_STORAGE
 AC_HEADER_TIME
 AC_HEADER_STDBOOL
-AC_CHECK_SA_LEN(ac_cv_sockaddr_has_sa_len)
+#AC_CHECK_SA_LEN(ac_cv_sockaddr_has_sa_len)
 
 # Checks for library functions.
 # AC_FUNC_ERROR_AT_LINE
