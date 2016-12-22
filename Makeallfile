@@ -45,7 +45,7 @@ define make_subdir
 		( cd $$subdir && make $1) || exit 1; \
 	done;
 	@for subdir in $(BENCHMARK_SUBDIRS) ; do \
-		( cd $$subdir && ./configure --host=arm-linux && make $1) || exit 1; \
+		( cd $$subdir && echo "ac_cv_func_setpgrp_void=yes" > config.cache && ./configure --host=arm-linux --config-cache && make $1) || exit 1; \
 	done;
 
 	@for subdir in $(LIGHTTPD_SUBDIRS) ; do \
@@ -59,10 +59,10 @@ define make_subdir
 	@for subdir in $(MTD_DIRS) ; do \
 	( \
 	cd $(LZO_DIRS) && ./configure --host=arm-linux --prefix=$(SETUPPATH) && make && make install && cd .. ;\
-	cd $(UUID_DIRS)&& ./configure --host=arm-linux --prefix=$(SETUPPATH) && \
-			make ACLOCAL=aclocal AUTOMAKE=automake && make install && cd .. ; \
-	cd $(MTD_DIRS) && make LZOCPPFLAGS=-I$(SETUPPATH)/include LZOLDFLAGS=-L$(SETUPPATH)/lib  \
-			CROSS=arm-linux-  WITHOUT_XATTR=1 DESTDIR=$(SETUPPATH) && make install DESTDIR=$(SETUPPATH) \
+	cd $(UUID_DIRS)&& autoreconf --force --install && ./configure --host=arm-linux --prefix=$(SETUPPATH) && \
+			 make && make install && cd .. ; \
+	cd $(MTD_DIRS) && make LZOCPPFLAGS=-Iinstall/include LZOLDFLAGS=-Linstall/lib  \
+			CROSS=arm-linux-  WITHOUT_XATTR=1 CFLAGS=-DWITHOUT_LZO \
 	) \
 	done;
 
