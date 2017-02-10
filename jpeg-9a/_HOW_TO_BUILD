@@ -1,0 +1,8 @@
+1. make clean
+2. rm -rf .deps
+3. ./configure --prefix=/usr/local/arm_linux_4.8/ --host=arm-linux --target=arm-linux
+4. make
+
+note:
+1. cp libjpeg* ../path to/rootfs/lib
+2. in ".libs" we can find "libjpeg*"

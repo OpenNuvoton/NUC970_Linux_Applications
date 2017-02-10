@@ -33,6 +33,7 @@ MTD_DIRS=mtd-utils
 YAFFS2_DIRS=yaffs2utils
 PYTHON=Python-2.7.9
 ETHTOOL=ethtool-4.6
+JPEG_LIB=jpeg-9a
 
 MINIGUI_LIB_SUBDIRS=minigui/libminigui-gpl-3.0.12
 MINIGUI_RES_SUBDIRS=minigui/minigui-res-be-3.0.12
@@ -54,6 +55,10 @@ define make_subdir
 
 	@for subdir in $(TSLIB_DIRS) ; do \
 		( cd $$subdir && ./configure --host=arm-linux --enable-static && make $1) || exit 1; \
+	done;
+
+	@for subdir in $(JPEG_LIB) ; do \
+		( cd $$subdir && ./configure --prefix=/usr/local/arm_linux_4.8/ --host=arm-linux --target=arm-linux && make $1) || exit 1; \
 	done;
 
 	@for subdir in $(MTD_DIRS) ; do \
