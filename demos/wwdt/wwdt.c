@@ -40,6 +40,7 @@ int main(void)
                 if(ii-- > 0) {
 			printf("ii = %d\n", ii);
                         ioctl(fd, WDIOC_KEEPALIVE, 0);
+			sleep(1);
 		}
 
         }
