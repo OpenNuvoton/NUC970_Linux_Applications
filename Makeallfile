@@ -22,8 +22,10 @@ SUBDIRS=wireless_tools.29 \
 		demos/eth2uart \
 		demos/spi \
 		demos/2d \
-		demos/rtc
-        
+		demos/rtc \
+		emWin/Sample/SimpleDemo \
+		emWin/Sample/GUIDemo
+
 BENCHMARK_SUBDIRS=benchmark/netperf-2.6.0
 LIGHTTPD_SUBDIRS=lighttpd-1.4.39
 TSLIB_DIRS=tslib-1.1

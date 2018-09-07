@@ -1,0 +1,3 @@
+(1). Go To the subfolder Sample/GUIDemo to type in the command "make" to run Makefile, build one binary file GUIDemo.
+(2). Go to the subfolder Sample/SimpleDemo to type in the command "make" to run Makefile, build one binary file SimpleDemo.
+(3). The both samples have no function of touch screen
