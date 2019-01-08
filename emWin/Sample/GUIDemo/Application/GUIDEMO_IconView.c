@@ -1417,6 +1417,7 @@ static const ALIGNMENT_ITEM _aAlignment[] = {
 *
 *       GUIDEMO_IconView
 */
+extern U8 g_u8GUIItem;
 void GUIDEMO_IconView(void) {
   ICONVIEW_Handle hIcon;
   TEXT_Handle     hText;
@@ -1435,6 +1436,7 @@ void GUIDEMO_IconView(void) {
     return;
   }
   GUIDEMO_ConfigureDemo("ICONVIEW Demo", "Shows the behavior of the ICONVIEW widget.", GUIDEMO_SHOW_CURSOR | GUIDEMO_SHOW_INFO | GUIDEMO_SHOW_CONTROL);
+    g_u8GUIItem = 1;
   GUIDEMO_DrawBk();
   WM_EnableMemdev(WM_HBKWIN);
   xOff = xSize - XSIZE_MIN;
@@ -1494,6 +1496,7 @@ void GUIDEMO_IconView(void) {
   //
   WM_DeleteWindow(hIcon);
   WM_DeleteWindow(hText);
+    g_u8GUIItem = 0;
 }
 
 #else

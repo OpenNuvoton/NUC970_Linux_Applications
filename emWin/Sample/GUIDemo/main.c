@@ -10,7 +10,7 @@
  *     main.c
  *
  * VERSION
- *     1.0
+ *     1.1
  *
  * DESCRIPTION
  *     To utilize emWin library to demonstrate  widgets feature.
@@ -22,7 +22,7 @@
  *     None
  *
  * HISTORY
- *     2018/09/07        Ver 1.0 Created
+ *     2019/01/08        Ver 1.1 Updated
  *
  * REMARK
  *     None
@@ -42,8 +42,6 @@
 #include <sys/time.h>
 
 #include <pthread.h>  // Thread
-
-
 
 #include "GUI.h"
 //#include "LCDConf.h"
@@ -75,6 +73,7 @@
 #define LCD_ENABLE_INT      _IO('v', 28)
 #define LCD_DISABLE_INT     _IO('v', 29)
 
+//#define IOCTL_LCD_GET_DMA_BASE          _IOR('v', 32, unsigned int *)
 
 #define DISPLAY_MODE_RGB555 0
 #define DISPLAY_MODE_RGB565 1
@@ -94,7 +93,10 @@
 
 static struct fb_var_screeninfo var;
 unsigned char *pVideoBuffer;
-unsigned char *g_VAFrameBuf;
+//unsigned char *g_VAFrameBuf;
+int g_xres;
+int g_yres;
+int g_bits_per_pixel;
 
 typedef struct Cursor
 {
@@ -152,11 +154,13 @@ int main()
 {
     int fd, ret;
     int i, t = 0;
+
     FILE *fpVideoImg;
+
+    unsigned long uVideoSize;
 
     pthread_t tid1, tid2;
 
-    unsigned long uVideoSize;
 
     fd = open("/dev/fb0", O_RDWR);
     if (fd == -1)
@@ -187,8 +191,12 @@ int main()
         printf("LCD Video Map Failed!\n");
         exit(0);
     }
+    //ioctl(fd, IOCTL_LCD_GET_DMA_BASE, &g_VAFrameBuf);
     // the processing of video buffer
-    g_VAFrameBuf = pVideoBuffer;
+    //g_VAFrameBuf = pVideoBuffer;
+    g_xres = var.xres;
+    g_yres = var.yres;
+    g_bits_per_pixel = var.bits_per_pixel;
 
     pthread_create(&tid1, NULL, MainTask_ISR, (void *)"MainTask");
     pthread_create(&tid2, NULL, TouchTask_ISR, (void *)"TouchTask");

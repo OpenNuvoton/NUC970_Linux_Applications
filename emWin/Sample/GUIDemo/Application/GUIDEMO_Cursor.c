@@ -188,6 +188,7 @@ static void _ShowCursorType(const CURSORTYPE_INFO* pCursorType, int x0, int y0) 
 *
 *       _DispCursor
 */
+extern U8 g_u8GUIItem;
 static void _DispCursor(void) {
   int xSize;
   int ySize;
@@ -196,6 +197,7 @@ static void _DispCursor(void) {
   ySize     = LCD_GetYSize();
   _ScreenX0 = (xSize - XSIZE_MIN) / 2;
   _ScreenY0 = (ySize - YSIZE_MIN) / 2;
+    g_u8GUIItem = 2;
   GUIDEMO_DrawBk();
   GUI_SetTextMode(GUI_TM_TRANS);
   GUI_SetFont(&GUI_FontRounded22);
@@ -210,6 +212,7 @@ static void _DispCursor(void) {
   GUIDEMO_Wait(4000);
   GUI_CURSOR_Select(&GUI_CursorArrowM);
   GUI_CURSOR_Hide();
+    g_u8GUIItem = 0;
 }
 
 /*********************************************************************

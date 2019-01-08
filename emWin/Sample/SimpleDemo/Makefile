@@ -4,7 +4,7 @@ CC=arm-linux-gcc
 LINK=$(CC)
 STRIP=arm-linux-strip
 CFLAGS=-MD -O2
-LDFLAGS=-L../../Lib -lNUemWin -lm -L./tslib -lts -ldl -static -pthread
+LDFLAGS=-L../../Lib -lNUemWin -lm -L./tslib -lts -ldl -pthread -static
 
 APPDIR=.
 CONFHEADER=../../Config

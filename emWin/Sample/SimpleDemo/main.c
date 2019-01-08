@@ -10,7 +10,7 @@
  *     main.c
  *
  * VERSION
- *     1.0
+ *     1.1
  *
  * DESCRIPTION
  *     To utilize emWin library to demonstrate interactive feature.
@@ -22,7 +22,7 @@
  *     None
  *
  * HISTORY
- *     2018/09/07        Ver 1.0 Created
+ *     2019/01/08        Ver 1.1 Updated
  *
  * REMARK
  *     None
@@ -46,8 +46,6 @@
 #include "GUI.h"
 //#include "LCDConf.h"
 #include "WM.h"
-
-
 
 /*IOCTLs*/
 //#define IOCTLSETCURSOR            _IOW('v', 21, unsigned int) //set cursor position
@@ -75,6 +73,7 @@
 #define LCD_ENABLE_INT      _IO('v', 28)
 #define LCD_DISABLE_INT     _IO('v', 29)
 
+//#define IOCTL_LCD_GET_DMA_BASE          _IOR('v', 32, unsigned int *)
 
 #define DISPLAY_MODE_RGB555 0
 #define DISPLAY_MODE_RGB565 1
@@ -94,14 +93,16 @@
 
 static struct fb_var_screeninfo var;
 unsigned char *pVideoBuffer;
-unsigned char *g_VAFrameBuf;
+//unsigned char *g_VAFrameBuf;
+int g_xres;
+int g_yres;
+int g_bits_per_pixel;
 
 typedef struct Cursor
 {
     unsigned char x;
     unsigned char y;
 } Cursor;
-
 
 typedef struct
 {
@@ -135,24 +136,13 @@ font myFont[11] = {{0x3e, 0x41, 0x41, 0x3e, 0x00}, //zero
 }; // point
 
 WM_HWIN CreateFramewin(void);
-
 void MainTask(void);
 extern void TouchTask(void);
 
 void *MainTask_ISR(void *arg)
 {
     printf("Main Task thread\n");
-    MainTask();
-}
 
-void *TouchTask_ISR(void *arg)
-{
-    printf("Touch Task thread\n");
-    TouchTask();
-}
-
-void MainTask(void)
-{
     WM_HWIN hWin;
     char     acVersion[40] = "Framewin: Version of emWin: ";
 
@@ -160,10 +150,17 @@ void MainTask(void)
     hWin = CreateFramewin();
     strcat(acVersion, GUI_GetVersionString());
     FRAMEWIN_SetText(hWin, acVersion);
+
     while (1)
     {
         GUI_Delay(500);
     }
+}
+
+void *TouchTask_ISR(void *arg)
+{
+    printf("Touch Task thread\n");
+    TouchTask();
 }
 
 int main()
@@ -207,8 +204,12 @@ int main()
         printf("LCD Video Map Failed!\n");
         exit(0);
     }
+    //ioctl(fd, IOCTL_LCD_GET_DMA_BASE, &g_VAFrameBuf);
     // the processing of video buffer
-    g_VAFrameBuf = pVideoBuffer;
+    //g_VAFrameBuf = pVideoBuffer;
+    g_xres = var.xres;
+    g_yres = var.yres;
+    g_bits_per_pixel = var.bits_per_pixel;
 
     pthread_create(&tid1, NULL, MainTask_ISR, (void *)"MainTask");
     pthread_create(&tid2, NULL, TouchTask_ISR, (void *)"TouchTask");
@@ -216,11 +217,7 @@ int main()
     pthread_join(tid1, NULL);
     pthread_join(tid2, NULL);
 
-    //MainTask();
-//  while (1)
-    {
-
-    }
+//    MainTask();
 
     /* Close LCD */
     //ioctl(fd, VIDEO_DISPLAY_OFF);

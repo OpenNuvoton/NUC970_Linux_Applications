@@ -1,2 +1,9 @@
 (1). Go To the subfolder Sample/GUIDemo to type in the command "make" to run Makefile, build one binary file GUIDemo.
+    (1.1). Utilize "__Gui_NumBytes__" in Makefile to adjust size of emWin memory pool. (Unit is byte)
 (2). Go to the subfolder Sample/SimpleDemo to type in the command "make" to run Makefile, build one binary file SimpleDemo.
+(3). Set environment variables for tslib touch feature.
+    (3.1). export TSLIB_CONFFILE=/etc/ts.conf
+    (3.2). export TSLIB_TSDEVICE=/dev/input/event0
+    (3.3). export TSLIB_CALIBFILE=/etc/pointercal
+    (3.4). export LD_LIBRARY_PATH=/lib/ts/
+(4). Do touch calibration "/usr/ts_calibrate" before to utilize tslib touch feature.

@@ -3,8 +3,8 @@
 CC=arm-linux-gcc
 LINK=$(CC)
 STRIP=arm-linux-strip
-CFLAGS=-MD -O2
-LDFLAGS=-L../../Lib -lNUemWin -lm -L./tslib -lts -ldl -static -pthread
+CFLAGS=-MD -O2 -D__Gui_NumBytes__=5242880
+LDFLAGS=-L../../Lib -lNUemWin -lm -L./tslib -lts -ldl -pthread -static
 
 APPDIR=.
 CONFHEADER=../../Config
@@ -34,7 +34,7 @@ $(CONFDIR)/%.o: $(CONFDIR)/%.c
 	$(CC) $(CFLAGS) -I. -I$(CONFHEADER) -I$(GUIHEADER) -c $< -o $@
 
 $(BINARY): $(APPOBJECTS) $(CONFOBJECTS)
-	$(LINK) $(CONFOBJECTS) $(APPOBJECTS) $(LDFLAGS) -o $(BINARY)
+	$(LINK) $(APPOBJECTS) $(CONFOBJECTS) $(LDFLAGS) -o $(BINARY)
 	$(STRIP) $(BINARY)
 
 clean:

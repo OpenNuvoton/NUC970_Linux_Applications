@@ -9,14 +9,13 @@
 *                                                                    *
 **********************************************************************
 
-** emWin V5.46 - Graphical user interface for embedded applications **
+** emWin V5.48 - Graphical user interface for embedded applications **
 All  Intellectual Property rights in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product. This file may
 only be used in accordance with the following terms:
 
-The  software has  been licensed by SEGGER Software GmbH to Nuvoton Technology Corporation
-at the address: No. 4, Creation Rd. III, Hsinchu Science Park, Taiwan
+The  software has  been licensed by SEGGER Software GmbH to Nuvoton Technology Corporationat the address: No. 4, Creation Rd. III, Hsinchu Science Park, Taiwan
 for the purposes  of  creating  libraries  for its 
 Arm Cortex-M and  Arm9 32-bit microcontrollers, commercialized and distributed by Nuvoton Technology Corporation
 under  the terms and conditions  of  an  End  User  
@@ -47,7 +46,7 @@ Purpose     : Display controller configuration (single layer)
 #include "GUI.h"
 #include "GUIDRV_Lin.h"
 //#include "GUIDRV_FlexColor.h"
-//#include "N9H2XTouchPanel.h"
+//#include "N9H30TouchPanel.h"
 #include "LCDConf.h"
 
 
@@ -64,13 +63,13 @@ Purpose     : Display controller configuration (single layer)
 //
 // Color conversion
 //
-#define COLOR_CONVERSION GUICC_M888
+//#define COLOR_CONVERSION GUICC_M888
 
 //
 // Display driver
 //
 //#define DISPLAY_DRIVER GUIDRV_FLEXCOLOR
-#define DISPLAY_DRIVER GUIDRV_LIN_32
+//#define DISPLAY_DRIVER GUIDRV_LIN_32
 //
 // Buffers / VScreens
 //
@@ -96,24 +95,24 @@ Purpose     : Display controller configuration (single layer)
 *
 **********************************************************************
 */
-#ifndef   VXSIZE_PHYS
-#define VXSIZE_PHYS XSIZE_PHYS
-#endif
-#ifndef   VYSIZE_PHYS
-#define VYSIZE_PHYS YSIZE_PHYS
-#endif
-#ifndef   XSIZE_PHYS
-#error Physical X size of display is not defined!
-#endif
-#ifndef   YSIZE_PHYS
-#error Physical Y size of display is not defined!
-#endif
-#ifndef   COLOR_CONVERSION
-#error Color conversion not defined!
-#endif
-#ifndef   DISPLAY_DRIVER
-#error No display driver defined!
-#endif
+//#ifndef   VXSIZE_PHYS
+//#define VXSIZE_PHYS XSIZE_PHYS
+//#endif
+//#ifndef   VYSIZE_PHYS
+//#define VYSIZE_PHYS YSIZE_PHYS
+//#endif
+//#ifndef   XSIZE_PHYS
+//#error Physical X size of display is not defined!
+//#endif
+//#ifndef   YSIZE_PHYS
+//#error Physical Y size of display is not defined!
+//#endif
+//#ifndef   COLOR_CONVERSION
+//#error Color conversion not defined!
+//#endif
+//#ifndef   DISPLAY_DRIVER
+//#error No display driver defined!
+//#endif
 #ifndef   DISPLAY_ORIENTATION
 #define DISPLAY_ORIENTATION 0
 #endif
@@ -180,7 +179,9 @@ int  GUI_TOUCH_X_MeasureY(void)
 *   display driver configuration.
 *
 */
-
+extern g_xres;
+extern g_yres;
+extern g_bits_per_pixel;
 
 void LCD_X_Config(void)
 {
@@ -192,16 +193,20 @@ void LCD_X_Config(void)
     //
     // Set display driver and color conversion for 1st layer
     //
-    GUI_DEVICE_CreateAndLink(DISPLAY_DRIVER, COLOR_CONVERSION, 0, 0);
+    //printf("### g_xres=%d g_yres=%d g_bits_per_pixel=%d\n", g_xres, g_yres, g_bits_per_pixel);
+    if (g_bits_per_pixel == 32)
+    GUI_DEVICE_CreateAndLink(GUIDRV_LIN_32, GUICC_M888, 0, 0);
+    else
+    GUI_DEVICE_CreateAndLink(GUIDRV_LIN_16, GUICC_M565, 0, 0);
     if (LCD_GetSwapXY())
     {
-        LCD_SetSizeEx (0, YSIZE_PHYS, XSIZE_PHYS);
-        LCD_SetVSizeEx(0, YSIZE_PHYS * NUM_VSCREENS, XSIZE_PHYS);
+        LCD_SetSizeEx (0, g_yres, g_xres);
+        LCD_SetVSizeEx(0, g_yres * NUM_VSCREENS, g_xres);
     }
     else
     {
-        LCD_SetSizeEx (0, XSIZE_PHYS, YSIZE_PHYS);
-        LCD_SetVSizeEx(0, XSIZE_PHYS, YSIZE_PHYS * NUM_VSCREENS);
+        LCD_SetSizeEx (0, g_xres, g_yres);
+        LCD_SetVSizeEx(0, g_xres, g_yres * NUM_VSCREENS);
     }
     LCD_SetVRAMAddrEx(0, (void *)pVideoBuffer);
 
@@ -216,8 +221,8 @@ void LCD_X_Config(void)
 //
 // Calibrate touch screen
 //
-    GUI_TOUCH_Calibrate(GUI_COORD_X, 0, XSIZE_PHYS, 0, XSIZE_PHYS);
-    GUI_TOUCH_Calibrate(GUI_COORD_Y, 0, YSIZE_PHYS, 0, YSIZE_PHYS);
+    GUI_TOUCH_Calibrate(GUI_COORD_X, 0, g_xres, 0, g_xres);
+    GUI_TOUCH_Calibrate(GUI_COORD_Y, 0, g_yres, 0, g_yres);
 
 }
 

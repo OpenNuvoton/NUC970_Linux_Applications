@@ -9,13 +9,13 @@
 *                                                                    *
 **********************************************************************
 
-** emWin V5.46 - Graphical user interface for embedded applications **
+** emWin V5.48 - Graphical user interface for embedded applications **
 All  Intellectual Property rights in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product. This file may
 only be used in accordance with the following terms:
 
-The  software has  been licensed by SEGGER Software GmbH to Nuvoton Technology Corporationat the address: No. 4, Creation Rd. III, Hsinchu Science Park, Taiwan
+The  software has  been licensed by SEGGER Software GmbH to Nuvoton Technology Corporationat the address: No. 4, Creation Rd. III, Hsinchu Science Park, Taiwan
 for the purposes  of  creating  libraries  for its 
 Arm Cortex-M and  Arm9 32-bit microcontrollers, commercialized and distributed by Nuvoton Technology Corporation
 under  the terms and conditions  of  an  End  User  
@@ -135,7 +135,11 @@ typedef struct {
   #define WIDGET_USE_PARENT_EFFECT 0
 #endif
 #ifndef   WIDGET_USE_FLEX_SKIN
-  #define WIDGET_USE_FLEX_SKIN     1
+  #if WM_SUPPORT_TRANSPARENCY
+    #define WIDGET_USE_FLEX_SKIN     1
+  #else
+    #define WIDGET_USE_FLEX_SKIN     0
+  #endif
 #endif
 #if !defined(WIDGET_USE_SCHEME_SMALL) && !defined(WIDGET_USE_SCHEME_MEDIUM) && !defined(WIDGET_USE_SCHEME_LARGE)
   #define WIDGET_USE_SCHEME_SMALL  1

@@ -759,6 +759,7 @@ static void _DrawBk(int Logo) {
   //
   if (Logo) {
     GUI_DrawBitmap(&bmSeggerLogo70x35, LOGO_DIST, LOGO_DIST);
+    GUI_DrawBitmap(&bmnuvoton_logo_70x35, LOGO_DIST, LOGO_DIST+bmnuvoton_logo_70x35.YSize);
   }
   //
   // Draw msec/picture
