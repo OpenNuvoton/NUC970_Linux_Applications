@@ -13,11 +13,6 @@
 #ifndef __NUC970_JPEG__H
 #define __NUC970_JPEG__H
 
-//#include <linux/config.h>
-#include <linux/videodev.h>
-
-#include <asm/io.h>
-
 
 typedef enum jpeg_state {
     JPEG_IDLE               = 1,
