@@ -14,7 +14,8 @@
 #ifndef SOL_ALG
 #define SOL_ALG 	279
 #endif
-#define BUF_SIZE 	16
+
+#define BUF_SIZE 	512
 
 
 __u32  _mtp_key[9] = {
@@ -44,7 +45,7 @@ static void aes_crypt(__u8 *protocol, int encrypt, int use_mtp_key,
 
  	tfmfd = socket(AF_ALG, SOCK_SEQPACKET, 0);
  	bind(tfmfd, (struct sockaddr *)&sa, sizeof(sa));
- 	
+
  	setsockopt(tfmfd, SOL_ALG, ALG_SET_KEY, key, 16);
  	
  	if (use_mtp_key)
@@ -209,7 +210,7 @@ void AES_demo(int use_mtp_key)
 {
  	int i;
  	char out[BUF_SIZE] = {0};
- 	char in[BUF_SIZE] = "Single block msg";
+ 	char in[BUF_SIZE];
  	const char key[16] =  "\x06\xa9\x21\x40\x36\xb8\xa1\x5b"
   							"\x51\x2e\x03\xd5\x34\x12\x00\x06";
  	char iv[16] = "\x3d\xaf\xba\x42\x9d\x9e\xb4\x30\xb4\x22\xda\x80\x2c\x9f\xac\x41";
@@ -220,6 +221,9 @@ void AES_demo(int use_mtp_key)
 	else
 	printf("|  AES-128 CBC mode encrypt/descrpt demo                        |\n");
     printf("+---------------------------------------------------------------+\n");
+
+	for (i = 0; i < BUF_SIZE; i++)
+		in[i] = i & 0xff;
 
 	aes_crypt("cbc(aes)", 1, use_mtp_key, in, BUF_SIZE, out, key, iv);
 
@@ -239,7 +243,7 @@ void DES_demo()
 {
  	int i;
  	char out[BUF_SIZE] = {0};
- 	char in[BUF_SIZE] = "Single block msg";
+ 	char in[BUF_SIZE];
  	const char key[24] =  "\x06\xa9\x21\x40\x36\xb8\xa1\x5b"
   							"\x51\x2e\x03\xd5\x34\x12\x00\x06"
   							"\xa0\x53\x07\x1e\x22\x00\x96\x77";
@@ -248,6 +252,9 @@ void DES_demo()
     printf("\n+---------------------------------------------------------------+\n");
 	printf("|  DES ECB mode encrypt/descrpt demo                            |\n");
     printf("+---------------------------------------------------------------+\n");
+
+	for (i = 0; i < BUF_SIZE; i++)
+		in[i] = i & 0xff;
 
 	des_crypt(0, "ecb(des)", 1, in, BUF_SIZE, out, key, iv);
 
@@ -266,7 +273,7 @@ void TDES_demo()
 {
  	int i;
  	char out[BUF_SIZE] = {0};
- 	char in[BUF_SIZE] = "Single block msg";
+ 	char in[BUF_SIZE];
  	const char key[24] =  "\x06\xa9\x21\x40\x36\xb8\xa1\x5b"
   							"\x51\x2e\x03\xd5\x34\x12\x00\x06"
   							"\xa0\x53\x07\x1e\x22\x00\x96\x77";
@@ -275,6 +282,9 @@ void TDES_demo()
     printf("\n+---------------------------------------------------------------+\n");
 	printf("|  Tripple-DES ECB mode encrypt/descrpt demo                    |\n");
     printf("+---------------------------------------------------------------+\n");
+
+	for (i = 0; i < BUF_SIZE; i++)
+		in[i] = i & 0xff;
  
 	des_crypt(1, "ecb(3des)", 1, in, BUF_SIZE, out, key, iv);
 
@@ -384,6 +394,8 @@ int SHA_demo(int digest_size, int is_hmac)
     close(tfmfd);
 }
 
+extern void crypto_raw_demo(void);
+
 int main(int argc, char **argv)
 {
 	MTP_demo();
@@ -401,7 +413,7 @@ int main(int argc, char **argv)
 	SHA_demo(384, 1);       // HMAC-SHA-384
 	SHA_demo(512, 0);       // SHA-512
 	SHA_demo(512, 1);       // HMAC-SHA-512
+
+	crypto_raw_demo();
 }
-
-
 

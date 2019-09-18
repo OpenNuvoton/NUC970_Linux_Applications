@@ -4,7 +4,7 @@ CC := arm-linux-gcc
 STRIP := arm-linux-strip
 
 TARGET = crypto_demo  
-SRCS := crypto.c
+SRCS := crypto.c crypto_raw.c
 
 LIBS= -lc -lgcc -lc
 
