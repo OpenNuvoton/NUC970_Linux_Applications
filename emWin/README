@@ -7,3 +7,5 @@
     (3.3). export TSLIB_CALIBFILE=/etc/pointercal
     (3.4). export LD_LIBRARY_PATH=/lib/ts/
 (4). Do touch calibration "/usr/ts_calibrate" before to utilize tslib touch feature.
+(5). Please to get the latest Linux BSP from OpenNuvoton https://github.com/OpenNuvoton/NUC970_Linux_Kernel.
+(6). Limitation: Linux emWin touch doesn't support orientation.

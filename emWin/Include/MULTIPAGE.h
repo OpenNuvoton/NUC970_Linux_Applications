@@ -3,13 +3,13 @@
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2018  SEGGER Microcontroller GmbH                *
+*        (c) 1996 - 2019  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V5.48 - Graphical user interface for embedded applications **
+** emWin V6.10 - Graphical user interface for embedded applications **
 All  Intellectual Property rights in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product. This file may
@@ -33,7 +33,7 @@ License model:            emWin License Agreement, signed February 27, 2018
 Licensed platform:        Cortex-M and ARM9 32-bit series microcontroller designed and manufactured by or for Nuvoton Technology Corporation
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
-SUA period:               2018-03-26 - 2019-03-27
+SUA period:               2018-03-26 - 2020-03-27
 Contact to extend SUA:    sales@segger.com
 ----------------------------------------------------------------------
 File        : MULTIPAGE.h
@@ -158,8 +158,11 @@ void             MULTIPAGE_EnablePage     (MULTIPAGE_Handle hObj, unsigned Index
 void             MULTIPAGE_EnableScrollbar(MULTIPAGE_Handle hObj, unsigned OnOff);
 GUI_COLOR        MULTIPAGE_GetBkColor     (MULTIPAGE_Handle hObj, unsigned Index);
 const GUI_FONT * MULTIPAGE_GetFont        (MULTIPAGE_Handle hObj);
+int              MULTIPAGE_GetNumTabs     (MULTIPAGE_Handle hObj);
 int              MULTIPAGE_GetSelection   (MULTIPAGE_Handle hObj);
 int              MULTIPAGE_GetPageText    (MULTIPAGE_Handle hObj, unsigned Index, char * pBuffer, int MaxLen);
+int              MULTIPAGE_GetTabHeight   (MULTIPAGE_Handle hObj);
+int              MULTIPAGE_GetTabWidth    (MULTIPAGE_Handle hObj, int Index);
 GUI_COLOR        MULTIPAGE_GetTextColor   (MULTIPAGE_Handle hObj, unsigned Index);
 int              MULTIPAGE_GetUserData    (MULTIPAGE_Handle hObj, void * pDest, int NumBytes);
 WM_HWIN          MULTIPAGE_GetWindow      (MULTIPAGE_Handle hObj, unsigned Index);

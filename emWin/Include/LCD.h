@@ -3,13 +3,13 @@
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2018  SEGGER Microcontroller GmbH                *
+*        (c) 1996 - 2019  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V5.48 - Graphical user interface for embedded applications **
+** emWin V6.10 - Graphical user interface for embedded applications **
 All  Intellectual Property rights in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product. This file may
@@ -33,7 +33,7 @@ License model:            emWin License Agreement, signed February 27, 2018
 Licensed platform:        Cortex-M and ARM9 32-bit series microcontroller designed and manufactured by or for Nuvoton Technology Corporation
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
-SUA period:               2018-03-26 - 2019-03-27
+SUA period:               2018-03-26 - 2020-03-27
 Contact to extend SUA:    sales@segger.com
 ----------------------------------------------------------------------
 File        : LCD.h
@@ -442,7 +442,6 @@ int LCD_ROTATE_SetSelEx   (int Index, int LayerIndex);
 #define LCD_DEVFUNC_SETSIZE       0x05 /* ...setting the layer size */
 #define LCD_DEVFUNC_SETVIS        0x06 /* ...setting the visibility of a layer */
 #define LCD_DEVFUNC_24BPP         0x07 /* ...drawing 24bpp bitmaps */
-#define LCD_DEVFUNC_NEXT_PIXEL    0x08 /* ...drawing a bitmap pixel by pixel */
 #define LCD_DEVFUNC_SET_VRAM_ADDR 0x09 /* ...setting the VRAM address */
 #define LCD_DEVFUNC_SET_VSIZE     0x0A /* ...setting the VRAM size */
 #define LCD_DEVFUNC_SET_SIZE      0x0B /* ...setting the display size */
@@ -488,6 +487,7 @@ int LCD_ROTATE_SetSelEx   (int Index, int LayerIndex);
 #define LCD_DEVDATA_MEMDEV        0x01 /* ...default memory device API */
 #define LCD_DEVDATA_PHYSPAL       0x02 /* ...physical palette */
 #define LCD_DEVDATA_VRAMADDR      0x03 /* ...VRAM address */
+#define LCD_DEVDATA_NEXT_PIXEL    0x04 /* ...drawing a bitmap pixel by pixel */
 
 /*********************************************************************
 *

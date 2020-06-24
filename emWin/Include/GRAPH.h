@@ -3,13 +3,13 @@
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2018  SEGGER Microcontroller GmbH                *
+*        (c) 1996 - 2019  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V5.48 - Graphical user interface for embedded applications **
+** emWin V6.10 - Graphical user interface for embedded applications **
 All  Intellectual Property rights in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product. This file may
@@ -33,7 +33,7 @@ License model:            emWin License Agreement, signed February 27, 2018
 Licensed platform:        Cortex-M and ARM9 32-bit series microcontroller designed and manufactured by or for Nuvoton Technology Corporation
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
-SUA period:               2018-03-26 - 2019-03-27
+SUA period:               2018-03-26 - 2020-03-27
 Contact to extend SUA:    sales@segger.com
 ----------------------------------------------------------------------
 File        : GRAPH.h
@@ -45,7 +45,7 @@ Purpose     : GRAPH include
 #define GRAPH_H
 
 #include "WM.h"
-#include "DIALOG_Intern.h"      /* Req. for Create indirect data structure */
+#include "DIALOG_Type.h"      /* Req. for Create indirect data structure */
 #include "WIDGET.h"
 
 #if GUI_WINSUPPORT
@@ -138,6 +138,7 @@ void      GRAPH_DetachScale            (GRAPH_Handle hObj, GRAPH_SCALE_Handle hS
 GUI_COLOR GRAPH_GetColor               (GRAPH_Handle hObj, unsigned Index);
 I32       GRAPH_GetScrollValue         (GRAPH_Handle hObj, U8 Coord);
 int       GRAPH_GetUserData            (GRAPH_Handle hObj, void * pDest, int NumBytes);
+void      GRAPH_InvertScrollbar        (GRAPH_Handle hObj, U8 Coord);
 void      GRAPH_SetAutoScrollbar       (GRAPH_Handle hObj, U8 Coord, U8 OnOff);
 void      GRAPH_SetBorder              (GRAPH_Handle hObj, unsigned BorderL, unsigned BorderT, unsigned BorderR, unsigned BorderB);
 GUI_COLOR GRAPH_SetColor               (GRAPH_Handle hObj, GUI_COLOR Color, unsigned Index);
@@ -162,6 +163,7 @@ void      GRAPH_DATA_YT_Delete         (GRAPH_DATA_Handle hDataObj);
 int       GRAPH_DATA_YT_GetValue       (GRAPH_DATA_Handle hDataObj, I16 * pValue, U32 Index);
 
 void      GRAPH_DATA_YT_SetAlign       (GRAPH_DATA_Handle hDataObj, int Align);
+GUI_COLOR GRAPH_DATA_YT_SetColor       (GRAPH_DATA_Handle hDataObj, GUI_COLOR Color);
 void      GRAPH_DATA_YT_SetOffY        (GRAPH_DATA_Handle hDataObj, int Off);
 void      GRAPH_DATA_YT_MirrorX        (GRAPH_DATA_Handle hDataObj, int OnOff);
 
@@ -171,6 +173,7 @@ void      GRAPH_DATA_XY_Delete         (GRAPH_DATA_Handle hDataObj);
 unsigned  GRAPH_DATA_XY_GetLineVis     (GRAPH_DATA_Handle hDataObj);
 int       GRAPH_DATA_XY_GetPoint       (GRAPH_DATA_Handle hDataObj, GUI_POINT * pPoint, U32 Index);
 unsigned  GRAPH_DATA_XY_GetPointVis    (GRAPH_DATA_Handle hDataObj);
+GUI_COLOR GRAPH_DATA_XY_SetColor       (GRAPH_DATA_Handle hDataObj, GUI_COLOR Color);
 void      GRAPH_DATA_XY_SetLineStyle   (GRAPH_DATA_Handle hDataObj, U8 LineStyle);
 unsigned  GRAPH_DATA_XY_SetLineVis     (GRAPH_DATA_Handle hDataObj, unsigned OnOff);
 void      GRAPH_DATA_XY_SetOffX        (GRAPH_DATA_Handle hDataObj, int Off);

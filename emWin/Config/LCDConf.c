@@ -3,13 +3,13 @@
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2018  SEGGER Microcontroller GmbH                *
+*        (c) 1996 - 2019  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V5.48 - Graphical user interface for embedded applications **
+** emWin V6.10 - Graphical user interface for embedded applications **
 All  Intellectual Property rights in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product. This file may
@@ -33,7 +33,7 @@ License model:            emWin License Agreement, signed February 27, 2018
 Licensed platform:        Cortex-M and ARM9 32-bit series microcontroller designed and manufactured by or for Nuvoton Technology Corporation
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
-SUA period:               2018-03-26 - 2019-03-27
+SUA period:               2018-03-26 - 2020-03-27
 Contact to extend SUA:    sales@segger.com
 ----------------------------------------------------------------------
 File        : LCDConf.c
@@ -59,17 +59,16 @@ Purpose     : Display controller configuration (single layer)
 //
 // Physical display size
 //
-
 //
 // Color conversion
 //
-//#define COLOR_CONVERSION GUICC_M888
+//#define COLOR_CONVERSION GUICC_M565
 
 //
 // Display driver
 //
 //#define DISPLAY_DRIVER GUIDRV_FLEXCOLOR
-//#define DISPLAY_DRIVER GUIDRV_LIN_32
+//#define DISPLAY_DRIVER GUIDRV_LIN_16
 //
 // Buffers / VScreens
 //
@@ -271,6 +270,7 @@ int LCD_X_DisplayDriver(unsigned LayerIndex, unsigned Cmd, void * pData)
         LCD_X_SETVRAMADDR_INFO * p;
         p = (LCD_X_SETVRAMADDR_INFO *)pData;
         pData=(void*)pVideoBuffer;
+        GUI_USE_PARA(p);
         //...
         return 0;
     }
@@ -282,6 +282,7 @@ int LCD_X_DisplayDriver(unsigned LayerIndex, unsigned Cmd, void * pData)
         LCD_X_SETORG_INFO * p;
         p = (LCD_X_SETORG_INFO *)pData;
         pData=(void*)pVideoBuffer;
+        GUI_USE_PARA(p);
         //...
         return 0;
     }
@@ -292,6 +293,7 @@ int LCD_X_DisplayDriver(unsigned LayerIndex, unsigned Cmd, void * pData)
         //
         LCD_X_SHOWBUFFER_INFO * p;
         p = (LCD_X_SHOWBUFFER_INFO *)pData;
+        GUI_USE_PARA(p);
         //...
         return 0;
     }
@@ -302,6 +304,7 @@ int LCD_X_DisplayDriver(unsigned LayerIndex, unsigned Cmd, void * pData)
         //
         LCD_X_SETLUTENTRY_INFO * p;
         p = (LCD_X_SETLUTENTRY_INFO *)pData;
+        GUI_USE_PARA(p);
         //...
         return 0;
     }

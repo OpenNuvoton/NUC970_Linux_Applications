@@ -3,13 +3,13 @@
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2018  SEGGER Microcontroller GmbH                *
+*        (c) 1996 - 2019  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V5.48 - Graphical user interface for embedded applications **
+** emWin V6.10 - Graphical user interface for embedded applications **
 All  Intellectual Property rights in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product. This file may
@@ -33,7 +33,7 @@ License model:            emWin License Agreement, signed February 27, 2018
 Licensed platform:        Cortex-M and ARM9 32-bit series microcontroller designed and manufactured by or for Nuvoton Technology Corporation
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
-SUA period:               2018-03-26 - 2019-03-27
+SUA period:               2018-03-26 - 2020-03-27
 Contact to extend SUA:    sales@segger.com
 ----------------------------------------------------------------------
 File        : LISTVIEW.h
@@ -45,7 +45,7 @@ Purpose     : LISTVIEW include
 #define LISTVIEW_H
 
 #include "WM.h"
-#include "DIALOG_Intern.h"      // Req. for Create indirect data structure
+#include "DIALOG_Type.h"      // Req. for Create indirect data structure
 #include "ICONVIEW.h"
 #include "HEADER.h"
 
@@ -77,6 +77,7 @@ Purpose     : LISTVIEW include
 #define LISTVIEW_CF_AUTOSCROLLBAR_H   (1 << 0)
 #define LISTVIEW_CF_AUTOSCROLLBAR_V   (1 << 1)
 #define LISTVIEW_CF_CELL_SELECT       (1 << 2)                     // Create Flag used to enable cell selection
+#define LISTVIEW_CF_MOTION            (1 << 3)
 #define LISTVIEW_SF_AUTOSCROLLBAR_H   LISTVIEW_CF_AUTOSCROLLBAR_H
 #define LISTVIEW_SF_AUTOSCROLLBAR_V   LISTVIEW_CF_AUTOSCROLLBAR_V
 
@@ -127,6 +128,7 @@ void             LISTVIEW_DeleteRowSorted     (LISTVIEW_Handle hObj, int Row);
 void             LISTVIEW_DisableRow          (LISTVIEW_Handle hObj, unsigned Row);
 void             LISTVIEW_DisableSort         (LISTVIEW_Handle hObj);
 void             LISTVIEW_EnableCellSelect    (LISTVIEW_Handle hObj, unsigned OnOff);  // Enables/disables cell selection
+void             LISTVIEW_EnableMotion        (LISTVIEW_Handle hObj, int OnOff);
 void             LISTVIEW_EnableRow           (LISTVIEW_Handle hObj, unsigned Row);
 void             LISTVIEW_EnableSort          (LISTVIEW_Handle hObj);
 GUI_COLOR        LISTVIEW_GetBkColor          (LISTVIEW_Handle hObj, unsigned Index);

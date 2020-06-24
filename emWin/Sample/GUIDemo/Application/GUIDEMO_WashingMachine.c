@@ -11083,7 +11083,7 @@ static int _ExecMachine(WM_HWIN hButton, int * pTimeNext, EXEC_MACHINE_CONTEXT *
 */
 static void _DemoWashingMachine(void) {
   EXEC_MACHINE_CONTEXT   ExecMachineContext = {0};
-  GUI_PID_STATE          State;
+  GUI_PID_STATE          State = {0};
   GUI_HSPRITE            hSprite;
   BUTTON_Handle          hButton;
   WM_HWIN                hWin;
@@ -11124,6 +11124,7 @@ static void _DemoWashingMachine(void) {
     hSprite = 1;
   }
   if (hSprite && (_NoMemory == 0)) {
+      GUI_PID_StoreState(&State);
     do {
       GUI_Delay(10);
       #if GUIDEMO_SHOW_SPRITES

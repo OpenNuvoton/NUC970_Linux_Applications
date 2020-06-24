@@ -3,13 +3,13 @@
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2018  SEGGER Microcontroller GmbH                *
+*        (c) 1996 - 2019  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V5.48 - Graphical user interface for embedded applications **
+** emWin V6.10 - Graphical user interface for embedded applications **
 All  Intellectual Property rights in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product. This file may
@@ -33,7 +33,7 @@ License model:            emWin License Agreement, signed February 27, 2018
 Licensed platform:        Cortex-M and ARM9 32-bit series microcontroller designed and manufactured by or for Nuvoton Technology Corporation
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
-SUA period:               2018-03-26 - 2019-03-27
+SUA period:               2018-03-26 - 2020-03-27
 Contact to extend SUA:    sales@segger.com
 ----------------------------------------------------------------------
 File        : LISTVIEW_Private.h
@@ -44,7 +44,8 @@ Purpose     : Private LISTVIEW include
 #ifndef LISTVIEW_PRIVATE_H
 #define LISTVIEW_PRIVATE_H
 
-#include "WM.h"
+#include "GUI_Private.h"
+#include "WM_Intern.h"
 
 #if GUI_WINSUPPORT
 
@@ -127,6 +128,10 @@ struct LISTVIEW_Obj {
   int                          SelCol;
   int                          ShowGrid;
   int                          SortIndex;                                         // Column for sorting
+  int                          MotionPosX;
+  int                          MotionPosOldX;
+  int                          MotionPosY;
+  int                          MotionPosOldY;
   unsigned                     RowDistY;
   unsigned                     LBorder;
   unsigned                     RBorder;
@@ -183,7 +188,7 @@ unsigned             LISTVIEW__GetRowSorted         (LISTVIEW_Handle   hObj, int
 void                 LISTVIEW__InvalidateInsideArea (LISTVIEW_Handle   hObj);
 void                 LISTVIEW__InvalidateRow        (LISTVIEW_Handle   hObj, int Sel);
 void                 LISTVIEW__InvalidateRowAndBelow(LISTVIEW_Handle   hObj, int Sel);
-void                 LISTVIEW__SetSel               (LISTVIEW_Handle   hObj, int NewSel);
+void                 LISTVIEW__SetSel               (LISTVIEW_Handle   hObj, int NewSel, int CheckPos);
 void                 LISTVIEW__SetSelCol            (LISTVIEW_Handle   hObj, int NewSelCol);
 int                  LISTVIEW__UpdateScrollParas    (LISTVIEW_Handle   hObj);
 

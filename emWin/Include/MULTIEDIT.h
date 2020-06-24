@@ -3,13 +3,13 @@
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2018  SEGGER Microcontroller GmbH                *
+*        (c) 1996 - 2019  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V5.48 - Graphical user interface for embedded applications **
+** emWin V6.10 - Graphical user interface for embedded applications **
 All  Intellectual Property rights in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product. This file may
@@ -33,7 +33,7 @@ License model:            emWin License Agreement, signed February 27, 2018
 Licensed platform:        Cortex-M and ARM9 32-bit series microcontroller designed and manufactured by or for Nuvoton Technology Corporation
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
-SUA period:               2018-03-26 - 2019-03-27
+SUA period:               2018-03-26 - 2020-03-27
 Contact to extend SUA:    sales@segger.com
 ----------------------------------------------------------------------
 File        : MULTIEDIT.h
@@ -45,7 +45,7 @@ Purpose     : MULTIEDIT include
 #define MULTIEDIT_H
 
 #include "WM.h"
-#include "DIALOG_Intern.h"      /* Req. for Create indirect data structure */
+#include "DIALOG_Type.h"      /* Req. for Create indirect data structure */
 
 #if GUI_WINSUPPORT
 
@@ -116,9 +116,12 @@ GUI_COLOR        MULTIEDIT_GetBkColor       (MULTIEDIT_HANDLE hObj, unsigned Ind
 int              MULTIEDIT_GetCursorCharPos (MULTIEDIT_HANDLE hObj);
 void             MULTIEDIT_GetCursorPixelPos(MULTIEDIT_HANDLE hObj, int * pxPos, int * pyPos);
 const GUI_FONT * MULTIEDIT_GetFont          (MULTIEDIT_HANDLE hObj);
+int              MULTIEDIT_GetNumChars      (MULTIEDIT_HANDLE hObj);
 void             MULTIEDIT_GetPrompt        (MULTIEDIT_HANDLE hObj, char* sDest, int MaxNumChars);
 void             MULTIEDIT_GetText          (MULTIEDIT_HANDLE hObj, char* sDest, int MaxNumChars);
 GUI_COLOR        MULTIEDIT_GetTextColor     (MULTIEDIT_HANDLE hObj, unsigned Index);
+int              MULTIEDIT_GetTextFromLine  (MULTIEDIT_HANDLE hObj, char * sDest, int MaxLen, unsigned CharPos, unsigned Line);
+int              MULTIEDIT_GetTextFromPos   (MULTIEDIT_HANDLE hObj, char * sDest, int MaxLen, int CharStart, int LineStart, int CharEnd, int LineEnd);
 int              MULTIEDIT_GetTextSize      (MULTIEDIT_HANDLE hObj);
 int              MULTIEDIT_GetUserData      (MULTIEDIT_HANDLE hObj, void * pDest, int NumBytes);
 void             MULTIEDIT_SetTextAlign     (MULTIEDIT_HANDLE hObj, int Align);

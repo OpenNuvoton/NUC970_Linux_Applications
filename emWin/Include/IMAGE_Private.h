@@ -3,13 +3,13 @@
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2018  SEGGER Microcontroller GmbH                *
+*        (c) 1996 - 2019  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V5.48 - Graphical user interface for embedded applications **
+** emWin V6.10 - Graphical user interface for embedded applications **
 All  Intellectual Property rights in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product. This file may
@@ -33,7 +33,7 @@ License model:            emWin License Agreement, signed February 27, 2018
 Licensed platform:        Cortex-M and ARM9 32-bit series microcontroller designed and manufactured by or for Nuvoton Technology Corporation
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
-SUA period:               2018-03-26 - 2019-03-27
+SUA period:               2018-03-26 - 2020-03-27
 Contact to extend SUA:    sales@segger.com
 ----------------------------------------------------------------------
 File        : IMAGE_Private.h
@@ -44,8 +44,9 @@ Purpose     : Private IMAGE include
 #ifndef IMAGE_PRIVATE_H
 #define IMAGE_PRIVATE_H
 
-#include "IMAGE.h"
 #include "GUI_Private.h"
+#include "WM_Intern.h"
+#include "IMAGE.h"
 
 #if GUI_WINSUPPORT
 
@@ -137,6 +138,7 @@ extern IMAGE_PROPS IMAGE__DefaultProps;
 */
 void IMAGE__SetWindowSize(IMAGE_Handle hObj);
 void IMAGE__FreeAttached (IMAGE_Handle hObj, int LeaveTimer);
+void IMAGE__SetVoid      (IMAGE_Handle hObj, const void * pData);
 
 #endif // GUI_WINSUPPORT
 #endif // IMAGE_PRIVATE_H

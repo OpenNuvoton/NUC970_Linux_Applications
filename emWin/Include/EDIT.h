@@ -3,13 +3,13 @@
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2018  SEGGER Microcontroller GmbH                *
+*        (c) 1996 - 2019  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V5.48 - Graphical user interface for embedded applications **
+** emWin V6.10 - Graphical user interface for embedded applications **
 All  Intellectual Property rights in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product. This file may
@@ -33,7 +33,7 @@ License model:            emWin License Agreement, signed February 27, 2018
 Licensed platform:        Cortex-M and ARM9 32-bit series microcontroller designed and manufactured by or for Nuvoton Technology Corporation
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
-SUA period:               2018-03-26 - 2019-03-27
+SUA period:               2018-03-26 - 2020-03-27
 Contact to extend SUA:    sales@segger.com
 ----------------------------------------------------------------------
 File        : EDIT.h
@@ -45,7 +45,7 @@ Purpose     : EDIT include
 #define EDIT_H
 
 #include "WM.h"
-#include "DIALOG_Intern.h" // Required for Create indirect data structure
+#include "DIALOG_Type.h" // Required for Create indirect data structure
 
 #if GUI_WINSUPPORT
 
@@ -169,6 +169,8 @@ void EDIT_AddKey           (EDIT_Handle hObj, int Key);
 void EDIT_EnableBlink      (EDIT_Handle hObj, int Period, int OnOff);
 GUI_COLOR EDIT_GetBkColor  (EDIT_Handle hObj, unsigned int Index);
 void EDIT_SetBkColor       (EDIT_Handle hObj, unsigned int Index, GUI_COLOR color);
+void EDIT_SetBorderSize    (EDIT_Handle hObj, int Border);
+int  EDIT_GetBorderSize    (EDIT_Handle hObj);
 void EDIT_SetCursorAtChar  (EDIT_Handle hObj, int Pos);
 void EDIT_SetCursorAtPixel (EDIT_Handle hObj, int xPos);
 void EDIT_SetFont          (EDIT_Handle hObj, const GUI_FONT * pFont);
@@ -186,15 +188,19 @@ int  EDIT_EnableInversion  (EDIT_Handle hObj, int OnOff);
 //
 // Get/Set user input
 //
+U16   EDIT_GetCharAtPixel    (EDIT_Handle hObj, int x, int y);
 int   EDIT_GetCursorCharPos  (EDIT_Handle hObj);
 void  EDIT_GetCursorPixelPos (EDIT_Handle hObj, int * pxPos, int * pyPos);
 float EDIT_GetFloatValue     (EDIT_Handle hObj);
 const GUI_FONT * EDIT_GetFont(EDIT_Handle hObj);
+int   EDIT_GetMaxLen         (EDIT_Handle hObj);
 int   EDIT_GetNumChars       (EDIT_Handle hObj);
 void  EDIT_GetText           (EDIT_Handle hObj, char * sDest, int MaxLen);
 int   EDIT_GetTextAlign      (EDIT_Handle hObj);
 I32   EDIT_GetValue          (EDIT_Handle hObj);
 void  EDIT_SetFloatValue     (EDIT_Handle hObj, float Value);
+void  EDIT_GetSel            (EDIT_Handle hObj, int * pFirstChar, int * pLastChar);
+void  EDIT_GetSelText        (EDIT_Handle hObj, char * sDest, int MaxLen);
 int   EDIT_GetUserData       (EDIT_Handle hObj, void * pDest, int NumBytes);
 void  EDIT_SetValue          (EDIT_Handle hObj, I32 Value);
 

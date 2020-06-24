@@ -3,13 +3,13 @@
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2018  SEGGER Microcontroller GmbH                *
+*        (c) 1996 - 2019  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V5.48 - Graphical user interface for embedded applications **
+** emWin V6.10 - Graphical user interface for embedded applications **
 All  Intellectual Property rights in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product. This file may
@@ -33,7 +33,7 @@ License model:            emWin License Agreement, signed February 27, 2018
 Licensed platform:        Cortex-M and ARM9 32-bit series microcontroller designed and manufactured by or for Nuvoton Technology Corporation
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
-SUA period:               2018-03-26 - 2019-03-27
+SUA period:               2018-03-26 - 2020-03-27
 Contact to extend SUA:    sales@segger.com
 ----------------------------------------------------------------------
 File        : GUI_Private.h
@@ -194,6 +194,13 @@ typedef struct {
   GUI_HMEM               hUsage;
 } GUI_MEMDEV;
 
+typedef struct {
+  GUI_USAGE Public;
+  struct {
+    int BytesPerLine;
+  } Private;
+} GUI_USAGE_BM;
+
 #define      GUI_MEMDEV_LOCK_H(h) ((GUI_MEMDEV *)GUI_LOCK_H(h))
 
 void         GUI_MEMDEV__CopyFromLCD (GUI_MEMDEV_Handle hMem);
@@ -264,6 +271,9 @@ void GUI_AA__DrawCharAA2(int x0, int y0, int XSize, int YSize, int BytesPerLine,
 void GUI_AA__DrawCharAA4(int x0, int y0, int XSize, int YSize, int BytesPerLine, const U8 * pData);
 void GUI_AA__DrawCharAA8(int x0, int y0, int XSize, int YSize, int BytesPerLine, const U8 * pData);
 
+/* Default routine for drawing string characters with EXT fonts */
+U16 GUI__DrawCharEXT(int RemChars, const char ** ps);
+
 /* Alpha blending helper functions */
 #define GUI_ALPHABLENDING_DONE  (1 << 0)
 
@@ -319,6 +329,10 @@ void GUI__InvertRectColors (int x0, int y0, int x1, int y1);
 void GUI__DispLine         (const char * s, int Len, const GUI_RECT * pr);
 void GUI__AddSpaceHex      (U32 v, U8 Len, char ** ps);
 void GUI__CalcTextRect     (const char * pText, const GUI_RECT * pTextRectIn, GUI_RECT * pTextRectOut, int TextAlign);
+int  GUI__IsPointInRect    (GUI_RECT * pRect, int x, int y);
+
+void GUI__DrawNonExistingCharacter(LCD_DRAWMODE DrawMode);
+int  GUI__GetNonExistingCharWidth (void);
 
 void GUI__ClearTextBackground(int xDist, int yDist);
 
@@ -350,6 +364,13 @@ int  GUI__BIDI_IsNSM             (U16 Char);
 U16  GUI__BIDI_GetCursorCharacter(const char * s, int Index, int MaxNumChars, int * pIsRTL);
 int  GUI__BIDI_GetWordWrap       (const char * s, int xSize, int * pxDist);
 int  GUI__BIDI_GetCharWrap       (const char * s, int xSize);
+
+const char * GUI__NOBIDI_Log2VisBuffered   (const char * s, int * pMaxNumChars, int Mode);
+int          GUI__NOBIDI_GetCursorPosX     (const char * s, int MaxNumChars, int Index);
+int          GUI__NOBIDI_GetCursorPosChar  (const char * s, int MaxNumChars, int x);
+U16          GUI__NOBIDI_GetCursorCharacter(const char * s, int Index, int MaxNumChars, int * pIsRTL);
+int          GUI__NOBIDI_GetWordWrap       (const char * s, int xSize, int * pxDist);
+int          GUI__NOBIDI_GetCharWrap       (const char * s, int xSize);
 
 #if (GUI_USE_BIDI2)
 
@@ -420,7 +441,6 @@ U32 GUI__Read32(const U8 ** ppData);
 
 /* Virtual screen support */
 void GUI__GetOrg(int * px, int * py);
-void GUI__SetOrgHook(void(* pfHook)(int x, int y));
 
 /* Timer support */
 int              GUI_TIMER__IsActive       (void);
@@ -433,13 +453,6 @@ tLCDDEV_Index2Color * GUI_GetpfIndex2ColorEx(int LayerIndex);
 tLCDDEV_Color2Index * GUI_GetpfColor2IndexEx(int LayerIndex);
 
 int GUI_GetBitsPerPixelEx(int LayerIndex);
-
-LCD_PIXELINDEX * LCD_GetpPalConvTable        (const LCD_LOGPALETTE * pLogPal);
-LCD_PIXELINDEX * LCD_GetpPalConvTableUncached(const LCD_LOGPALETTE * pLogPal);
-LCD_PIXELINDEX * LCD_GetpPalConvTableBM      (const LCD_LOGPALETTE * pLogPal, const GUI_BITMAP * pBitmap, int LayerIndex);
-
-/* Setting a function for converting a color palette to an array of index values */
-void GUI_SetFuncGetpPalConvTable(LCD_PIXELINDEX * (* pFunc)(const LCD_LOGPALETTE * pLogPal, const GUI_BITMAP * pBitmap, int LayerIndex));
 
 /*********************************************************************
 *
@@ -491,11 +504,11 @@ void GL_DrawArc          (int x0, int y0, int rx, int ry, int a0, int a1);
 void GL_DrawBitmap       (const GUI_BITMAP * pBM, int x0, int y0);
 void GL_DrawCircle       (int x0, int y0, int r);
 void GL_DrawEllipse      (int x0, int y0, int rx, int ry, int w);
+void GL_DrawEllipseXL    (int xm, int ym, int rx, int ry, int w);
 void GL_DrawHLine        (int y0, int x0, int x1);
 void GL_DrawPolygon      (const GUI_POINT * pPoints, int NumPoints, int x0, int y0);
 void GL_DrawPoint        (int x,  int y);
 void GL_DrawLine1        (int x0, int y0, int x1, int y1);
-void GL_DrawLine1Ex      (int x0, int y0, int x1, int y1, unsigned * pPixelCnt);
 void GL_DrawLineRel      (int dx, int dy);
 void GL_DrawLineTo       (int x,  int y);
 void GL_DrawLineToEx     (int x,  int y, unsigned * pPixelCnt);
@@ -645,6 +658,11 @@ extern GUI_COLOR        GUI__BkColorDefault;
 extern GUI_SADDR GUI_CONTEXT * GUI_pContext;
 
 extern GUI_DEVICE * GUI__apDevice[GUI_NUM_LAYERS];
+
+//
+// Function pointer for drawing string characters with EXT fonts
+//
+extern U16 (* GUI__pfDrawCharEXT)(int RemChars, const char ** ps);
 
 //
 // Function pointer for converting a palette containing a color array into an index array

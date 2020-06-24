@@ -3,13 +3,13 @@
 *        Solutions for real time microcontroller applications        *
 **********************************************************************
 *                                                                    *
-*        (c) 1996 - 2018  SEGGER Microcontroller GmbH                *
+*        (c) 1996 - 2019  SEGGER Microcontroller GmbH                *
 *                                                                    *
 *        Internet: www.segger.com    Support:  support@segger.com    *
 *                                                                    *
 **********************************************************************
 
-** emWin V5.48 - Graphical user interface for embedded applications **
+** emWin V6.10 - Graphical user interface for embedded applications **
 All  Intellectual Property rights in the Software belongs to  SEGGER.
 emWin is protected by  international copyright laws.  Knowledge of the
 source code may not be used to write a similar product. This file may
@@ -33,7 +33,7 @@ License model:            emWin License Agreement, signed February 27, 2018
 Licensed platform:        Cortex-M and ARM9 32-bit series microcontroller designed and manufactured by or for Nuvoton Technology Corporation
 ----------------------------------------------------------------------
 Support and Update Agreement (SUA)
-SUA period:               2018-03-26 - 2019-03-27
+SUA period:               2018-03-26 - 2020-03-27
 Contact to extend SUA:    sales@segger.com
 ----------------------------------------------------------------------
 File        : HEADER.h
@@ -45,7 +45,7 @@ Purpose     : HEADER include
 #define HEADER_H
 
 #include "WM.h"
-#include "DIALOG_Intern.h"      /* Req. for Create indirect data structure */
+#include "DIALOG_Type.h"      /* Req. for Create indirect data structure */
 #include "WIDGET.h"
 
 #if GUI_WINSUPPORT
@@ -126,6 +126,7 @@ void             HEADER_AddItem            (HEADER_Handle hObj, int Width, const
 void             HEADER_DeleteItem         (HEADER_Handle hObj, unsigned Index);
 GUI_COLOR        HEADER_GetArrowColor      (HEADER_Handle hObj);
 GUI_COLOR        HEADER_GetBkColor         (HEADER_Handle hObj);
+int              HEADER_GetColumnFromPos   (HEADER_Handle hObj, int x);
 const GUI_FONT * HEADER_GetFont            (HEADER_Handle hObj);
 int              HEADER_GetHeight          (HEADER_Handle hObj);
 int              HEADER_GetItemText        (HEADER_Handle hObj, unsigned Index, char * pBuffer, int MaxSize);
