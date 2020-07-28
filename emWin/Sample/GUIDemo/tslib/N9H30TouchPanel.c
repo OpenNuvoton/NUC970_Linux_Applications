@@ -8,6 +8,7 @@
 #include "N9H30TouchPanel.h"
 #include "tslib.h"
 
+#define __OLD_FILTER__ 0
 
 void TouchTask(void)
 {
@@ -17,7 +18,10 @@ void TouchTask(void)
     int x, y, xDiff, yDiff;
     int  Pressed;
 
+    #if __OLD_FILTER__
     int ifirst;
+    #endif
+
     struct tsdev *ts;
     char *tsdevice=NULL;
 
@@ -51,7 +55,10 @@ void TouchTask(void)
         exit(1);
     }
 
+    #if __OLD_FILTER__
     ifirst = 1;
+    #endif
+
     while (1)
     {
         struct ts_sample samp;
@@ -102,11 +109,15 @@ void TouchTask(void)
             {
                 if ((x != 0) && (y != 0))
                 {
+
+                    #if __OLD_FILTER__
                     if ( ifirst <= 5 )
                     {
                         ifirst++;
                         continue;
                     }
+                    #endif
+
                     xOld = x;
                     yOld = y;
                     PressedOld = 1;
@@ -121,7 +132,11 @@ void TouchTask(void)
             {
                 PressedOld = 0;
                 GUI_TOUCH_StoreState(-1, -1);
+
+                #if __OLD_FILTER__
                 ifirst = 0;
+                #endif
+
 //  printf("X= -1, Y=-1\n");
             }
         }
