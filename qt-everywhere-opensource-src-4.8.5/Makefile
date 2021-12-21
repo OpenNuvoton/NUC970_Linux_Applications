@@ -8,7 +8,7 @@
 
 first: make_default
 MAKEFILE      = Makefile
-QMAKE         = /home/ccwang/bsp/nuc970/workspace/_qt/QT4/qt-everywhere-opensource-src-4.8.5/bin/qmake
+QMAKE         = $(PWD)/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
 MKDIR         = mkdir -p

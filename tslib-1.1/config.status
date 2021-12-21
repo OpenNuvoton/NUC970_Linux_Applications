@@ -437,7 +437,7 @@ Copyright (C) 2012 Free Software Foundation, Inc.
 This config.status script is free software; the Free Software Foundation
 gives unlimited permission to copy, distribute and modify it."
 
-ac_pwd='/home/schung/applications/tslib-1.1'
+ac_pwd='${PWD}'
 srcdir='.'
 INSTALL='/usr/bin/install -c'
 MKDIR_P='/bin/mkdir -p'
@@ -960,12 +960,12 @@ S["mkdir_p"]="/bin/mkdir -p"
 S["MKDIR_P"]="/bin/mkdir -p"
 S["INSTALL_STRIP_PROGRAM"]="$(install_sh) -c -s"
 S["STRIP"]="arm-linux-strip"
-S["install_sh"]="${SHELL} /home/schung/applications/tslib-1.1/install-sh"
-S["MAKEINFO"]="${SHELL} /home/schung/applications/tslib-1.1/missing --run makeinfo"
-S["AUTOHEADER"]="${SHELL} /home/schung/applications/tslib-1.1/missing --run autoheader"
-S["AUTOMAKE"]="${SHELL} /home/schung/applications/tslib-1.1/missing --run automake-1.11"
-S["AUTOCONF"]="${SHELL} /home/schung/applications/tslib-1.1/missing --run autoconf"
-S["ACLOCAL"]="${SHELL} /home/schung/applications/tslib-1.1/missing --run aclocal-1.11"
+S["install_sh"]="${SHELL} ${PWD}/install-sh"
+S["MAKEINFO"]="${SHELL} ${PWD}/missing --run makeinfo"
+S["AUTOHEADER"]="${SHELL} ${PWD}/missing --run autoheader"
+S["AUTOMAKE"]="${SHELL} ${PWD}/missing --run automake-1.11"
+S["AUTOCONF"]="${SHELL} ${PWD}/missing --run autoconf"
+S["ACLOCAL"]="${SHELL} ${PWD}/missing --run aclocal-1.11"
 S["VERSION"]="1.1.0"
 S["PACKAGE"]="tslib"
 S["CYGPATH_W"]="echo"
