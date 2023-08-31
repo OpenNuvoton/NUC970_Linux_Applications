@@ -44,7 +44,7 @@ Purpose     : Include file defining current GUI version
 #ifndef  GUI_VERSION_H
 #define  GUI_VERSION_H
 
-#define GUI_VERSION 610064
+#define GUI_VERSION 610065
 
 #endif   /* Avoid multiple inclusion */
 
